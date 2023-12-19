@@ -8,11 +8,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
+import { DefaultLayoutComponent } from './shared/default-layout/default-layout.component';
+import { CheckSheetsComponent } from './views/check-sheets/check-sheets.component';
+import { RoleComponent } from './views/role/role.component';
+import { UsersComponent } from './views/users/users.component';
+import { AuditComponent } from './views/audit/audit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    DefaultLayoutComponent,
+    CheckSheetsComponent,
+    RoleComponent,
+    UsersComponent,
+    AuditComponent
   ],
   imports: [
     BrowserModule, 
