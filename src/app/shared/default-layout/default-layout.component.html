@@ -21,9 +21,19 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="mynavbar">
+
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/views/check-sheet']" [routerLinkActive]="['active']">Check Sheet</a>
+            <div class="dropdown">
+              <a class="dropbtn nav-link">Check Sheet
+                <i class="fa fa-caret-down"></i>
+              </a>
+              <div class="dropdown-content">
+                <a [routerLink]="['/views/check-sheet']" [routerLinkActive]="['active']">ESD</a>
+                <a [routerLink]="['/views/check-sheet']" [routerLinkActive]="['active']">SGA</a>
+              </div>
+            </div>
+            <!-- <a class="nav-link">Account</a> -->
           </li>
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['/views/audit']" [routerLinkActive]="['active']">Audit</a>

@@ -203,8 +203,12 @@ export class CheckSheetsComponent implements OnInit {
       commentRemarks: "",
       completed: ""
     })
-    console.log(this.openAreaArray);
   }
+
+  removeOpenArea(index: any) {
+    this.openAreaArray.splice(index, 1)
+  }
+
   openModal(id: any) {
     this.images = '../../../assets/images/' + id + '.png';
     this.modalReference = this.modalService.open(this.confirmModal, { ariaLabelledBy: 'modal-basic-title', centered: true });

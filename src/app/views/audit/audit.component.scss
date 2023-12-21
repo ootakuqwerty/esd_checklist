@@ -1,8 +1,23 @@
-.col-left {
-    text-align: left;
-    padding: 15px;
-}
-
 .left {
     text-align: left;
+}
+
+// .score-details{
+//     margin-left: 8rem;
+// }
+
+.card-status{
+    height: 13rem;
+    background-color: #ffffff;
+}
+
+.text-status{
+    font-size: 100px;
+}
+
+.btn-footer{
+    button{
+        margin: 1rem;
+        width: 10rem;
+    }
 }

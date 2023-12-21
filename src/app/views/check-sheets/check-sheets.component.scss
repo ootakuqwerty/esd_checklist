@@ -1,8 +1,3 @@
-.col-left {
-    text-align: left;
-    padding: 15px;
-}
-
 .table {
     margin-top: 1rem;
 }
@@ -89,4 +84,11 @@ input:checked+.slider:before {
 
 img{
     width: 29rem;
+}
+
+.btn-footer{
+    button{
+        margin: 1rem;
+        width: 10rem;
+    }
 }
