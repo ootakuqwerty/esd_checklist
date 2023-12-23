@@ -13,6 +13,9 @@ import { CheckSheetsComponent } from './views/check-sheets/check-sheets.componen
 import { RoleComponent } from './views/role/role.component';
 import { UsersComponent } from './views/users/users.component';
 import { AuditComponent } from './views/audit/audit.component';
+import { ToastrModule } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -25,15 +28,21 @@ import { AuditComponent } from './views/audit/audit.component';
     AuditComponent
   ],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    NgbModule
-
+    NgbModule,
+    ToastrModule.forRoot({
+      closeButton: true,
+      timeOut: 5000, // 5 seconds
+      progressBar: false,
+    }),
+    CommonModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

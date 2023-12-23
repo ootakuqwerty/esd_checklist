@@ -1,19 +1,13 @@
-.center {
-  margin: auto;
-  width: 35%;
-  text-align: center;
-}
-
 .text-wrapper {
-  padding: 1rem;
-
-  div {margin-top: 1rem;}
-  span{margin-left: .2rem;}
+    input{
+        margin-bottom: 1rem;
+    }
+    select{
+        margin-bottom: 1rem;
+    }
 }
 
-.btn-footer{
-  button{
-      margin: 1rem;
-      width: 10rem; 
-  }
+.header-button{
+    text-align: right;
+    margin-bottom: 1rem;
 }
