@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
     private loginService: LoginService,
-    private toastr: ToastrService, 
+    private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
   username = "";
@@ -24,14 +24,16 @@ export class LoginComponent implements OnInit {
 
   login() {
     let payload = {
-      username: this.username,
-      password: this.password,
+      Username: this.username,
+      Password: this.password,
+      Token: ""
     };
     this.spinner.show();
     this.loginService.login(payload).subscribe(
       (data: any) => {
-        if (data.length > 0) {
+        if (data) {
           this.spinner.hide();
+          localStorage.setItem("UserInfo", JSON.stringify(data))
           this.router.navigateByUrl('/views');
         } else {
           this.toastr.error("Invalid Login Credentials")
@@ -39,9 +41,15 @@ export class LoginComponent implements OnInit {
         }
       },
       (error: any) => {
-        this.toastr.error(error.code)
+        console.log(error.code)
+        this.toastr.error("Invalid Login Credentials")
         this.spinner.hide();
       }
     )
+  }
+
+  disabledLogin(){
+    if(this.username == "" || this.password == "") return true
+    return false
   }
 }

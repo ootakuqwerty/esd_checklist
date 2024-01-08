@@ -29,8 +29,8 @@
                 <i class="fa fa-caret-down"></i>
               </a>
               <div class="dropdown-content">
-                <a [routerLink]="['/views/check-sheet']" [routerLinkActive]="['active']">ESD</a>
-                <a [routerLink]="['/views/check-sheet']" [routerLinkActive]="['active']">SGA</a>
+                <a [routerLink]="['/views/esd-check-sheet']" [routerLinkActive]="['active']">ESD</a>
+                <a [routerLink]="['/views/sga-check-sheet']" [routerLinkActive]="['active']">SGA</a>
               </div>
             </div>
             <!-- <a class="nav-link">Account</a> -->
@@ -55,13 +55,14 @@
           </li>
         </ul>
         <form class="d-flex">
-          <input class="form-control me-2" type="text" placeholder="Search">
-          <button class="btn btn-primary" type="button">Search</button>
+          <button class="btn btn-secondary" (click)="logOut()" type="button">Logout</button>
         </form>
       </div>
     </div>
   </nav>
-
+  <!-- <div class="mt-5">
+    <h1>WELCOME</h1>
+  </div> -->
   <div class="container-fluid mt-5">
     <router-outlet></router-outlet>
   </div>

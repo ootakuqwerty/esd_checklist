@@ -1,0 +1,194 @@
+<h2>ESD AUDIT CHECK SHEET</h2>
+
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Control #</span><input class="form-control" type="text"
+          [(ngModel)]="header.controlNo" (keyup.enter)="searchControlNo($event)" />
+      </div>
+
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Div/Flr/Process</span><input class="form-control" type="text"
+          [(ngModel)]="header.process" />
+      </div>
+
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Date</span><input class="form-control" [(ngModel)]="header.date" type="date" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="scrollit">
+  <table class="table table-responsive table-bordered table-hover">
+    <thead>
+      <tr>
+        <th colspan="2">ESD Audit Items</th>
+        <th scope="col">Ideal Condition</th>
+        <th scope="col">Critiera</th>
+        <th scope="col">Fail/Pass</th>
+        <th scope="col">QTY</th>
+        <th colspan="3">Condition</th>
+        <th scope="col">Actual Picture</th>
+        <th scope="col">Comments/Remarks</th>
+        <th scope="col">% Completed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of checkListArray; let i = index">
+        <td>{{i}}</td>
+        <td class="td-left">{{item.item}}</td>
+        <td><button class="btn btn-secondary" (click)="openModal(i)">View</button></td>
+        <td class="td-criteria td-left">{{item.criteria}}</td>
+        <td>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'">
+            <span class="slider round"></span>
+          </label>
+        </td>
+        <td>
+          <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]">/
+          <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]">
+        </td>
+        <td>
+          <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[0].name"
+            (change)="radioItemChange(item.condition, item.condition[0].name)">
+          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0].name">
+            {{item.condition[0].name}}</label>
+        </td>
+        <td>
+          <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[1].name"
+            (change)="radioItemChange(item.condition, item.condition[1].name)">
+          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1].name">
+            {{item.condition[1].name}}</label>
+        </td>
+        <td>
+          <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[2].name"
+            (change)="radioItemChange(item.condition,item.condition[2].name)">
+          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name">
+            {{item.condition[2].name}}</label>
+        </td>
+        <td>
+          <input #fileUpload type="file" (click)="fileUpload.value = ''" (change)="importFile($event,item)"
+            style="display:none" accept="image/*">
+          <button (click)="fileUpload.click()" class="btn btn-primary">Upload</button>
+          &nbsp;
+          <button class="btn btn-secondary" (click)="openUploadedModal(item)">View</button>
+        </td>
+        <td><textarea type="text" [(ngModel)]="item.commentRemarks" class="form-control"></textarea></td>
+        <td><input type="text" [(ngModel)]="item.completed" class="form-control"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-md-2">
+    <h3>Open Area</h3>
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-primary" (click)="addOpenArea()">Add</button>
+  </div>
+</div>
+
+<div class="scrollit">
+  <table class="table table-responsive table-bordered table-hover">
+    <thead>
+      <tr>
+        <th colspan="2">ESD Audit Items</th>
+        <th scope="col">Ideal Condition</th>
+        <th scope="col">Critiera</th>
+        <th scope="col">Fail/Pass</th>
+        <th scope="col">QTY</th>
+        <th colspan="3">Condition</th>
+        <th scope="col">Actual Picture</th>
+        <th scope="col">Comments/Remarks</th>
+        <th scope="col">% Completed</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of openAreaArray; let i = index">
+        <td>{{i}}</td>
+        <td class="td-left"><textarea type="text" [(ngModel)]="item.item" class="form-control"></textarea></td>
+        <td><button class="btn btn-secondary">View</button></td>
+        <td class="td-left"><textarea type="text" [(ngModel)]="item.criteria" class="form-control"></textarea></td>
+        <td>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'">
+            <span class="slider round"></span>
+          </label>
+        </td>
+        <td>
+          <input class="qty" min="0" type="number" [(ngModel)]="item.qty">/
+          <input class="qty" min="0" type="number">
+        </td>
+        <td>
+          <input type="radio" class="btn-check" [name]="i" [id]="i + item.condition[0] + '-open'">
+          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0] + '-open'">
+            {{item.condition[0]}}</label>
+        </td>
+        <td>
+          <input type="radio" class="btn-check" [name]="i" [id]="i + item.condition[1] + '-open'">
+          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1] + '-open'">
+            {{item.condition[1]}}</label>
+        </td>
+        <td>
+          <input type="radio" class="btn-check" [name]="i" [id]="i + item.condition[2] + '-open'">
+          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2] + '-open'">
+            {{item.condition[2]}}</label>
+        </td>
+        <td>
+          <button class="btn btn-primary">Upload</button>
+          &nbsp;
+          <button class="btn btn-secondary">View</button>
+        </td>
+        <td><textarea type="text" [(ngModel)]="item.commentRemarks" class="form-control"></textarea></td>
+        <td><input type="text" [(ngModel)]="item.completed" class="form-control"></td>
+        <td><button class="btn btn-danger" (click)="removeOpenArea(i)">Remove</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="btn-footer">
+  <span><button class="btn btn-warning btn-lg" (click)="clear()">Clear</button></span>
+  <span><button class="btn btn-primary btn-lg" (click)="saveChecksheet()">Save</button></span>
+</div>
+
+<!-- Confirmation Modal -->
+<ng-template #confirmationModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title"></h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <div class="modal-body modal-sm">
+    <img alt="" [src]="images">
+  </div>
+</ng-template>
+
+<!-- View Uploaded Modal -->
+<ng-template #uploadedModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title"></h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <div class="modal-body modal-lg">
+    <div *ngIf="uploadedImagesList.actualPicture.length > 0">
+      <div class="image-wrap" *ngFor="let image of uploadedImagesList.actualPicture; index as i">
+        <button class="remove-image" (click)="removeImage(uploadedImagesList.actualPicture, i)">x</button>
+        <img alt="" [src]="image">
+      </div>
+    </div>
+    <div *ngIf="uploadedImagesList.actualPicture.length == 0">
+      <h2 style="text-align: center;">No Image</h2>
+    </div>
+ 
+  </div>
+</ng-template>

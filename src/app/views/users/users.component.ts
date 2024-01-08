@@ -61,11 +61,11 @@ export class UsersComponent implements OnInit {
     this.spinner.show();
     this.userService.userList().subscribe((data: any) => {
       this.usersList = data;
-      console.log(this.usersList);
       this.spinner.hide();
     }, (error) => {
       console.log(error);
-      this.toastr.error(error)
+      this.spinner.hide();
+      this.toastr.error("Something Went Wrong")
     })
   }
 
