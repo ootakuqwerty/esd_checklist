@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { SgaCheckSheetComponent } from './views/sga-check-sheet/sga-check-sheet.component';
+import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SgaCheckSheetComponent } from './views/sga-check-sheet/sga-check-sheet.
     RoleComponent,
     UsersComponent,
     AuditComponent,
-    SgaCheckSheetComponent
+    SgaCheckSheetComponent,
+    SgaPatrolFormComponent
   ],
   imports: [
     BrowserModule,

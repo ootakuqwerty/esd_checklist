@@ -85,13 +85,10 @@
 
 <hr>
 
-<div class="row">
-  <div class="col-md-2">
-    <h3>Open Area</h3>
-  </div>
-  <div class="col-md-1">
-    <button class="btn btn-primary" (click)="addOpenArea()">Add</button>
-  </div>
+<div class="row col-md-12" style="text-align: left;">
+  <span>
+    <label style="font-size: 20px;">Open Area</label>&nbsp;&nbsp;<button class="btn btn-primary" (click)="addOpenArea()">Add</button>
+  </span>
 </div>
 
 <div class="scrollit">
@@ -189,6 +186,6 @@
     <div *ngIf="uploadedImagesList.actualPicture.length == 0">
       <h2 style="text-align: center;">No Image</h2>
     </div>
- 
+
   </div>
 </ng-template>
