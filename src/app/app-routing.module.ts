@@ -6,7 +6,8 @@ import { EsdCheckSheetsComponent } from './views/esd-check-sheets/esd-check-shee
 import { SgaCheckSheetComponent } from './views/sga-check-sheet/sga-check-sheet.component'
 import { RoleComponent } from './views/role/role.component';
 import { UsersComponent } from './views/users/users.component';
-import { AuditComponent } from './views/audit/audit.component'
+import { AuditComponent } from './views/esd-audit/esd-audit.component';
+import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.component';
 
 const routes: Routes = [
   {
@@ -15,9 +16,10 @@ const routes: Routes = [
     children: [
       { path: 'esd-check-sheet', component: EsdCheckSheetsComponent },
       { path: 'sga-check-sheet', component: SgaCheckSheetComponent },
+      { path: 'sga-patrol-form', component: SgaPatrolFormComponent },
       { path: 'role', component: RoleComponent },
       { path: 'users', component: UsersComponent },
-      { path: 'audit', component: AuditComponent },
+      { path: 'esd-audit', component: AuditComponent },
     ]
   },
 

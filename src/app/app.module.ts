@@ -12,7 +12,7 @@ import { DefaultLayoutComponent } from './shared/default-layout/default-layout.c
 import { EsdCheckSheetsComponent } from './views/esd-check-sheets/esd-check-sheets.component';
 import { RoleComponent } from './views/role/role.component';
 import { UsersComponent } from './views/users/users.component';
-import { AuditComponent } from './views/audit/audit.component';
+import { AuditComponent } from './views/esd-audit/esd-audit.component';
 import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { NgxSpinnerModule } from "ngx-spinner";

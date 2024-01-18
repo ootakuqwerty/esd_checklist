@@ -31,19 +31,14 @@ export class LoginComponent implements OnInit {
     this.spinner.show();
     this.loginService.login(payload).subscribe(
       (data: any) => {
-        if (data) {
+        if (data.Success) {
           this.spinner.hide();
           localStorage.setItem("UserInfo", JSON.stringify(data))
           this.router.navigateByUrl('/views');
         } else {
-          this.toastr.error("Invalid Login Credentials")
+          this.toastr.error(data.Message)
           this.spinner.hide();
         }
-      },
-      (error: any) => {
-        console.log(error.code)
-        this.toastr.error("Invalid Login Credentials")
-        this.spinner.hide();
       }
     )
   }

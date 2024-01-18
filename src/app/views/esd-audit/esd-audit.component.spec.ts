@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuditComponent } from './audit.component';
+import { AuditComponent } from './esd-audit.component';
 
 describe('AuditComponent', () => {
   let component: AuditComponent;
