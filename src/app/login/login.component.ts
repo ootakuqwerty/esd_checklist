@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       (data: any) => {
         if (data.Success) {
           this.spinner.hide();
-          localStorage.setItem("UserInfo", JSON.stringify(data))
+          localStorage.setItem("UserInfo", JSON.stringify(data.Data))
           this.router.navigateByUrl('/views');
         } else {
           this.toastr.error(data.Message)
