@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-audit',
-  templateUrl: './audit.component.html',
-  styleUrls: ['./audit.component.scss']
+  templateUrl: './esd-audit.component.html',
+  styleUrls: ['./esd-audit.component.scss']
 })
 export class AuditComponent {
 

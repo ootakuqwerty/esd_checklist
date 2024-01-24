@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckSheetsComponent } from './check-sheets.component';
+import { SgaCheckSheetComponent } from './sga-check-sheet.component';
 
-describe('CheckSheetsComponent', () => {
-  let component: CheckSheetsComponent;
-  let fixture: ComponentFixture<CheckSheetsComponent>;
+describe('SgaCheckSheetComponent', () => {
+  let component: SgaCheckSheetComponent;
+  let fixture: ComponentFixture<SgaCheckSheetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CheckSheetsComponent ]
+      declarations: [ SgaCheckSheetComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CheckSheetsComponent);
+    fixture = TestBed.createComponent(SgaCheckSheetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

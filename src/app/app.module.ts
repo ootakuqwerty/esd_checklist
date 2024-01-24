@@ -9,31 +9,44 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
 import { DefaultLayoutComponent } from './shared/default-layout/default-layout.component';
-import { CheckSheetsComponent } from './views/check-sheets/check-sheets.component';
+import { EsdCheckSheetsComponent } from './views/esd-check-sheets/esd-check-sheets.component';
 import { RoleComponent } from './views/role/role.component';
 import { UsersComponent } from './views/users/users.component';
-import { AuditComponent } from './views/audit/audit.component';
+import { AuditComponent } from './views/esd-audit/esd-audit.component';
+import { ToastrModule } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { SgaCheckSheetComponent } from './views/sga-check-sheet/sga-check-sheet.component';
+import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DefaultLayoutComponent,
-    CheckSheetsComponent,
+    EsdCheckSheetsComponent,
     RoleComponent,
     UsersComponent,
-    AuditComponent
+    AuditComponent,
+    SgaCheckSheetComponent,
+    SgaPatrolFormComponent
   ],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    NgbModule
-
+    NgbModule,
+    ToastrModule.forRoot({
+      closeButton: true,
+      timeOut: 5000, // 5 seconds
+      progressBar: false,
+    }),
+    CommonModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

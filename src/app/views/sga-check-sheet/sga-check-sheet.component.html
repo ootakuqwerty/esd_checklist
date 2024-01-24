@@ -1,0 +1,116 @@
+<h2>SGA THEME REGISTRATION</h2>
+
+<div class="card">
+  <div class="card-body">
+
+    <div class="row">
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>THEME TITLE</span><input placeholder="Enter theme title" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>PRESENT</span><input placeholder="Enter present" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>TARGET</span><input placeholder="Enter target" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>DIVISION</span>
+        <select class="form-control" id="DIV">
+          <option value="" disabled>Select Division</option>
+          <option *ngFor="let div of divisionList" [value]="div.ID"> {{div.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>BLDG</span><input placeholder="Enter theme building" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>FLOOR</span><input placeholder="Enter floor" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>DEPT</span><input placeholder="Enter depeartment" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>DEPT. MNGR</span><input placeholder="Enter theme department manager" class="form-control" type="text" />
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>SECTION MNGR</span><input placeholder="Enter section manager" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>SECTION CHIEF</span><input placeholder="Enter section chief" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>SECTION</span><input placeholder="Enter section" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>SGA LEADER</span><input placeholder="Enter SGA leader" class="form-control" type="text" />
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>EMP NO.</span><input placeholder="Enter employee number" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>SHIFT OF LEADER</span><input placeholder="Enter shift of leader" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>LOCAL NO.</span><input placeholder="Enter local number" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>E-MAIL ADDRESS</span><input placeholder="Enter email address" class="form-control" type="text" />
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>Category</span>
+        <select class="form-control" id="category">
+          <option value="" disabled>Select Division</option>
+          <option *ngFor="let div of categoryList" [value]="div.ID"> {{div.Name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>CONTROL No.</span><input placeholder="Enter control number" class="form-control" type="text" />
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>Type</span>
+        <select class="form-control" id="type">
+          <option value="NEW">NEW</option>
+          <option value="RE-ENTRY">RE-ENTRY</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6 col-md-6 col-left">
+        <div class="row">
+          <span>GROUP MEMBERS NAME</span>
+          <div class="col-xs-10 col-md-10">
+
+            <select multiple class="form-control" id="sel2">
+              <option *ngFor="let member of sga.Members; let i = index" (dblclick)="removeMember(i)">{{member}}</option>
+            </select>
+            <input placeholder="Enter group member" class="form-control member" type="text" [(ngModel)]="member" />
+          </div>
+          <div class="col-xs-2 col-md-2 add-members">
+            <button class="btn btn-primary" [disabled]="member == ''" (click)="addMember()">Add member</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-2 col-md-2 col-left">
+        <span>MEMB QTY.</span><input class="form-control" type="text" disabled [(ngModel)]="sga.MembersCount" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-footer">
+  <span><button class="btn btn-warning btn-lg">Clear</button></span>
+  <span><button class="btn btn-primary btn-lg">Save</button></span>
+</div>

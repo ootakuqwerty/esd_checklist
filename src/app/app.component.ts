@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from './services/login.service'
 
 interface WeatherForecast {
   date: string;
@@ -14,24 +15,13 @@ interface WeatherForecast {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  public forecasts: any
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    // this.getForecasts();
+   
   }
-
-  // getForecasts() {
-  //   this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-  //     (result) => {
-  //       this.forecasts = result;
-  //     },
-  //     (error) => {
-  //       console.error(error);
-  //     }
-  //   );
-  // }
 
   title = 'esd_checksheet_angular.client';
 }

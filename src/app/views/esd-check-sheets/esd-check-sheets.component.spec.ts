@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuditComponent } from './audit.component';
+import { EsdCheckSheetsComponent } from './esd-check-sheets.component';
 
-describe('AuditComponent', () => {
-  let component: AuditComponent;
-  let fixture: ComponentFixture<AuditComponent>;
+describe('EsdCheckSheetsComponent', () => {
+  let component: EsdCheckSheetsComponent;
+  let fixture: ComponentFixture<EsdCheckSheetsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuditComponent ]
+      declarations: [ EsdCheckSheetsComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AuditComponent);
+    fixture = TestBed.createComponent(EsdCheckSheetsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

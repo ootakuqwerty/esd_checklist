@@ -1,0 +1,57 @@
+.scrollit {
+    overflow: scroll;
+    height: auto;
+    max-height: 500px;
+}
+
+.card-body{
+    overflow: scroll;
+    height: auto;
+    max-height: 710px;
+}
+
+th {
+    position: sticky;
+    top: -1px;
+    /* 0px if you don't have a navbar, but something is required */
+    background: grey;
+    z-index: 1;
+}
+
+.td-left {
+    text-align: left;
+}
+
+.col-left{
+    span{
+        font-weight: bold;
+        margin-left: 0.5rem;
+    }
+}
+
+.btn-footer {
+    button {
+        margin: 1rem;
+        width: 10rem;
+    }
+
+}
+
+.members{
+    background-color: #ffffff;
+    border-color: black;
+    border-bottom: solid 1px;
+    label{
+        align-items: center;
+    }
+}
+
+.add-members{
+    margin-left:.5rem;
+    margin-top: .5rem;
+}
+
+.member{
+    margin-top: 1rem;
+
+}

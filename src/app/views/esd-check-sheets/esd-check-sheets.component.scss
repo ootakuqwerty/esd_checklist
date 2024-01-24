@@ -70,25 +70,72 @@ input:checked+.slider:before {
     padding: 5px;
 }
 
-.qty{
+.qty {
     width: 3rem;
 }
 
-.col-md-1{
+.col-md-1 {
     margin-left: -7rem;
 }
+
 // .div-table{
 //     overflow-y: auto;
 //     height: 41rem;   
 // }
 
-img{
-    width: 29rem;
+img {
+    width: 100%;
 }
 
-.btn-footer{
-    button{
+.btn-footer {
+    button {
         margin: 1rem;
         width: 10rem;
     }
+}
+
+.modal-body {
+    max-height: 50rem;
+    overflow: auto;
+
+    .image-wrap {
+        margin-bottom: 1rem;
+
+        img {
+            border: 5px solid #555;
+            ;
+        }
+    }
+}
+
+.scrollit {
+    overflow: scroll;
+    height: auto;
+    max-height: 500px;
+}
+
+.btn-check {
+    position: fixed;
+}
+
+th {
+    position: sticky;
+    top: -1px;
+    /* 0px if you don't have a navbar, but something is required */
+    background: grey;
+    z-index: 1;
+}
+
+.remove-image {
+    color: white;
+    background-color: grey;
+    border: 0px;
+    position: absolute;
+    margin-top: 10px;
+    right: 1px;
+    margin-right: 25px;
+}
+
+.td-left {
+    text-align: left;
 }
