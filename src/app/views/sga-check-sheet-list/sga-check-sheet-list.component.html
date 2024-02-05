@@ -1,0 +1,30 @@
+<h2>SGA THEME REGISTRATION LIST</h2>
+
+<div class="card">
+    <div class="card-body">
+        <select class="form-control date_filter" id="date_filter" [(ngModel)]="date_filter" (change)="onFilterChange()">
+            <option value="1">Today</option>
+            <option value="2">Last 2 days</option>
+            <option value="5">Last 5 days</option>
+            <option value="15">Last 15 days</option>
+            <option value="30">Last 30 days</option>
+          </select>
+          <br>
+        <div class="scrollit">
+            <table class="table table-responsive table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Theme Title</th>
+                        <th scope="col">Division</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Sec</th>
+                        <th scope="col">Sec</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

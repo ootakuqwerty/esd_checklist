@@ -8,6 +8,8 @@ import { RoleComponent } from './views/role/role.component';
 import { UsersComponent } from './views/users/users.component';
 import { AuditComponent } from './views/esd-audit/esd-audit.component';
 import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.component';
+import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-check-sheet-list.component';
+import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
 
 const routes: Routes = [
   {
@@ -15,11 +17,13 @@ const routes: Routes = [
     component: DefaultLayoutComponent,
     children: [
       { path: 'esd-check-sheet', component: EsdCheckSheetsComponent },
+      { path: 'sga-check-sheet-list', component: SgaCheckSheetListComponent },
       { path: 'sga-check-sheet', component: SgaCheckSheetComponent },
       { path: 'sga-patrol-form', component: SgaPatrolFormComponent },
       { path: 'role', component: RoleComponent },
       { path: 'users', component: UsersComponent },
       { path: 'esd-audit', component: AuditComponent },
+      { path: 'sga-reports', component: SgaReportsComponent },
     ]
   },
 

@@ -18,6 +18,8 @@ import { CommonModule } from '@angular/common';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { SgaCheckSheetComponent } from './views/sga-check-sheet/sga-check-sheet.component';
 import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.component';
+import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-check-sheet-list.component';
+import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.
     UsersComponent,
     AuditComponent,
     SgaCheckSheetComponent,
-    SgaPatrolFormComponent
+    SgaPatrolFormComponent,
+    SgaCheckSheetListComponent,
+    SgaReportsComponent
   ],
   imports: [
     BrowserModule,

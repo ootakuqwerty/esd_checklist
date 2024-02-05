@@ -22,29 +22,39 @@ export class LoginComponent implements OnInit {
 
   }
 
-  login() {
+  async login() {
+    this.spinner.show();
     let payload = {
       Username: this.username,
       Password: this.password,
       Token: ""
     };
-    this.spinner.show();
     this.loginService.login(payload).subscribe(
-      (data: any) => {
+      async (data: any) => {
         if (data.Success) {
+          localStorage.setItem("UserInfo", JSON.stringify(data.Data));
+
+          let dynamicData = await this.loginService.loadAllDynamicData(JSON.stringify(data.Data));
+          localStorage.setItem("DynamicData", JSON.stringify(dynamicData));
+
+          let dynamicTempate = await this.loginService.loadAllDynamicTemplate(JSON.stringify(data.Data));
+          localStorage.setItem("DynamicTemplate", JSON.stringify(dynamicTempate));
+
           this.spinner.hide();
-          localStorage.setItem("UserInfo", JSON.stringify(data.Data))
           this.router.navigateByUrl('/views');
         } else {
           this.toastr.error(data.Message)
           this.spinner.hide();
         }
+      }, (error: any) => {
+        this.toastr.error(error.message)
+        console.log(error);
       }
     )
   }
 
-  disabledLogin(){
-    if(this.username == "" || this.password == "") return true
+  disabledLogin() {
+    if (this.username == "" || this.password == "") return true
     return false
   }
 }

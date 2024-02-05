@@ -21,3 +21,9 @@ th, td {
 table {
     margin: 0 auto;
 }
+
+@media screen and (max-width: 600px) {
+    :host {
+        padding-bottom: 1rem;
+    }
+  }
