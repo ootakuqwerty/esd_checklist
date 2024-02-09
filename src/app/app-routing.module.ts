@@ -10,13 +10,14 @@ import { AuditComponent } from './views/esd-audit/esd-audit.component';
 import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.component';
 import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-check-sheet-list.component';
 import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
+import { IsAuthorizedGuard } from './guard/is-authorized.guard';
 
 const routes: Routes = [
   {
     path: 'views',
     component: DefaultLayoutComponent,
     children: [
-      { path: 'esd-check-sheet', component: EsdCheckSheetsComponent },
+      { path: 'esd-check-sheet', component: EsdCheckSheetsComponent, canActivate: [IsAuthorizedGuard] },
       { path: 'sga-check-sheet-list', component: SgaCheckSheetListComponent },
       { path: 'sga-check-sheet', component: SgaCheckSheetComponent },
       { path: 'sga-patrol-form', component: SgaPatrolFormComponent },

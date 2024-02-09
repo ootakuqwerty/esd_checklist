@@ -5,6 +5,7 @@ import { UserAccountService } from '../../services/user-account.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { EsdChecksheetService } from '../../services/esd-checksheet.service';
 import { ToastrService } from 'ngx-toastr';
+import { UtilsService } from '../../services/utils.service'
 
 @Component({
   selector: 'app-esd-check-sheets',
@@ -23,6 +24,19 @@ export class EsdCheckSheetsComponent implements OnInit {
   images = ""
   uploadedImagesList: any;
   userInfo: any
+  model = {
+    TransactionNumber: "",
+    Date: "",
+    Division: "",
+    auditProperAuditor: "",
+    auditProperLeadAuditor: "",
+    auditProperProcessOwner: "",
+    auditVerificationProcessOwner: "",
+    auditVerificationLeadOwner: "",
+    auditVerificationEsdCoordinator: "",
+    start: "test",
+    end: ""
+  }
   header = {
     ID: '',
     controlNo: '',
@@ -30,188 +44,45 @@ export class EsdCheckSheetsComponent implements OnInit {
     date: ''
   }
 
-  checkListArrayOrig = [{
-    item: "Wrist Strap*",
-    idealCondition: [],
-    criteria: "Wrist strap bracelet condition intact",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Smock*",
-    idealCondition: [],
-    criteria: "Smock condition has no cuts and not broken",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Footwear*",
-    idealCondition: [],
-    criteria: "Heel or toe grounding tab condition (heel straps) Footwear condition",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "ESD Flooring*",
-    idealCondition: [],
-    criteria: "Flooring condition is presentable",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Floor Mats*",
-    idealCondition: [],
-    criteria: "Floor mats presentable",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Push Cart",
-    idealCondition: [],
-    criteria: "Transportmedia antitastic and dissipative\nTransportmedia lined with static - safe material",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Wip Rack",
-    idealCondition: [],
-    criteria: "Storage media grounded\nSensitive components and assemblies properly stored",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Personnel Checks",
-    idealCondition: [],
-    criteria: "Personnel wearing wrist strap properly\nPersonnel wearing footwear properly (2 each)\nPersonnel wearing smock correctly\nPersonnnel grounded\nPersonnel transporting product via safe practices\npersonnel loading / unloading product properly\npersonnel following self test production",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Packaging Material",
-    idealCondition: [],
-    criteria: "ESD packaging labels present and visible",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Air Ionizer",
-    idealCondition: [],
-    criteria: "Air ionizer present if used\nAir ionizer calibration label updated. Proper use of Use of Air Ionizer",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Training*",
-    idealCondition: [],
-    criteria: "ESD training program implemented\nNo training records (for imcomplete) (eng, ops, mngt)",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Product Handling*",
-    idealCondition: [],
-    criteria: "Product not exposed outside of ESD work station\nProduct handled with ESD (gloves / finger cots) product stored properly",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Chairs*",
-    idealCondition: [],
-    criteria: "Chairs in ESD area are dissipative\nDissipative chairs incorporate drag rain (added protection)",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "Records*",
-    idealCondition: [],
-    criteria: "Humidity records are available and correct\nHumidity records are available and correct\nTemperature records are available and current",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  {
-    item: "ESD Committee  ID*",
-    idealCondition: [],
-    criteria: "ESD Committee ID must be worn at all times\nESD Committee ID must be worn at all times\nCommittee ID must be presentable ",
-    passOrFail: false,
-    qty: [0, 0],
-    condition: [{ name: "A", value: false }, { name: "B", value: false }, { name: "C", value: false }],
-    actualPicture: [],
-    commentRemarks: "",
-    completed: ""
-  },
-  ]
+  checkListArrayOrig = [];
 
   checkListArray: any
 
   openAreaArray: any[] = []
+  esdPersonel: any
+
+  processOwnerList: any
+  auditorList: any;
+  leadAuditorList: any;
+  esdCoordinatorList: any;
+  esdDivisionList: any;
+
+  totalItemPass: any = 0;
+  totalItemFailed: any = 0;
+  rateScore: any = 0;
+  rank: any = '';
 
   constructor(private datePipe: DatePipe,
     private modalService: NgbModal,
     private userAccountService: UserAccountService,
     private spinner: NgxSpinnerService,
     private esdChecksheetService: EsdChecksheetService,
-    private toastr: ToastrService,) { }
+    private toastr: ToastrService,
+    private utilsService: UtilsService) { }
 
   ngOnInit() {
-    this.checkListArray = this.checkListArrayOrig
+    this.checkListArrayOrig = JSON.parse(this.utilsService.getEsdTemplate().Template);
+    this.checkListArray = this.checkListArrayOrig;
+
     this.header.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
+    this.model.Date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
     this.userInfo = this.userAccountService.getUserAccount();
+
+    this.auditorList = this.utilsService.getAllEsdPersonelData().filter((process: any) => process.Type == 'Auditor');
+    this.leadAuditorList = this.utilsService.getAllEsdPersonelData().filter((process: any) => process.Type == 'Lead_Auditor');
+    this.processOwnerList = this.utilsService.getAllEsdPersonelData().filter((process: any) => process.Type == 'Process_Owner');
+    this.esdCoordinatorList = this.utilsService.getAllEsdPersonelData().filter((process: any) => process.Type == 'ESD_Coordinator');
+    this.esdDivisionList = this.utilsService.getEsdDivisions();
   }
 
   addOpenArea() {
@@ -219,9 +90,23 @@ export class EsdCheckSheetsComponent implements OnInit {
       item: "",
       idealCondition: [],
       criteria: "",
+      notAvailable: false,
       passOrFail: false,
-      qty: "",
-      condition: ["A", "B", "C"],
+      qty: [0, 0],
+      condition: [
+        {
+          name: "A",
+          value: false
+        },
+        {
+          name: "B",
+          value: false
+        },
+        {
+          name: "C",
+          value: false
+        }
+      ],
       actualPicture: [],
       commentRemarks: "",
       completed: ""
@@ -339,18 +224,21 @@ export class EsdCheckSheetsComponent implements OnInit {
   }
 
   clear() {
-    this.header.ID = "";
-    this.header.controlNo = "";
-    this.header.process = "";
-    this.header.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
-    this.checkListArray = this.checkListArrayOrig
-    this.openAreaArray = [];
-    window.scroll(0, 0)
+    var alert = confirm("Are you sure you want to clear?");
+    if (alert == true) {
+      this.header.ID = "";
+      this.header.controlNo = "";
+      this.header.process = "";
+      this.header.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
+      this.checkListArray = this.checkListArrayOrig
+      this.openAreaArray = [];
+      window.scroll(0, 0)
+    }
   }
 
   searchControlNo(event: any) {
     let controlNo = event.target.value;
-    if(controlNo != ""){
+    if (controlNo != "") {
       this.esdChecksheetService.getCheckSheet(controlNo).subscribe((data: any) => {
         if (data.Success) {
           this.header.ID = data.Data.ID;
@@ -364,5 +252,52 @@ export class EsdCheckSheetsComponent implements OnInit {
         this.toastr.error(error)
       })
     }
+  }
+
+  startTimer() {
+    this.model.start = Date.now.toString();
+    this.utilsService.getAutoNumber('QAETD').subscribe((response: any) => {
+      this.model.TransactionNumber = response.Data
+    })
+  }
+
+  getPercentCompletion(item: any) {
+    if ((item.qty[0] != 0 && item.qty[1] != 0) && item.qty[0] <= item.qty[1]) {
+      let percent = (item.qty[0] / item.qty[1]) * 100
+      item.completed = this.toFixed(percent, 0);
+    } else item.completed = "Invalid"
+  }
+
+  getTotalScore() {
+    let totalItemFailed = 0
+    let totalItemPass = 0
+
+    this.checkListArray.forEach((item: any) => {
+      if (item.passOrFail) totalItemPass += 1
+      else totalItemFailed += 1
+    });
+
+    this.openAreaArray.forEach((item: any) => {
+      if (item.passOrFail) totalItemPass += 1
+      else totalItemFailed += 1
+    });
+
+    this.totalItemPass = totalItemPass;
+    this.totalItemFailed = totalItemFailed;
+
+    let totalLength = this.checkListArray.length + this.openAreaArray.length
+
+    let score = (totalItemPass / totalLength * 100)
+    this.rateScore = this.toFixed(score, 0);
+    if (this.rateScore >= 91 && this.rateScore <= 100) this.rank = "A"
+    else if (this.rateScore >= 81 && this.rateScore <= 90) this.rank = "B"
+    else if (this.rateScore >= 71 && this.rateScore <= 80) this.rank = "C"
+    else if (this.rateScore <= 70) this.rank = "D"
+  }
+
+  toFixed(num: any, fixed: any) {
+    fixed = fixed || 0;
+    fixed = Math.pow(10, fixed);
+    return Math.floor(num * fixed) / fixed;
   }
 }

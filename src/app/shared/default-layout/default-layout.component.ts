@@ -10,14 +10,14 @@ import { UserAccountService } from 'src/app/services/user-account.service';
 export class DefaultLayoutComponent implements OnInit {
   selectedScreen = "";
   userInfo: any
-  constructor(private router: Router, 
+  constructor(private router: Router,
     private userAccountService: UserAccountService) {
 
   }
 
   ngOnInit(): void {
     this.userInfo = this.userAccountService.getUserAccount();
-    this.selectedScreen = String(localStorage.getItem("selectedScreen"))
+    this.selectedScreen = localStorage.getItem("selectedScreen") != null ? String(localStorage.getItem("selectedScreen")) : '';
   }
 
   logOut() {
@@ -25,7 +25,7 @@ export class DefaultLayoutComponent implements OnInit {
     window.location.replace('/');
   }
 
-  setSelection(){
+  setSelection() {
     localStorage.setItem("selectedScreen", this.selectedScreen)
   }
 }

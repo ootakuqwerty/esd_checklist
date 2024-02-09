@@ -3,161 +3,372 @@
 <div class="card">
   <div class="card-body">
     <div class="row">
-      <div class="col-xs-4 col-md-4 col-left">
-        <span style="font-weight: bold;">Control #</span><input class="form-control" type="text"
-          [(ngModel)]="header.controlNo" (keyup.enter)="searchControlNo($event)" />
+      <div class="col-md-4 left">
+        <span style="font-weight: bold;">Transaction Number</span><input class="form-control" type="text"
+          [(ngModel)]="model.TransactionNumber" readonly />
+      </div>
+      <div class="col-md-4 left">
+        <span style="font-weight: bold;">Date</span><input class="form-control" type="date" [(ngModel)]="model.Date"
+          readonly />
+      </div>
+      <div class="col-md-4 left">
+        <span style="font-weight: bold;">Div/Flr/Process</span>
+        <select class="form-control" id="auditVerificationLeadOwner" [(ngModel)]="model.Division">
+          <option value=""></option>
+          <option *ngFor="let data of esdDivisionList" [value]="data.ID">
+            {{data.Name}}
+          </option>
+        </select>
       </div>
 
-      <div class="col-xs-4 col-md-4 col-left">
-        <span style="font-weight: bold;">Div/Flr/Process</span><input class="form-control" type="text"
-          [(ngModel)]="header.process" />
-      </div>
+    </div>
+  </div>
+</div>
 
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <h5><b>Audit Proper</b></h5>
       <div class="col-xs-4 col-md-4 col-left">
-        <span style="font-weight: bold;">Date</span><input class="form-control" [(ngModel)]="header.date" type="date" />
+        <span style="font-weight: bold;">Auditor</span>
+        <select class="form-control" id="auditProperAuditor" [(ngModel)]="model.auditProperAuditor">
+          <option value=""></option>
+          <option *ngFor="let data of this.auditorList" [value]="data.ControlNumber"> {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn btn-primary" id="btnAuditProperAuditor" [disabled]="model.auditProperAuditor == ''">Add
+            Signature</button>
+        </div>
+      </div>
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Lead Auditor</span>
+        <select class="form-control" id="auditProperLeadAuditor" [(ngModel)]="model.auditProperLeadAuditor">
+          <option value=""></option>
+          <option *ngFor="let data of this.leadAuditorList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn btn-primary" id="btnAuditProperLeadAuditor"
+            [disabled]="model.auditProperLeadAuditor == ''">Add Signature</button>
+        </div>
+      </div>
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Process Owner</span>
+        <select class="form-control" id="auditProperProcessOwner" [(ngModel)]="model.auditProperProcessOwner">
+          <option value=""></option>
+          <option *ngFor="let data of this.processOwnerList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn btn-primary" id="btnAuditProperProcessOwner"
+            [disabled]="model.auditProperProcessOwner == ''">Add Signature</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="scrollit">
-  <table class="table table-responsive table-bordered table-hover">
-    <thead>
-      <tr>
-        <th colspan="2">ESD Audit Items</th>
-        <th scope="col">Ideal Condition</th>
-        <th scope="col">Critiera</th>
-        <th scope="col">Fail/Pass</th>
-        <th scope="col">QTY</th>
-        <th colspan="3">Condition</th>
-        <th scope="col">Actual Picture</th>
-        <th scope="col">Comments/Remarks</th>
-        <th scope="col">% Completed</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of checkListArray; let i = index">
-        <td>{{i}}</td>
-        <td class="td-left">{{item.item}}</td>
-        <td><button class="btn btn-secondary" (click)="openModal(i)">View</button></td>
-        <td class="td-criteria td-left">{{item.criteria}}</td>
-        <td>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'">
-            <span class="slider round"></span>
-          </label>
-        </td>
-        <td>
-          <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]">/
-          <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]">
-        </td>
-        <td>
-          <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[0].name"
-            (change)="radioItemChange(item.condition, item.condition[0].name)">
-          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0].name">
-            {{item.condition[0].name}}</label>
-        </td>
-        <td>
-          <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[1].name"
-            (change)="radioItemChange(item.condition, item.condition[1].name)">
-          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1].name">
-            {{item.condition[1].name}}</label>
-        </td>
-        <td>
-          <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[2].name"
-            (change)="radioItemChange(item.condition,item.condition[2].name)">
-          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name">
-            {{item.condition[2].name}}</label>
-        </td>
-        <td>
-          <input #fileUpload type="file" (click)="fileUpload.value = ''" (change)="importFile($event,item)"
-            style="display:none" accept="image/*">
-          <button (click)="fileUpload.click()" class="btn btn-primary">Upload</button>
-          &nbsp;
-          <button class="btn btn-secondary" (click)="openUploadedModal(item)">View</button>
-        </td>
-        <td><textarea type="text" [(ngModel)]="item.commentRemarks" class="form-control"></textarea></td>
-        <td><input type="text" [(ngModel)]="item.completed" class="form-control"></td>
-      </tr>
-    </tbody>
-  </table>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <h5><b>Audit Verification</b></h5>
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Process Owner</span>
+        <select class="form-control" id="auditVerificationProcessOwner"
+          [(ngModel)]="model.auditVerificationProcessOwner">
+          <option value=""></option>
+          <option *ngFor="let data of this.processOwnerList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn btn-primary" id="btnAuditVerificationProcessOwner"
+            [disabled]="model.auditVerificationProcessOwner == ''">Add Signature</button>
+        </div>
+      </div>
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Lead Auditor</span>
+        <select class="form-control" id="auditVerificationLeadOwner" [(ngModel)]="model.auditVerificationLeadOwner">
+          <option value=""></option>
+          <option *ngFor="let data of this.leadAuditorList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn btn-primary" id="btnAuditVerificationLeadOwner"
+            [disabled]="model.auditVerificationLeadOwner == ''">Add Signature</button>
+        </div>
+      </div>
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">ESD Coordinator</span>
+        <select class="form-control" id="auditVerificationEsdCoordinator"
+          [(ngModel)]="model.auditVerificationEsdCoordinator">
+          <option value=""></option>
+          <option *ngFor="let data of this.esdCoordinatorList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn btn-primary" id="btnAuditVerificationEsdCoordinator"
+            [disabled]="model.auditVerificationEsdCoordinator == ''">Add Signature</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<hr>
+<!-- CheckSheet -->
+<div class="card" *ngIf="model.start != ''">
+  <div class="card-body">
+    <div class="scrollit">
+      <table class="table table-responsive table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="2">ESD Audit Items</th>
+            <th scope="col">Ideal Condition</th>
+            <th scope="col">Criteria</th>
+            <th scope="col">Not Avialable</th>
+            <th scope="col">Fail/Pass</th>
+            <th scope="col">QTY</th>
+            <th scope="col">% Completed</th>
+            <th colspan="3">Condition</th>
+            <th scope="col">Actual Picture</th>
+            <th scope="col">Comments/Remarks</th>
 
-<div class="row col-md-12" style="text-align: left;">
-  <span>
-    <label style="font-size: 20px;">Open Area</label>&nbsp;&nbsp;<button class="btn btn-primary" (click)="addOpenArea()">Add</button>
-  </span>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of checkListArray; let i = index">
+            <td>{{i}}</td>
+            <td class="td-left">{{item.item}}</td>
+            <td><button class="btn btn-secondary" (click)="openModal(i)">View</button></td>
+            <td class="td-criteria td-left">{{item.criteria}}</td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.notAvailable" [name]="i + 'notAvailable'"
+                  [id]="i + 'notAvailable'">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'"
+                  [disabled]="item.notAvailable" (change)="getTotalScore()">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]" [disabled]="item.notAvailable"
+                (input)="getPercentCompletion(item)">/
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]" [disabled]="item.notAvailable"
+                (input)="getPercentCompletion(item)">
+            </td>
+            <td><label>{{item.completed}}</label></td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[0].name"
+                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition, item.condition[0].name)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0].name">
+                {{item.condition[0].name}}</label>
+            </td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[1].name"
+                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition, item.condition[1].name)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1].name">
+                {{item.condition[1].name}}</label>
+            </td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[2].name"
+                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition,item.condition[2].name)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name">
+                {{item.condition[2].name}}</label>
+            </td>
+            <td>
+              <input #fileUpload type="file" (click)="fileUpload.value = ''" (change)="importFile($event,item)"
+                style="display:none" accept="image/*">
+              <button (click)="fileUpload.click()" class="btn btn-primary"
+                [disabled]="item.notAvailable">Upload</button>
+              &nbsp;
+              <button class="btn btn-secondary" (click)="openUploadedModal(item)"
+                [disabled]="item.notAvailable">View</button>
+            </td>
+            <td><textarea type="text" [(ngModel)]="item.commentRemarks" [disabled]="item.notAvailable"
+                class="form-control"></textarea></td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-<div class="scrollit">
-  <table class="table table-responsive table-bordered table-hover">
-    <thead>
-      <tr>
-        <th colspan="2">ESD Audit Items</th>
-        <th scope="col">Ideal Condition</th>
-        <th scope="col">Critiera</th>
-        <th scope="col">Fail/Pass</th>
-        <th scope="col">QTY</th>
-        <th colspan="3">Condition</th>
-        <th scope="col">Actual Picture</th>
-        <th scope="col">Comments/Remarks</th>
-        <th scope="col">% Completed</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of openAreaArray; let i = index">
-        <td>{{i}}</td>
-        <td class="td-left"><textarea type="text" [(ngModel)]="item.item" class="form-control"></textarea></td>
-        <td><button class="btn btn-secondary">View</button></td>
-        <td class="td-left"><textarea type="text" [(ngModel)]="item.criteria" class="form-control"></textarea></td>
-        <td>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'">
-            <span class="slider round"></span>
-          </label>
-        </td>
-        <td>
-          <input class="qty" min="0" type="number" [(ngModel)]="item.qty">/
-          <input class="qty" min="0" type="number">
-        </td>
-        <td>
-          <input type="radio" class="btn-check" [name]="i" [id]="i + item.condition[0] + '-open'">
-          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0] + '-open'">
-            {{item.condition[0]}}</label>
-        </td>
-        <td>
-          <input type="radio" class="btn-check" [name]="i" [id]="i + item.condition[1] + '-open'">
-          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1] + '-open'">
-            {{item.condition[1]}}</label>
-        </td>
-        <td>
-          <input type="radio" class="btn-check" [name]="i" [id]="i + item.condition[2] + '-open'">
-          <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2] + '-open'">
-            {{item.condition[2]}}</label>
-        </td>
-        <td>
-          <button class="btn btn-primary">Upload</button>
-          &nbsp;
-          <button class="btn btn-secondary">View</button>
-        </td>
-        <td><textarea type="text" [(ngModel)]="item.commentRemarks" class="form-control"></textarea></td>
-        <td><input type="text" [(ngModel)]="item.completed" class="form-control"></td>
-        <td><button class="btn btn-danger" (click)="removeOpenArea(i)">Remove</button></td>
-      </tr>
-    </tbody>
-  </table>
+<!-- Open Area -->
+<div class="card" *ngIf="model.start != ''">
+  <div class="card-body">
+    <div class="row col-md-12" style="text-align: left;">
+      <span>
+        <label style="font-size: 20px;">Open Area</label>&nbsp;&nbsp;<button class="btn btn-primary"
+          (click)="addOpenArea(); getTotalScore();">Add</button>
+      </span>
+    </div>
+
+    <div class="scrollit" *ngIf="this.openAreaArray.length > 0">
+      <table class="table table-responsive table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="2">ESD Audit Items</th>
+            <th scope="col">Ideal Condition</th>
+            <th scope="col">Criteria</th>
+            <th scope="col">Not Avialable</th>
+            <th scope="col">Fail/Pass</th>
+            <th scope="col">QTY</th>
+            <th colspan="3">Condition</th>
+            <th scope="col">Actual Picture</th>
+            <th scope="col">Comments/Remarks</th>
+            <th scope="col">% Completed</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of openAreaArray; let i = index">
+            <td>{{i}}</td>
+            <td class="td-left"><textarea type="text" [(ngModel)]="item.item" class="form-control"></textarea></td>
+            <td><button class="btn btn-secondary">View</button></td>
+            <td class="td-left"><textarea type="text" [(ngModel)]="item.criteria" class="form-control"></textarea></td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.notAvailable" [name]="i + 'notAvailable'"
+                  [id]="i + 'notAvailable'">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'"
+                  [disabled]="item.notAvailable" (change)="getTotalScore()">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]" [disabled]="item.notAvailable"
+                (input)="getPercentCompletion(item)">/
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]" [disabled]="item.notAvailable"
+                (input)="getPercentCompletion(item)">
+            </td>
+
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[0].name + '-open-area'"
+                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition, item.condition[0].name)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0].name + '-open-area'">
+                {{item.condition[0].name}}</label>
+            </td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[1].name + '-open-area'"
+                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition, item.condition[1].name)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1].name + '-open-area'">
+                {{item.condition[1].name}}</label>
+            </td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[2].name + '-open-area'"
+                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition,item.condition[2].name)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name + '-open-area'">
+                {{item.condition[2].name}}</label>
+            </td>
+            <td>
+              <button class="btn btn-primary">Upload</button>
+              &nbsp;
+              <button class="btn btn-secondary">View</button>
+            </td>
+            <td><textarea type="text" [(ngModel)]="item.commentRemarks" class="form-control"></textarea></td>
+            <td><input type="text" [(ngModel)]="item.completed" class="form-control"></td>
+            <td><button class="btn btn-danger" (click)="removeOpenArea(i)">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
+<!-- Scores -->
+<div class="card" *ngIf="model.start != ''">
+  <div class="card-body">
+    <div class="row">
 
-<!-- <div class="btn-footer">
-  <span><button class="btn btn-warning btn-lg" (click)="clear()">Clear</button></span>
-  <span><button class="btn btn-primary btn-lg" (click)="saveChecksheet()">Save</button></span>
-</div> -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status"> {{rateScore}}</label>
+          </div>
+        </div>
+        Score/Rate
+      </div>
 
-<div class="btn-footer">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status">{{rank}}</label>
+          </div>
+        </div>
+        Rank
+      </div>
+
+      <div class="col-md-3">
+        <table class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>91-100</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>81-90</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>71-80</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>70 below</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="row score-details">
+            <label> Total Item Pass : {{totalItemPass}}</label>
+          </div>
+          <div class="row score-details">
+            <label> Total Item Failed : {{totalItemFailed}}</label>
+          </div>
+          <!-- <div class="row score-details">
+            <label> Rate / Score : {{rateScore}}</label>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Start Timer -->
+<div class="row timer mt-5" *ngIf="model.start == ''">
+  <div class="col text-center">
+    <button class="btn btn-primary btn-block btn-lg" (click)="startTimer()">Start Timer</button>
+  </div>
+</div>
+
+<!-- Button Footer -->
+<div class="btn-footer" *ngIf="model.start != ''">
   <div class="row">
     <button class="btn btn-warning btn-block btn-lg" (click)="clear()">Clear</button>
   </div>

@@ -26,6 +26,13 @@ export class DynamicTemplateService {
       .pipe(map(response => {
         return response.data;
       }));
+  }
 
+  testAPI(){
+    return axios.get(this.url + 'api/DynamicData/TestAPI', this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
   }
 }
+

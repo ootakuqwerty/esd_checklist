@@ -30,15 +30,18 @@ export class LoginService {
       fetch(this.url + 'api/DynamicData/Divisions', auth),
       fetch(this.url + 'api/DynamicData/ThemeRegistrationContollers', auth),
       fetch(this.url + 'api/DynamicData/GetAllEsdPersonel', auth),
+      fetch(this.url + 'api/DynamicData/GetAllEsdDivision', auth),
     ])
-      .then(async ([divisions, themeRegistrationContollers, esdPersonel]) => {
+      .then(async ([divisions, themeRegistrationContollers, esdPersonels, esdDivisions]) => {
         const divisionData = await divisions.json()
         const themeRegistrationContollersData = await themeRegistrationContollers.json()
-        const esdPersonelData = await esdPersonel.json()
+        const esdPersonelData = await esdPersonels.json()
+        const esdDivisionsData = await esdDivisions.json()
         return ({
           divisionData: divisionData.Data,
           themeRegistrationContollersData: themeRegistrationContollersData.Data,
-          esdPersonelData: esdPersonelData.Data
+          esdPersonelData: esdPersonelData.Data,
+          esdDivisionsData: esdDivisionsData.Data,
         })
       })
       .catch(error => {
@@ -56,11 +59,14 @@ export class LoginService {
     }
     return Promise.all([
       fetch(this.url + 'api/DynamicTemplate/GetDynamicTemplate/sga_verification_patrol_sheet', auth),
+      fetch(this.url + 'api/DynamicTemplate/GetDynamicTemplate/esd_audit_check_sheet', auth),
     ])
-      .then(async ([sgaVerification]) => {
-        const sgaVerificationData = await sgaVerification.json()
+      .then(async ([sgaVerification, esdCheckSheet]) => {
+        const sgaVerificationData = await sgaVerification.json();
+        const esdCheckSheetData = await esdCheckSheet.json();
         return ({
-          sgaVerificationData: sgaVerificationData.Data
+          sgaVerificationData: sgaVerificationData.Data,
+          esdCheckSheetData: esdCheckSheetData.Data
         })
       })
       .catch(error => {

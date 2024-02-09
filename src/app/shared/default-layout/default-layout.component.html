@@ -13,7 +13,7 @@
             Sheet</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  [routerLinkActive]="['active']">Audit Reverification</a>
+          <a class="nav-link" [routerLink]="['/views/esd-audit']" [routerLinkActive]="['active']">Audit Reverification</a>
         </li>
         <!-- <li class="nav-item">
           <div class="dropdown">
@@ -27,9 +27,9 @@
             </div>
           </div>
         </li> -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]="['/views/esd-audit']" [routerLinkActive]="['active']">Audit</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <div class="dropdown">
             <a class="dropbtn nav-link">Account
@@ -59,12 +59,12 @@
   <h1>WELCOME</h1>
   <div class="row selection">
     <div class="col-md-12">
-      <button class="btn btn-block btn-success option-button" (click)="selectedScreen = 'esd'; setSelection()">ESD</button>
+      <button class="btn btn-block btn-secondary option-button" (click)="selectedScreen = 'esd'; setSelection()">ESD</button>
     </div>
   </div>
   <div class="row selection">
     <div class="col-md-12">
-      <button class="btn btn-block btn-success option-button" (click)="selectedScreen = 'sga'; setSelection()">SGA</button>
+      <button class="btn btn-block btn-secondary option-button" (click)="selectedScreen = 'sga'; setSelection()">SGA</button>
     </div>
   </div>
 </div>

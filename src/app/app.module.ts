@@ -20,6 +20,7 @@ import { SgaCheckSheetComponent } from './views/sga-check-sheet/sga-check-sheet.
 import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.component';
 import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-check-sheet-list.component';
 import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
+import { IsAuthorizedGuard } from './guard/is-authorized.guard';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,7 @@ import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
     CommonModule,
     NgxSpinnerModule
   ],
-  providers: [],
+  providers: [IsAuthorizedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
