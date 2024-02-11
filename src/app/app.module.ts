@@ -21,6 +21,7 @@ import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.
 import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-check-sheet-list.component';
 import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
 import { IsAuthorizedGuard } from './guard/is-authorized.guard';
+import { EsdCheckSheetsListComponent } from './views/esd-check-sheets-list/esd-check-sheets-list.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { IsAuthorizedGuard } from './guard/is-authorized.guard';
     SgaCheckSheetComponent,
     SgaPatrolFormComponent,
     SgaCheckSheetListComponent,
-    SgaReportsComponent
+    SgaReportsComponent,
+    EsdCheckSheetsListComponent
   ],
   imports: [
     BrowserModule,

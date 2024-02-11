@@ -11,6 +11,7 @@ import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.
 import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-check-sheet-list.component';
 import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
 import { IsAuthorizedGuard } from './guard/is-authorized.guard';
+import { EsdCheckSheetsListComponent } from './views/esd-check-sheets-list/esd-check-sheets-list.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
     component: DefaultLayoutComponent,
     children: [
       { path: 'esd-check-sheet', component: EsdCheckSheetsComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'esd-check-sheet-list', component: EsdCheckSheetsListComponent, canActivate: [IsAuthorizedGuard] },
       { path: 'sga-check-sheet-list', component: SgaCheckSheetListComponent },
       { path: 'sga-check-sheet', component: SgaCheckSheetComponent },
       { path: 'sga-patrol-form', component: SgaPatrolFormComponent },

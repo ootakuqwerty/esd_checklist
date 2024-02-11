@@ -20,23 +20,43 @@ export class EsdCheckSheetsComponent implements OnInit {
   @ViewChild('uploadedModal', { static: false })
   uploadedModal!: ElementRef;
 
+  @ViewChild('signatureModal', { static: false })
+  signatureModal!: ElementRef;
+
+
   modalReference: any;
   images = ""
   uploadedImagesList: any;
   userInfo: any
   model = {
     TransactionNumber: "",
-    Date: "",
-    Division: "",
-    auditProperAuditor: "",
-    auditProperLeadAuditor: "",
-    auditProperProcessOwner: "",
-    auditVerificationProcessOwner: "",
-    auditVerificationLeadOwner: "",
-    auditVerificationEsdCoordinator: "",
-    start: "test",
-    end: ""
+    divOrFloorOrProcess: "",
+    AuditProperAuditor: "",
+    AuditProperAuditorSigned: false,
+    AuditProperLeadAuditor: "",
+    AuditProperLeadAuditorSigned: false,
+    AuditProperProcessOwner: "",
+    AuditProperProcessOwnerSigned: false,
+    AuditVerificationProcessOwner: "",
+    AuditVerificationProcessOwnerSigned: false,
+    AuditVerificationLeadAuditor: "",
+    AuditVerificationLeadAuditorSigned: false,
+    AuditVerificationEsdCoordinator: "",
+    AuditVerificationEsdCoordinatorSigned: false,
+    TotalItemPass: 0,
+    TotalItemFail: 0,
+    RankScore: 0,
+    Rank: "",
+    DateTimeStarted: "",
+    DateTimeEnded: "",
+    CheckSheet: "",
+    OpenArea: "",
+    CreatedBy: "0",
+    CreatedOn: "",
+    UpdatedBy: "0",
+    UpdatedOn: "",
   }
+
   header = {
     ID: '',
     controlNo: '',
@@ -62,6 +82,14 @@ export class EsdCheckSheetsComponent implements OnInit {
   rateScore: any = 0;
   rank: any = '';
 
+  addSignatureData = {
+    status: false,
+    type: '',
+    title: '',
+    image: '',
+    error: false,
+  };
+
   constructor(private datePipe: DatePipe,
     private modalService: NgbModal,
     private userAccountService: UserAccountService,
@@ -71,11 +99,11 @@ export class EsdCheckSheetsComponent implements OnInit {
     private utilsService: UtilsService) { }
 
   ngOnInit() {
+    this.spinner.show()
     this.checkListArrayOrig = JSON.parse(this.utilsService.getEsdTemplate().Template);
     this.checkListArray = this.checkListArrayOrig;
 
-    this.header.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
-    this.model.Date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
+    this.model.CreatedOn = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
     this.userInfo = this.userAccountService.getUserAccount();
 
     this.auditorList = this.utilsService.getAllEsdPersonelData().filter((process: any) => process.Type == 'Auditor');
@@ -83,6 +111,25 @@ export class EsdCheckSheetsComponent implements OnInit {
     this.processOwnerList = this.utilsService.getAllEsdPersonelData().filter((process: any) => process.Type == 'Process_Owner');
     this.esdCoordinatorList = this.utilsService.getAllEsdPersonelData().filter((process: any) => process.Type == 'ESD_Coordinator');
     this.esdDivisionList = this.utilsService.getEsdDivisions();
+
+    this.getTotalScore();
+
+    this.checkListArray.forEach((item: any) => {
+      this.getPercentCompletion(item);
+    })
+    if (this.openAreaArray) {
+      this.openAreaArray.forEach((item: any) => {
+        this.getPercentCompletion(item);
+      })
+    }
+    setTimeout(() => {
+      this.spinner.hide()
+    }, 100);
+
+  } 
+  
+  formatDateDisplay(date: any){
+    return String(this.datePipe.transform(date, "yyyy-MM-dd hh:mm:ss"))
   }
 
   addOpenArea() {
@@ -111,14 +158,21 @@ export class EsdCheckSheetsComponent implements OnInit {
       commentRemarks: "",
       completed: ""
     })
+    this.openAreaArray.forEach((item: any) => {
+      this.getPercentCompletion(item);
+    })
   }
 
   removeOpenArea(index: any) {
-    this.openAreaArray.splice(index, 1)
+    let alert = confirm("Are you sure you want to delete?");
+    if (alert) {
+      this.openAreaArray.splice(index, 1);
+      this.getTotalScore();
+    }
   }
 
   openModal(id: any) {
-    this.images = '../../../assets/images/' + id + '.png';
+    this.images = '../../../assets/images/audit_checksheet/' + id + '.png';
     this.modalReference = this.modalService.open(this.confirmModal, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' });
     this.modalReference.result.then((result: any) => {
     }, (reason: any) => {
@@ -149,52 +203,48 @@ export class EsdCheckSheetsComponent implements OnInit {
     });
   }
 
-  saveChecksheet() {
+  saveChecksheet(isNew: boolean) {
     this.spinner.show();
     let payload = {
-      ControlNo: this.header.controlNo,
-      Process: this.header.process,
-      Date: this.header.date,
-      CheckSheet: JSON.stringify(this.checkListArray),
-      OpenArea: JSON.stringify(this.openAreaArray),
-      CreatedBy: this.userInfo.UserID,
-      UpdatedBy: "0",
-
+      ...this.model
     }
-    if (this.header.ID == "") {
+    payload.TotalItemPass = this.totalItemPass;
+    payload.TotalItemFail = this.totalItemFailed;
+    payload.RankScore = this.rateScore;
+    payload.Rank = this.rank;
+    payload.CheckSheet = JSON.stringify(this.checkListArray)
+    payload.OpenArea = JSON.stringify(this.openAreaArray)
+    payload.CreatedBy = this.userInfo.UserID
+    payload.UpdatedOn = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
+
+    if(isNew){
       this.esdChecksheetService.addCheckSheet(payload).subscribe((data) => {
         if (data.Success) {
-          window.scroll(0, 0)
-          this.header.ID = data.Data.ID;
-          this.spinner.hide();
           this.toastr.success(data.Message)
+          this.spinner.hide();
         } else {
           this.spinner.hide();
-          this.toastr.error(data.Message)
+          this.toastr.error(data.Message);
         }
-
-      }, (error) => {
+      }, (error: any) => {
         this.spinner.hide();
-        console.log(error);
         this.toastr.error(error)
       })
-    } else {
-      this.esdChecksheetService.updateCheckSheet(this.header.ID, payload).subscribe((data) => {
+    }else{
+      this.esdChecksheetService.updateCheckSheet(payload).subscribe((data) => {
         if (data.Success) {
-          window.scroll(0, 0)
           this.toastr.success(data.Message)
           this.spinner.hide();
         } else {
-          this.toastr.error(data.Message)
           this.spinner.hide();
+          this.toastr.error(data.Message);
         }
-
-      }, (error) => {
+      }, (error: any) => {
         this.spinner.hide();
-        console.log(error);
         this.toastr.error(error)
       })
     }
+  
   }
 
   importFile(event: any, item: any) {
@@ -209,10 +259,10 @@ export class EsdCheckSheetsComponent implements OnInit {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-          item.actualPicture.push(reader.result)
+          item.push(reader.result);
           this.spinner.hide();
         };
-      }, 500);
+      }, 100);
     } catch (error) {
       this.spinner.hide();
     }
@@ -255,9 +305,12 @@ export class EsdCheckSheetsComponent implements OnInit {
   }
 
   startTimer() {
-    this.model.start = Date.now.toString();
+    this.spinner.show();
+    this.model.DateTimeStarted = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
+    this.model.DateTimeEnded = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
     this.utilsService.getAutoNumber('QAETD').subscribe((response: any) => {
-      this.model.TransactionNumber = response.Data
+      this.model.TransactionNumber = response.Data;
+      this.saveChecksheet(true)
     })
   }
 
@@ -299,5 +352,95 @@ export class EsdCheckSheetsComponent implements OnInit {
     fixed = fixed || 0;
     fixed = Math.pow(10, fixed);
     return Math.floor(num * fixed) / fixed;
+  }
+
+  onClickAddSignature(type: any) {
+    if (type == 'auditProperAuditor') {
+      this.addSignatureData.status = this.model.AuditProperAuditorSigned
+      this.addSignatureData.type = type
+      this.addSignatureData.title = 'Audit Proper Auditor Signature';
+      this.addSignatureData.image = '../../../assets/images/esd_personel/' + this.model.AuditProperAuditor + '.png';
+
+    } else if (type == 'auditProperLeadAuditor') {
+      this.addSignatureData.status = this.model.AuditProperLeadAuditorSigned
+      this.addSignatureData.type = type
+      this.addSignatureData.title = 'Audit Proper Lead Auditor Signature';
+      this.addSignatureData.image = '../../../assets/images/esd_personel/' + this.model.AuditProperLeadAuditor + '.png';
+    } else if (type == 'auditProperProcessOwner') {
+      this.addSignatureData.status = this.model.AuditProperProcessOwnerSigned
+      this.addSignatureData.type = type
+      this.addSignatureData.title = 'Audit Proper Process Owner Signature';
+      this.addSignatureData.image = '../../../assets/images/esd_personel/' + this.model.AuditProperProcessOwner + '.png';
+    } else if (type == 'auditVerificationProcessOwner') {
+      this.addSignatureData.status = this.model.AuditVerificationProcessOwnerSigned
+      this.addSignatureData.type = type
+      this.addSignatureData.title = 'Audit Verification Process Owner Signature';
+      this.addSignatureData.image = '../../../assets/images/esd_personel/' + this.model.AuditVerificationProcessOwner + '.png';
+    } else if (type == 'auditVerificationLeadAuditor') {
+      this.addSignatureData.status = this.model.AuditVerificationLeadAuditorSigned
+      this.addSignatureData.type = type
+      this.addSignatureData.title = 'Audit Verification Lead Auditor Signature';
+      this.addSignatureData.image = '../../../assets/images/esd_personel/' + this.model.AuditVerificationLeadAuditor + '.png';
+    } else if (type == 'auditVerificationEsdCoordinator') {
+      this.addSignatureData.status = this.model.AuditVerificationEsdCoordinatorSigned
+      this.addSignatureData.type = type
+      this.addSignatureData.title = 'Audit Verification ESD Coordinator';
+      this.addSignatureData.image = '../../../assets/images/esd_personel/' + this.model.AuditVerificationEsdCoordinator + '.png';
+    }
+    this.addSignatureData.error = false;
+    this.modalReference = this.modalService.open(this.signatureModal, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' });
+    this.modalReference.result.then((result: any) => {
+      this.spinner.show()
+      if (this.addSignatureData.type == 'auditProperAuditor') {
+        this.model.AuditProperAuditorSigned = result;
+      } else if (this.addSignatureData.type == 'auditProperLeadAuditor') {
+        this.model.AuditProperLeadAuditorSigned = result;
+      } else if (this.addSignatureData.type == 'auditProperProcessOwner') {
+        this.model.AuditProperProcessOwnerSigned = result;
+      } else if (this.addSignatureData.type == 'auditVerificationProcessOwner') {
+        this.model.AuditVerificationProcessOwnerSigned = result;
+      } else if (this.addSignatureData.type == 'auditVerificationLeadAuditor') {
+        this.model.AuditVerificationLeadAuditorSigned = result;
+      } else if (this.addSignatureData.type == 'auditVerificationEsdCoordinator') {
+        this.model.AuditVerificationEsdCoordinatorSigned = result;
+      }
+      this.spinner.hide()
+    }, (reason: any) => { });
+
+  }
+
+  ValidateRequiredFields() {
+    let ctr = 0
+    if (this.model.TransactionNumber == '') ctr++;
+    if (this.model.divOrFloorOrProcess == '') ctr++;
+    this.checkListArray.forEach((item: any) => {
+      if (!item.notAvailable) {
+        if (item.actualPicture.length == 0) ctr++;
+        if (item.completed == 'Invalid') ctr++;
+        let ifHasTrue = false;
+        item.condition.forEach((cond: any) => {
+          if (cond.value) ifHasTrue = true;
+        })
+        if (!ifHasTrue) ctr++;
+      }
+    })
+    if (this.openAreaArray.length > 0) {
+      this.openAreaArray.forEach((item: any) => {
+        if (!item.notAvailable) {
+          if (item.actualPicture.length == 0) ctr++;
+          if (item.completed == 'Invalid') ctr++;
+          let ifHasTrue = false;
+          item.condition.forEach((cond: any) => {
+            if (cond.value) ifHasTrue = true;
+          })
+          if (!ifHasTrue) ctr++;
+        }
+      })
+    }
+    return ctr > 0
+  }
+
+  imageHasBeenLoaded(event:any, addSignatureData: any){
+    addSignatureData.error = true;
   }
 }

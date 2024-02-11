@@ -29,14 +29,14 @@ export class EsdChecksheetService {
   }
   
   public addCheckSheet(payload: any) {
-    return axios.post(this.url + 'api/EsdCheckSheet', payload, this.auth)
+    return axios.post(this.url + 'api/EsdAuditCheckSheet', payload, this.auth)
       .pipe(map(response => {
         return response.data;
       }));
   }
 
-  public updateCheckSheet(id: any, payload: any) {
-    return axios.put(this.url + 'api/EsdCheckSheet/' + id, payload, this.auth)
+  public updateCheckSheet(payload: any) {
+    return axios.put(this.url + 'api/EsdAuditCheckSheet', payload, this.auth)
       .pipe(map(response => {
         return response.data;
       }));
