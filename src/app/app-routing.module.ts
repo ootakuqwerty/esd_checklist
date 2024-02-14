@@ -20,13 +20,13 @@ const routes: Routes = [
     children: [
       { path: 'esd-check-sheet', component: EsdCheckSheetsComponent, canActivate: [IsAuthorizedGuard] },
       { path: 'esd-check-sheet-list', component: EsdCheckSheetsListComponent, canActivate: [IsAuthorizedGuard] },
-      { path: 'sga-check-sheet-list', component: SgaCheckSheetListComponent },
-      { path: 'sga-check-sheet', component: SgaCheckSheetComponent },
-      { path: 'sga-patrol-form', component: SgaPatrolFormComponent },
-      { path: 'role', component: RoleComponent },
-      { path: 'users', component: UsersComponent },
-      { path: 'esd-audit', component: AuditComponent },
-      { path: 'sga-reports', component: SgaReportsComponent },
+      { path: 'sga-check-sheet-list', component: SgaCheckSheetListComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'sga-check-sheet', component: SgaCheckSheetComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'sga-patrol-form', component: SgaPatrolFormComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'role', component: RoleComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'users', component: UsersComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'esd-audit', component: AuditComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'sga-reports', component: SgaReportsComponent, canActivate: [IsAuthorizedGuard] },
     ]
   },
 

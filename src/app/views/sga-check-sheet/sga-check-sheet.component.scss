@@ -5,9 +5,9 @@
 }
 
 .card-body{
-    overflow: scroll;
+    // overflow: scroll;
     height: auto;
-    max-height: 710px;
+    // max-height: 710px;
 }
 
 th {
@@ -29,13 +29,12 @@ th {
     }
 }
 
-// .btn-footer {
-//     button {
-//         margin: 1rem;
-//         width: 10rem;
-//     }
+.btn-footer {
+    .row {
+        padding: .5rem;
+    }
+}
 
-// }
 
 .members{
     background-color: #ffffff;

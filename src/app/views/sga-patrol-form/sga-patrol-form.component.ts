@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DynamicTemplateService } from 'src/app/services/dynamic-template.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-sga-patrol-form',
@@ -21,11 +22,17 @@ export class SgaPatrolFormComponent implements OnInit {
 
   constructor(private datePipe: DatePipe,
     private dynamicTemplateService: DynamicTemplateService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
+    this.spinner.show()
     this.header.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
     this.getTemplate();
+
+    setTimeout(() => {
+      this.spinner.hide()
+    }, 100);
   }
 
   getTemplate() {

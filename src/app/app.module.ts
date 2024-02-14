@@ -22,6 +22,7 @@ import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-che
 import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
 import { IsAuthorizedGuard } from './guard/is-authorized.guard';
 import { EsdCheckSheetsListComponent } from './views/esd-check-sheets-list/esd-check-sheets-list.component';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { EsdCheckSheetsListComponent } from './views/esd-check-sheets-list/esd-c
     ReactiveFormsModule,
     RouterModule,
     NgbModule,
+    DataTablesModule,
     ToastrModule.forRoot({
       closeButton: true,
       timeOut: 5000, // 5 seconds

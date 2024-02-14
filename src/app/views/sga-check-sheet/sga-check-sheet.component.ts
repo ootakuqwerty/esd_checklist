@@ -54,9 +54,14 @@ export class SgaCheckSheetComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show()
     this.getDivisions();
     this.getThemeRegistrationControllers();
     this.userInfo = this.userAccountService.getUserAccount();
+
+    setTimeout(() => {
+      this.spinner.hide()
+    }, 100);
   }
 
   getDivisions() {
