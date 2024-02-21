@@ -21,6 +21,20 @@ export class EsdChecksheetService {
     }
   }
 
+  public getCheckSheetByDate(payload: any) {
+    return axios.post(this.url + 'api/EsdAuditCheckSheet/GetAllEsdCheckSheetWithDateFilter', payload, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
+  public getCheckSheetByTransactionNumber(transactionNumber: any){
+    return axios.get(this.url + 'api/EsdAuditCheckSheet/' + transactionNumber, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
   public getCheckSheet(id: any) {
     return axios.get(this.url + 'api/EsdCheckSheet/' + id, this.auth)
       .pipe(map(response => {
@@ -37,6 +51,13 @@ export class EsdChecksheetService {
 
   public updateCheckSheet(payload: any) {
     return axios.put(this.url + 'api/EsdAuditCheckSheet', payload, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
+  public updateEndTime(payload: any) {
+    return axios.put(this.url + 'api/EsdAuditCheckSheet/UpdateEndTime', payload, this.auth)
       .pipe(map(response => {
         return response.data;
       }));

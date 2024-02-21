@@ -1,22 +1,14 @@
-<h2>ESD AUDIT CHECK SHEET LIST</h2>
+<h2>ESD REVERIFICATION LIST</h2>
 
 <div class="card">
     <div class="card-body">
-        <div class="left">
-            <select class="form-control date_filter" id="date_filter" [(ngModel)]="date_filter"
-                (change)="onFilterChange()">
-                <option value="0">Today</option>
-                <option value="2">Last 2 days</option>
-                <option value="5">Last 5 days</option>
-                <option value="15">Last 15 days</option>
-                <option value="30">Last 30 days</option>
-            </select>
-        </div>
-        <div class="right">
-            <button class="btn btn-primary btn-add"
-            [routerLinkActive]="['active']" [routerLink]="['/views/esd-check-sheet', 0]">Add Check Sheet</button>
-        </div>
-        <br>
+        <select class="form-control date_filter" id="date_filter" [(ngModel)]="date_filter" (change)="onFilterChange()">
+            <option value="0">Today</option>
+            <option value="2">Last 2 days</option>
+            <option value="5">Last 5 days</option>
+            <option value="15">Last 15 days</option>
+            <option value="30">Last 30 days</option>
+        </select>
         <br>
         <table class="table table-responsive table-bordered table-hover" id="esd_table">
             <thead>
@@ -32,12 +24,12 @@
             <tbody>
                 <tr *ngFor="let item of esd_checksheet_list">
                     <td>{{item.TransactionNumber}}</td>
-                    <td>{{item.CreatedOn | date : 'medium'}}</td>
+                    <td>{{item.CreatedOn | date: 'medium'}}</td>
                     <td>{{getDivision(item.divOrFloorOrProcess)}}</td>
                     <td>{{item.RankScore}}</td>
                     <td>{{item.Rank}}</td>
                     <td><button class="btn btn-primary"
-                            [routerLink]="['/views/esd-check-sheet', item.TransactionNumber]">View</button>
+                            [routerLink]="['/views/esd-reverification', item.TransactionNumber]">View</button>
                     </td>
                 </tr>
             </tbody>

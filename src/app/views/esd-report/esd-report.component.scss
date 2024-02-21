@@ -83,7 +83,7 @@ img {
     width: 100%;
 }
 
-.btn-footer {
+.btn-header {
     .row {
         padding: .5rem;
     }
@@ -93,6 +93,7 @@ img {
     max-height: 50rem;
     overflow: auto;
     text-align: center;
+
     .image-wrap {
         margin-bottom: 1rem;
 
@@ -150,6 +151,7 @@ th {
 
 .left {
     text-align: left;
+    margin-left: 50px;
 }
 
 // .score-details{
@@ -181,4 +183,8 @@ th {
 
 .btn .badge {
     background-color: #323232;
+}
+
+.yellow {
+    background-color: #A9CCE3;
 }

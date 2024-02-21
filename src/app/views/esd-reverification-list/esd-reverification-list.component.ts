@@ -8,13 +8,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
-  selector: 'app-esd-check-sheets-list',
-  templateUrl: './esd-check-sheets-list.component.html',
-  styleUrls: ['./esd-check-sheets-list.component.css'],
+  selector: 'app-esd-reverification-list',
+  templateUrl: './esd-reverification-list.component.html',
+  styleUrls: ['./esd-reverification-list.component.css'],
   providers: [DatePipe]
 })
-export class EsdCheckSheetsListComponent implements OnInit {
-
+export class EsdReverificationListComponent {
   @ViewChild(DataTableDirective, { static: false })
   dtElement!: DataTableDirective;
 
@@ -29,9 +28,7 @@ export class EsdCheckSheetsListComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private utils: UtilsService
-  ) {
-
-  }
+  ) { }
 
   ngOnInit(): void {
     this.getDateOffset();
@@ -74,5 +71,5 @@ export class EsdCheckSheetsListComponent implements OnInit {
 
   getDivision(id: any) {
     return this.utils.getEsdDivisionByID(id).Name
-  }
+  } 
 }

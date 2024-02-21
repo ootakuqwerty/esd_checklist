@@ -20,6 +20,7 @@ export class SgaChecksheetService {
       },
     }
   }
+  
 
   public getCheckSheets() {
     return axios.get(this.url + 'api/SgaThemeRegistration/', this.auth)
@@ -30,6 +31,27 @@ export class SgaChecksheetService {
   
   public addCheckSheet(payload: any) {
     return axios.post(this.url + 'api/SgaThemeRegistration', payload, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
+  public updateCheckSheet(payload: any) {
+    return axios.put(this.url + 'api/SgaThemeRegistration', payload, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
+  public getCheckSheetByDate(payload: any) {
+    return axios.post(this.url + 'api/SgaThemeRegistration/GetAllThemeWithDateFilter', payload, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
+  public getSgaCheckSheet(id: any) {
+    return axios.get(this.url + 'api/SgaThemeRegistration/' + id, this.auth)
       .pipe(map(response => {
         return response.data;
       }));

@@ -9,27 +9,20 @@
     <div class="collapse navbar-collapse" id="mynavbar" *ngIf="selectedScreen == 'esd'">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/views/esd-check-sheet']" [routerLinkActive]="['active']">Audit Check
+          <a class="nav-link" [routerLink]="['/views/esd-check-sheet-list']" [routerLinkActive]="['active']">Audit Check
             Sheet</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/views/esd-audit']" [routerLinkActive]="['active']">Audit Reverification</a>
-        </li> -->
-        <!-- <li class="nav-item">
-          <div class="dropdown">
-            <a class="dropbtn nav-link">Check Sheet
-              <i class="fa fa-caret-down"></i>
-            </a>
-            <div class="dropdown-content">
-              <a [routerLink]="['/views/esd-check-sheet']" [routerLinkActive]="['active']">ESD</a>
-              <a [routerLink]="['/views/sga-check-sheet']" [routerLinkActive]="['active']">SGA</a>
-              <a [routerLink]="['/views/sga-patrol-form']" [routerLinkActive]="['active']">Patrol Form</a>
-            </div>
-          </div>
-        </li> -->
-        <!-- <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/views/esd-audit']" [routerLinkActive]="['active']">Audit</a>
-        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/views/esd-reverification-list']"
+            [routerLinkActive]="['active']">Reverification</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/views/esd-reports-list']" [routerLinkActive]="['active']">Reports</a>
+        </li>
+        <li class="nav-item" *ngIf="this.userInfo.AccessID == 0">
+          <a class="nav-link" [routerLink]="['/views/users']" [routerLinkActive]="['active']">User Account</a>
+        </li>
+        <!--        
         <li class="nav-item">
           <div class="dropdown">
             <a class="dropbtn nav-link">Account
@@ -40,11 +33,8 @@
               <a [routerLink]="['/views/role']" [routerLinkActive]="['active']">Role</a>
             </div>
           </div>
-          <!-- <a class="nav-link">Account</a> -->
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Reports</a>
-        </li>
+        </li> -->
+
       </ul>
       <form class="d-flex">
         <label class="account">{{this.userInfo.Fullname}} {{"(" + selectedScreen.toUpperCase() + ")"}}</label>
@@ -56,9 +46,10 @@
 
     <div class="collapse navbar-collapse" id="mynavbar" *ngIf="selectedScreen == 'sga'">
       <ul class="navbar-nav me-auto">
-      
+
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/views/sga-check-sheet']" [routerLinkActive]="['active']">SGA Theme Registration</a>
+          <a class="nav-link" [routerLink]="['/views/sga-check-sheet-list']" [routerLinkActive]="['active']">SGA Theme
+            Registration</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/views/sga-patrol-form']">Patrol Form</a>
@@ -107,12 +98,14 @@
   <h1>WELCOME</h1>
   <div class="row selection">
     <div class="col-md-12">
-      <button class="btn btn-block btn-secondary option-button" (click)="selectedScreen = 'esd'; setSelection()">ESD</button>
+      <button class="btn btn-block btn-secondary option-button"
+        (click)="selectedScreen = 'esd'; setSelection()">ESD</button>
     </div>
   </div>
   <div class="row selection">
     <div class="col-md-12">
-      <button class="btn btn-block btn-secondary option-button" (click)="selectedScreen = 'sga'; setSelection()">SGA</button>
+      <button class="btn btn-block btn-secondary option-button"
+        (click)="selectedScreen = 'sga'; setSelection()">SGA</button>
     </div>
   </div>
 </div>

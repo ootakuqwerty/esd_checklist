@@ -12,21 +12,35 @@ import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-che
 import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
 import { IsAuthorizedGuard } from './guard/is-authorized.guard';
 import { EsdCheckSheetsListComponent } from './views/esd-check-sheets-list/esd-check-sheets-list.component';
+import { EsdReverificationComponent } from './views/esd-reverification/esd-reverification.component';
+import { EsdReverificationListComponent } from './views/esd-reverification-list/esd-reverification-list.component';
+import { EsdReportListComponent } from './views/esd-report-list/esd-report-list.component';
+import { EsdReportComponent } from './views/esd-report/esd-report.component';
+
 
 const routes: Routes = [
   {
     path: 'views',
     component: DefaultLayoutComponent,
     children: [
-      { path: 'esd-check-sheet', component: EsdCheckSheetsComponent, canActivate: [IsAuthorizedGuard] },
+      //ESD
+      { path: 'esd-check-sheet/:id', component: EsdCheckSheetsComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'esd-reverification/:id', component: EsdReverificationComponent, canActivate: [IsAuthorizedGuard] },
       { path: 'esd-check-sheet-list', component: EsdCheckSheetsListComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'esd-reverification-list', component: EsdReverificationListComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'esd-reports-list', component: EsdReportListComponent, canActivate: [IsAuthorizedGuard]},
+      { path: 'esd-reports/:id', component: EsdReportComponent, canActivate: [IsAuthorizedGuard]},
+
+      //SGA
       { path: 'sga-check-sheet-list', component: SgaCheckSheetListComponent, canActivate: [IsAuthorizedGuard] },
-      { path: 'sga-check-sheet', component: SgaCheckSheetComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'sga-check-sheet/:id', component: SgaCheckSheetComponent, canActivate: [IsAuthorizedGuard] },
       { path: 'sga-patrol-form', component: SgaPatrolFormComponent, canActivate: [IsAuthorizedGuard] },
-      { path: 'role', component: RoleComponent, canActivate: [IsAuthorizedGuard] },
-      { path: 'users', component: UsersComponent, canActivate: [IsAuthorizedGuard] },
-      { path: 'esd-audit', component: AuditComponent, canActivate: [IsAuthorizedGuard] },
       { path: 'sga-reports', component: SgaReportsComponent, canActivate: [IsAuthorizedGuard] },
+
+      //Users
+      { path: 'users', component: UsersComponent, canActivate: [IsAuthorizedGuard] },
+    
+     
     ]
   },
 

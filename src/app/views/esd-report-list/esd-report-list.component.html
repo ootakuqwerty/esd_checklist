@@ -1,4 +1,4 @@
-<h2>ESD AUDIT CHECK SHEET LIST</h2>
+<h2>ESD REPORTS</h2>
 
 <div class="card">
     <div class="card-body">
@@ -11,10 +11,6 @@
                 <option value="15">Last 15 days</option>
                 <option value="30">Last 30 days</option>
             </select>
-        </div>
-        <div class="right">
-            <button class="btn btn-primary btn-add"
-            [routerLinkActive]="['active']" [routerLink]="['/views/esd-check-sheet', 0]">Add Check Sheet</button>
         </div>
         <br>
         <br>
@@ -37,7 +33,7 @@
                     <td>{{item.RankScore}}</td>
                     <td>{{item.Rank}}</td>
                     <td><button class="btn btn-primary"
-                            [routerLink]="['/views/esd-check-sheet', item.TransactionNumber]">View</button>
+                            [routerLink]="['/views/esd-reports', item.TransactionNumber]">View</button>
                     </td>
                 </tr>
             </tbody>

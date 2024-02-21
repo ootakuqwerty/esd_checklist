@@ -17,3 +17,7 @@
   img{
     width: 15rem;
   }
+
+  .card-body{
+    padding: 50px !important;
+  }

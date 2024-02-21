@@ -21,11 +21,6 @@ export class UtilsService {
     }
   }
 
-  getDivisions() {
-    let dynamicData = localStorage.getItem("DynamicData")
-    if (dynamicData != null) return (JSON.parse(dynamicData).divisionData)
-  }
-
   getEsdDivisions() {
     let dynamicData = localStorage.getItem("DynamicData")
     if (dynamicData != null) return (JSON.parse(dynamicData).esdDivisionsData)
@@ -36,7 +31,7 @@ export class UtilsService {
     if (dynamicData != null) return (JSON.parse(dynamicData).themeRegistrationContollersData)
   }
 
-  getAllEsdPersonelData() {
+  getAllEsdPersonnelData() {
     let dynamicData = localStorage.getItem("DynamicData")
     if (dynamicData != null) return (JSON.parse(dynamicData).esdPersonelData)
   }
@@ -51,5 +46,60 @@ export class UtilsService {
       .pipe(map(response => {
         return response.data;
       }));
+  }
+
+  getSGAAutoNumber(){
+    return axios.get(this.url + 'api/AutoId', this.auth)
+    .pipe(map(response => {
+      return response.data;
+    }));
+  }
+
+  getEsdDivisionByID(id: any): any{
+    let division: any
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) division = JSON.parse(dynamicData).esdDivisionsData
+    return division.find((div: any) => div.ID == id);
+  }
+
+
+  getSgaDivisions() {
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) return (JSON.parse(dynamicData).divisionData)
+  }
+
+  getSgaBuilding () {
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) return (JSON.parse(dynamicData).sgaBuildingsData)
+  }
+
+  getSgaFloor () {
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) return (JSON.parse(dynamicData).sgaFloorsData)
+  }
+
+  getSgaDepartment () {
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) return (JSON.parse(dynamicData).sgaDepartmentsData)
+  }
+
+  getSgaSection () {
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) return (JSON.parse(dynamicData).sgaSectionsData)
+  }
+
+  getSgaPersonnelData(){
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) return (JSON.parse(dynamicData).sgaPersonnelsData)
+  }
+
+  getSgaUomData(){
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) return (JSON.parse(dynamicData).sgaUomData)
+  }
+
+  getSgaSectionChief(){
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) return (JSON.parse(dynamicData).sgaShiftOfLeadersData)
   }
 }

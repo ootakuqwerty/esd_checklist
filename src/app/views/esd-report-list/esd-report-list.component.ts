@@ -7,14 +7,14 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UtilsService } from 'src/app/services/utils.service';
 
+
 @Component({
-  selector: 'app-esd-check-sheets-list',
-  templateUrl: './esd-check-sheets-list.component.html',
-  styleUrls: ['./esd-check-sheets-list.component.css'],
+  selector: 'app-esd-report',
+  templateUrl: './esd-report-list.component.html',
+  styleUrls: ['./esd-report-list.component.css'],
   providers: [DatePipe]
 })
-export class EsdCheckSheetsListComponent implements OnInit {
-
+export class EsdReportListComponent {
   @ViewChild(DataTableDirective, { static: false })
   dtElement!: DataTableDirective;
 
@@ -60,7 +60,7 @@ export class EsdCheckSheetsListComponent implements OnInit {
               pageLength: 10,
               processing: true,
               stateSave: true,
-              order: [[0, 'desc']] 
+              order: [[0, 'desc']]
             });
           });
         }, 1);

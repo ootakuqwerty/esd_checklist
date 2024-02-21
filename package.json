@@ -31,6 +31,7 @@
     "datatables.net-dt": "^1.13.10",
     "jest-editor-support": "*",
     "jquery": "^3.7.1",
+    "jspdf": "^2.5.1",
     "ng-bootstrap": "^1.6.3",
     "ngx-spinner": "^16.0.2",
     "ngx-toastr": "^18.0.0",

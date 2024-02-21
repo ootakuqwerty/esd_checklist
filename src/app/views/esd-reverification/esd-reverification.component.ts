@@ -9,12 +9,12 @@ import { UtilsService } from '../../services/utils.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-esd-check-sheets',
-  templateUrl: './esd-check-sheets.component.html',
-  styleUrls: ['./esd-check-sheets.component.scss'],
+  selector: 'app-esd-reverification',
+  templateUrl: './esd-reverification.component.html',
+  styleUrls: ['./esd-reverification.component.scss'],
   providers: [DatePipe]
 })
-export class EsdCheckSheetsComponent implements OnInit {
+export class EsdReverificationComponent {
   @ViewChild('confirmationModal', { static: false })
   confirmModal!: ElementRef;
 
@@ -154,14 +154,19 @@ export class EsdCheckSheetsComponent implements OnInit {
             this.checkListArray = JSON.parse(data.Data.CheckSheet);
             this.openAreaArray = JSON.parse(data.Data.OpenArea);
 
+            this.model.DateTimeStarted = data.Data.DateTimeStarted
+            this.model.DateTimeEnded = data.Data.DateTimeEnded
+
             this.getTotalScore();
 
             this.checkListArray.forEach((item: any) => {
               this.getPercentCompletion(item);
+              this.getReverifyPercentCompletion(item);
             })
             if (this.openAreaArray) {
               this.openAreaArray.forEach((item: any) => {
                 this.getPercentCompletion(item);
+                this.getReverifyPercentCompletion(item);
               })
             }
           } else {
@@ -202,22 +207,6 @@ export class EsdCheckSheetsComponent implements OnInit {
           value: false
         }
       ],
-      reverify_qty: [0,0],
-      reverify_condition: [
-        {
-          name: "A",
-          value: false
-        },
-        {
-          name: "B",
-          value: false
-        },
-        {
-          name: "C",
-          value: false
-        }
-      ],
-      reverify_completed: "",
       actualPicture: [],
       commentRemarks: "",
       completed: ""
@@ -295,7 +284,6 @@ export class EsdCheckSheetsComponent implements OnInit {
         this.toastr.error(error)
       })
     } else {
-    
       payload.UpdatedBy = this.userInfo.UserID;
       this.esdChecksheetService.updateCheckSheet(payload).subscribe((data) => {
         if (data.Success) {
@@ -311,7 +299,39 @@ export class EsdCheckSheetsComponent implements OnInit {
         this.toastr.error(error)
       })
     }
+  }
 
+  saveEndDateTime(){
+    var alert = confirm("Are you sure you want to end time?");
+    if(alert){
+      this.spinner.show();
+      let payload = {
+        ...this.model
+      }
+      payload.TotalItemPass = this.totalItemPass;
+      payload.TotalItemFail = this.totalItemFailed;
+      payload.RankScore = this.rateScore;
+      payload.Rank = this.rank;
+      payload.CheckSheet = JSON.stringify(this.checkListArray)
+      payload.OpenArea = JSON.stringify(this.openAreaArray)
+      payload.CreatedBy = this.userInfo.UserID
+      payload.UpdatedOn = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
+      payload.DateTimeEnded = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
+      payload.UpdatedBy = this.userInfo.UserID;
+      this.esdChecksheetService.updateEndTime(payload).subscribe((data) => {
+        if (data.Success) {
+          window.scroll(0, 0)
+          this.toastr.success(data.Message)
+          this.spinner.hide();
+        } else {
+          this.spinner.hide();
+          this.toastr.error(data.Message);
+        }
+      }, (error: any) =>{
+        this.spinner.hide();
+        this.toastr.error(error)
+      })
+    }
   }
 
   importFile(event: any, item: any) {
@@ -388,6 +408,13 @@ export class EsdCheckSheetsComponent implements OnInit {
     } else item.completed = "Invalid"
   }
 
+  getReverifyPercentCompletion(item: any) {
+    if ((item.reverify_qty[0] != 0 && item.reverify_qty[1] != 0) && item.reverify_qty[0] <= item.reverify_qty[1]) {
+      let percent = (item.reverify_qty[0] / item.reverify_qty[1]) * 100;
+      item.reverify_completed = this.toFixed(percent, 0);
+    } else item.reverify_completed = "Invalid"
+  }
+
   getTotalScore() {
     let totalItemFailed = 0
     let totalItemPass = 0
@@ -395,7 +422,7 @@ export class EsdCheckSheetsComponent implements OnInit {
     let openTotalCount = 0
 
     this.checkListArray.forEach((item: any) => {
-      if(!item.notAvailable){
+      if (!item.notAvailable) {
         if (item.passOrFail) totalItemPass += 1
         else totalItemFailed += 1;
         origTotalCount += 1
@@ -403,7 +430,7 @@ export class EsdCheckSheetsComponent implements OnInit {
     });
 
     this.openAreaArray.forEach((item: any) => {
-      if(!item.notAvailable){
+      if (!item.notAvailable) {
         if (item.passOrFail) totalItemPass += 1
         else totalItemFailed += 1;
         origTotalCount += 1

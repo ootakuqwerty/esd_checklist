@@ -1,0 +1,230 @@
+<!-- Button Footer -->
+<div class="btn-header">
+  <div class="row">
+    <button class="btn btn-success btn-lg" (click)="exportPDF()">Export</button>
+  </div>
+</div>
+
+<div id="contentToConvert" #content>
+  <!-- Header -->
+  <br>
+  <div class="row">
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">Transaction Number: </label>&nbsp;
+      &nbsp;<label>{{model.TransactionNumber}}</label>
+    </div>
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">Date: </label>&nbsp; &nbsp;<label>{{formatDateDisplay(
+        model.CreatedOn)}}</label>
+    </div>
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">Div/Flr/Process: </label>&nbsp;
+      &nbsp;<label>{{division }}</label>
+    </div>
+  </div>
+  <hr>
+  <!-- Audit Proper -->
+  <h5><b>Audit Proper</b></h5>
+  <div class="row">
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">Auditor: </label>&nbsp;
+      &nbsp;<label>{{model.AuditProperAuditor}}</label>
+    </div>
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">Lead Auditor: </label>&nbsp; &nbsp;<label>{{
+        model.AuditProperLeadAuditor}}</label>
+    </div>
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">Process Owner: </label>&nbsp;
+      &nbsp;<label>{{model.AuditProperProcessOwner }}</label>
+    </div>
+  </div>
+
+  <hr>
+  <!-- Audit Verification -->
+  <h5><b>Audit Verification</b></h5>
+  <div class="row">
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">Process Owner: </label>&nbsp;
+      &nbsp;<label>{{model.AuditVerificationProcessOwner}}</label>
+    </div>
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">Lead Auditor: </label>&nbsp; &nbsp;<label>{{
+        model.AuditVerificationLeadAuditor}}</label>
+    </div>
+    <div class="col-md-3 left">
+      <label style="font-weight: bold;">ESD Coordinator: </label>&nbsp;
+      &nbsp;<label>{{model.AuditVerificationEsdCoordinator }}</label>
+    </div>
+  </div>
+  <hr>
+
+  <!-- Check Sheet -->
+  <div class="card-body">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th colspan="2">ESD Audit Items</th>
+          <th scope="col">Criteria</th>
+          <th scope="col">Not Available</th>
+          <th scope="col">Fail/Pass</th>
+          <th scope="col">QTY</th>
+          <th scope="col">% Completed</th>
+          <th scope="col">Condition</th>
+          <th scope="col" class="yellow">QTY</th>
+          <th scope="col" class="yellow">% Completed</th>
+          <th scope="col" class="yellow">Condition</th>
+          <th scope="col">Comments/Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of checkListArray; let i = index">
+          <td>{{i}}</td>
+          <td class="td-left">{{item.item}}</td>
+          <td class="td-criteria td-left">{{item.criteria}}</td>
+          <td>
+            {{item.notAvailable ? "Yes": "No"}}
+          </td>
+          <td>
+            {{item.passOrFail ? "Yes": "No"}}
+          </td>
+          <td>
+            {{item.qty[0] + "/" + item.qty[1]}}
+          </td>
+          <td><label>{{item.completed}}</label></td>
+          <td>
+            {{getConditionValue(item.condition)}}
+          </td>
+          <td class="yellow">
+            {{item.reverify_qty[0] + "/" + item.reverify_qty[1]}}
+          </td>
+          <td class="yellow"><label>{{item.reverify_completed}}</label></td>
+          <td class="yellow">
+            {{getConditionValue(item.reverify_condition)}}
+          </td>
+          <td>
+            <label>{{item.commentRemarks}}</label>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Open Area -->
+  <hr>
+  <h5><b>Open Area</b></h5>
+  <div class="card-body">
+    <table class="table table-responsive table-bordered table-hover">
+      <thead>
+        <tr>
+          <th colspan="2">ESD Audit Items</th>
+          <th scope="col">Criteria</th>
+          <th scope="col">Not Available</th>
+          <th scope="col">Fail/Pass</th>
+          <th scope="col">QTY</th>
+          <th scope="col">% Completed</th>
+          <th scope="col">Condition</th>
+          <th scope="col" class="yellow">QTY</th>
+          <th scope="col" class="yellow">% Completed</th>
+          <th scope="col" class="yellow">Condition</th>
+          <th scope="col">Comments/Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of openAreaArray; let i = index">
+          <td>{{i}}</td>
+          <td class="td-left">{{item.item}}</td>
+          <td class="td-criteria td-left">{{item.criteria}}</td>
+          <td>
+            {{item.notAvailable ? "Yes": "No"}}
+          </td>
+          <td>
+            {{item.passOrFail ? "Yes": "No"}}
+          </td>
+          <td>
+            {{item.qty[0] + "/" + item.qty[1]}}
+          </td>
+          <td><label>{{item.completed}}</label></td>
+          <td>
+            {{getConditionValue(item.condition)}}
+          </td>
+          <td>
+            {{item.reverify_qty[0] + "/" + item.reverify_qty[1]}}
+          </td>
+          <td><label>{{item.reverify_completed}}</label></td>
+          <td>
+            {{getConditionValue(item.reverify_condition)}}
+          </td>
+          <td> <label>{{item.commentRemarks}}</label></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+  <!-- Scores -->
+  <div class="card-body">
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status"> {{this.model.RankScore}}</label>
+          </div>
+        </div>
+        Score/Rate
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status">{{this.model.Rank}}</label>
+          </div>
+        </div>
+        Rank
+      </div>
+
+      <div class="col-md-3">
+        <table class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>91-100</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>81-90</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>71-80</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>70 below</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="row score-details">
+            <label> Total Item Pass : {{this.model.TotalItemPass}}</label>
+          </div>
+          <div class="row score-details">
+            <label> Total Item Failed : {{this.model.TotalItemFail}}</label>
+          </div>
+          <!-- <div class="row score-details">
+              <label> Rate / Score : {{rateScore}}</label>
+            </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

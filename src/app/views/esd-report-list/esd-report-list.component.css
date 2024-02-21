@@ -1,11 +1,9 @@
-.scrollit {
-    overflow: scroll;
-    height: auto;
-    max-height: 500px;
+.date_filter{
+    width: 20rem;
   }
 
-  .date_filter{
-    width: 20rem;
+  td{
+    text-align: left !important;
   }
 
   .left, .right {
@@ -22,9 +20,4 @@
 
   .btn-add{
     float: right;
-    margin-right: 1rem;
-  }
-
-  .control-no{
-      width: 30% !important;
   }

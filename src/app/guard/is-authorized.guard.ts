@@ -3,24 +3,28 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { Observable } from 'rxjs';
 import { DynamicTemplateService } from '../services/dynamic-template.service';
 import { UserAccountService } from '../services/user-account.service'
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IsAuthorizedGuard implements CanActivate {
-  constructor(public dynamicTemplateService: DynamicTemplateService, private userAccountService: UserAccountService, private router: Router) { }
+  constructor(public dynamicTemplateService: DynamicTemplateService, private userAccountService: UserAccountService, private router: Router,
+    private spinner: NgxSpinnerService,) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     this.dynamicTemplateService.testAPI().subscribe((data: any) => {
     }, (error) => {
-      try{
+      try {
         if (error.response.status == 401) {
           localStorage.clear();
+          this.spinner.hide()
           return this.router.navigate(['/login']);
         }
-      }catch(error: any){
+      } catch (error: any) {
         localStorage.clear();
+        this.spinner.hide()
         return this.router.navigate(['/login']);
       }
       return true
@@ -29,9 +33,10 @@ export class IsAuthorizedGuard implements CanActivate {
 
     if (userInfo == null) {
       localStorage.clear()
+      this.spinner.hide()
       return this.router.navigate(['/login'])
     };
-
+    this.spinner.hide()
     return true;
   }
 

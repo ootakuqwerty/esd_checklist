@@ -23,6 +23,10 @@ import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
 import { IsAuthorizedGuard } from './guard/is-authorized.guard';
 import { EsdCheckSheetsListComponent } from './views/esd-check-sheets-list/esd-check-sheets-list.component';
 import { DataTablesModule } from 'angular-datatables';
+import { EsdReverificationComponent } from './views/esd-reverification/esd-reverification.component';
+import { EsdReverificationListComponent } from './views/esd-reverification-list/esd-reverification-list.component';
+import { EsdReportListComponent } from './views/esd-report-list/esd-report-list.component';
+import { EsdReportComponent } from './views/esd-report/esd-report.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,11 @@ import { DataTablesModule } from 'angular-datatables';
     SgaPatrolFormComponent,
     SgaCheckSheetListComponent,
     SgaReportsComponent,
-    EsdCheckSheetsListComponent
+    EsdCheckSheetsListComponent,
+    EsdReverificationComponent,
+    EsdReverificationListComponent,
+    EsdReportListComponent,
+    EsdReportComponent,
   ],
   imports: [
     BrowserModule,

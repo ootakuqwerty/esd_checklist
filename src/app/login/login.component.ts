@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
           let dynamicData = await this.loginService.loadAllDynamicData(JSON.stringify(data.Data));
           localStorage.setItem("DynamicData", JSON.stringify(dynamicData));
-
+          
           let dynamicTempate = await this.loginService.loadAllDynamicTemplate(JSON.stringify(data.Data));
           localStorage.setItem("DynamicTemplate", JSON.stringify(dynamicTempate));
 

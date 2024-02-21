@@ -26,6 +26,8 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   setSelection() {
-    localStorage.setItem("selectedScreen", this.selectedScreen)
+    localStorage.setItem("selectedScreen", this.selectedScreen);
+    if(this.selectedScreen == 'esd') this.router.navigateByUrl('/views/esd-check-sheet-list')
+    else this.router.navigateByUrl('/views/sga-check-sheet-list')
   }
 }

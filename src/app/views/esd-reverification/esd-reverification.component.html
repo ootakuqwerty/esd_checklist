@@ -1,4 +1,4 @@
-<h2>ESD AUDIT CHECK SHEET</h2>
+<h2>ESD REVERIFICATION</h2>
 
 <!-- Header -->
 <div class="card">
@@ -79,7 +79,7 @@
 </div>
 
 <!-- Audit Verification -->
-<!-- <div class="card">
+ <div class="card">
   <div class="card-body">
     <div class="row">
       <h5><b>Audit Verification</b></h5>
@@ -135,7 +135,7 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
 <!-- CheckSheet -->
 <div class="card" *ngIf="model.DateTimeStarted != ''">
@@ -152,6 +152,9 @@
             <th scope="col">QTY</th>
             <th scope="col">% Completed</th>
             <th colspan="3">Condition</th>
+            <th scope="col" class="yellow">QTY</th>
+            <th scope="col" class="yellow">% Completed</th>
+            <th colspan="3" class="yellow">Condition</th> 
             <th scope="col">Actual Picture</th>
             <th scope="col">Comments/Remarks</th>
 
@@ -166,54 +169,80 @@
             <td>
               <label class="switch">
                 <input type="checkbox" [(ngModel)]="item.notAvailable" [name]="i + 'notAvailable'" 
-                  [id]="i + 'notAvailable'" (change)="getTotalScore()">
+                  [id]="i + 'notAvailable'" (change)="getTotalScore()" disabled>
                 <span class="slider round"></span>
               </label>
             </td>
             <td>
               <label class="switch">
                 <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'"
-                  [disabled]="item.notAvailable" (change)="getTotalScore()">
+                disabled (change)="getTotalScore()">
                 <span class="slider round"></span>
               </label>
             </td>
             <td>
-              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]" [disabled]="item.notAvailable"
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]" disabled
                 (input)="getPercentCompletion(item)">/
-              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]" [disabled]="item.notAvailable"
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]" disabled 
                 (input)="getPercentCompletion(item)">
             </td>
             <td><label>{{item.completed}}</label></td>
             <td>
               <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[0].name"
-                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition, item.condition[0].name)" [checked]="item.condition[0].value">
+                (change)="radioItemChange(item.condition, item.condition[0].name)" [checked]="item.condition[0].value" disabled >
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0].name">
                 {{item.condition[0].name}}</label>
             </td>
             <td>
               <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[1].name"
-                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition, item.condition[1].name)" [checked]="item.condition[1].value">
+                 (change)="radioItemChange(item.condition, item.condition[1].name)" [checked]="item.condition[1].value" disabled>
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1].name">
                 {{item.condition[1].name}}</label>
             </td>
             <td>
               <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[2].name"
-                [disabled]="item.notAvailable" (change)="radioItemChange(item.condition,item.condition[2].name)" [checked]="item.condition[2].value">
+               (change)="radioItemChange(item.condition,item.condition[2].name)" [checked]="item.condition[2].value" disabled>
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name">
                 {{item.condition[2].name}}</label>
+            </td>
+            <td class="yellow">
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[0]"
+              (input)="getReverifyPercentCompletion(item)"
+               >/
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[1]" 
+              (input)="getReverifyPercentCompletion(item)"
+              >
+            </td>
+            <td class="yellow"><label>{{item.reverify_completed}}</label></td>
+            <td class="yellow">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[0].name + 'r'"
+                (change)="radioItemChange(item.reverify_condition, item.reverify_condition[0].name)" [checked]="item.reverify_condition[0].value" >
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[0].name + 'r'" >
+                {{item.reverify_condition[0].name}}</label>
+            </td>
+            <td class="yellow">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[1].name + 'r'"
+                 (change)="radioItemChange(item.reverify_condition, item.reverify_condition[1].name)" [checked]="item.reverify_condition[1].value">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[1].name + 'r'">
+                {{item.reverify_condition[1].name}}</label>
+            </td>
+            <td class="yellow">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[2].name + 'r'"
+               (change)="radioItemChange(item.reverify_condition,item.reverify_condition[2].name)" [checked]="item.reverify_condition[2].value">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[2].name + 'r'">
+                {{item.reverify_condition[2].name}}</label>
             </td>
             <td>
               <input #fileUpload type="file" (click)="fileUpload.value = ''"
                 (change)="importFile($event,item.actualPicture)" style="display:none" accept="image/*">
               <button (click)="fileUpload.click()" class="btn btn-primary"
-                [disabled]="item.notAvailable">Upload</button>
+              disabled>Upload</button>
               &nbsp;
               <button class="btn btn-secondary" (click)="openUploadedModal(item.actualPicture)"
                 [disabled]="item.notAvailable">View <span class="badge">{{item.actualPicture.length}}</span></button>
             </td>
             <td><textarea type="text" [(ngModel)]="item.commentRemarks" [disabled]="item.notAvailable"
                 class="form-control"></textarea></td>
-
           </tr>
         </tbody>
       </table>
@@ -243,9 +272,11 @@
             <th scope="col">QTY</th>
             <th scope="col">% Completed</th>
             <th colspan="3">Condition</th>
+            <th scope="col" class="yellow">QTY</th>
+            <th scope="col" class="yellow">% Completed</th>
+            <th colspan="3" class="yellow">Condition</th> 
             <th scope="col">Actual Picture</th>
-            <th scope="col">Comments/Remarks</th>
-            <th scope="col">Action</th>
+            <th scope="col">Comments/Remarks</th> 
           </tr>
         </thead>
         <tbody>
@@ -305,6 +336,33 @@
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name + '-open-area'">
                 {{item.condition[2].name}}</label>
             </td>
+            <td class="yellow">
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[0]"
+              (input)="getReverifyPercentCompletion(item)"
+               >/
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[1]" 
+              (input)="getReverifyPercentCompletion(item)"
+              >
+            </td>
+            <td class="yellow"><label>{{item.reverify_completed}}</label></td>
+            <td class="yellow">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[0].name + 'r-open-area'"
+                (change)="radioItemChange(item.reverify_condition, item.reverify_condition[0].name)" [checked]="item.reverify_condition[0].value" >
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[0].name + 'r-open-area'" >
+                {{item.reverify_condition[0].name}}</label>
+            </td>
+            <td class="yellow">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[1].name + 'r-open-area'"
+                 (change)="radioItemChange(item.reverify_condition, item.reverify_condition[1].name)" [checked]="item.reverify_condition[1].value">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[1].name + 'r-open-area'">
+                {{item.reverify_condition[1].name}}</label>
+            </td>
+            <td class="yellow">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[2].name + 'r-open-area'"
+               (change)="radioItemChange(item.reverify_condition,item.reverify_condition[2].name)" [checked]="item.reverify_condition[2].value">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[2].name + 'r-open-area'">
+                {{item.reverify_condition[2].name}}</label>
+            </td>
             <td>
               <input #fileUploadActual type="file" (click)="fileUploadActual.value = ''"
                 (change)="importFile($event,item.actualPicture)" style="display:none" accept="image/*">
@@ -316,7 +374,6 @@
             </td>
             <td><textarea type="text" [(ngModel)]="item.commentRemarks" [disabled]="item.notAvailable"
                 class="form-control"></textarea></td>
-            <td><button class="btn btn-danger" (click)="removeOpenArea(i)">Remove</button></td>
           </tr>
         </tbody>
       </table>
@@ -402,13 +459,16 @@
 </div>
 
 <!-- Button Footer -->
-<div class="btn-footer" *ngIf="model.DateTimeStarted != ''">
+<div class="btn-footer" *ngIf="model.DateTimeEnded == null || model.DateTimeEnded == ''">
   <!-- <div class="row">
     <button class="btn btn-warning btn-block btn-lg" (click)="clear()">Clear</button>
   </div> -->
   <div class="row">
     <button class="btn btn-primary btn-lg" [disabled]="ValidateRequiredFields()"
       (click)="saveChecksheet(false)">Save</button>
+  </div>
+  <div class="row"  >
+    <button class="btn btn-success btn-lg" [disabled]="ValidateRequiredFields()" (click)="saveEndDateTime()">End Time</button>
   </div>
 </div>
 
