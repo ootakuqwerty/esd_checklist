@@ -16,6 +16,7 @@ import { EsdReverificationComponent } from './views/esd-reverification/esd-rever
 import { EsdReverificationListComponent } from './views/esd-reverification-list/esd-reverification-list.component';
 import { EsdReportListComponent } from './views/esd-report-list/esd-report-list.component';
 import { EsdReportComponent } from './views/esd-report/esd-report.component';
+import { SgaPatrolFormListComponent } from './views/sga-patrol-form-list/sga-patrol-form-list.component';
 
 
 const routes: Routes = [
@@ -34,7 +35,8 @@ const routes: Routes = [
       //SGA
       { path: 'sga-check-sheet-list', component: SgaCheckSheetListComponent, canActivate: [IsAuthorizedGuard] },
       { path: 'sga-check-sheet/:id', component: SgaCheckSheetComponent, canActivate: [IsAuthorizedGuard] },
-      { path: 'sga-patrol-form', component: SgaPatrolFormComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'sga-patrol-form-list', component: SgaPatrolFormListComponent, canActivate: [IsAuthorizedGuard] },
+      { path: 'sga-patrol-form/:id', component: SgaPatrolFormComponent, canActivate: [IsAuthorizedGuard] },
       { path: 'sga-reports', component: SgaReportsComponent, canActivate: [IsAuthorizedGuard] },
 
       //Users

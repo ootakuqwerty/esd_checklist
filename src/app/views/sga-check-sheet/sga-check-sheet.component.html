@@ -5,7 +5,7 @@
 
     <div class="row">
       <div class="col-xs-3 col-md-3 col-left">
-        <span>CONTROL No.</span><input placeholder="Enter control number" class="form-control" type="text" readonly
+        <span>CONTROL No.</span><input placeholder="Auto generated" class="form-control" type="text" readonly
           [(ngModel)]="sga.ControlNo" />
       </div>
       <div class="col-xs-3 col-md-3 col-left">
@@ -101,7 +101,8 @@
     <hr>
     <div class="row">
       <div class="col-xs-3 col-md-3 col-left">
-        <span>SGA LEADER</span><input class="form-control" type="text" placeholder="Auto Generated Based on Emp No" readonly [(ngModel)]="sga.SgaLeader" />
+        <span>SGA LEADER</span><input class="form-control" type="text" placeholder="Auto Generated Based on Emp No"
+          readonly [(ngModel)]="sga.SgaLeader" />
       </div>
       <div class="col-xs-3 col-md-3 col-left">
         <span>EMP NO.</span>
@@ -157,7 +158,8 @@
             <input placeholder="Enter group member" class="form-control member" type="text" [(ngModel)]="member" />
           </div>
           <div class="col-xs-4 col-md-4 add-members">
-            <button class="btn btn-primary" [disabled]="member == ''" (click)="addMember()">Add member</button>
+            <button class="btn btn-primary" [disabled]="member == ''" [hidden]="hidden" (click)="addMember()">Add
+              member</button>
           </div>
         </div>
       </div>
@@ -169,11 +171,12 @@
 </div>
 
 <!-- Button Footer -->
-<div class="btn-footer">
+<div class="btn-footer" *ngIf="paramsId == 0">
   <div class="row">
-    <button class="btn btn-warning btn-block btn-lg" (click)="clear()">Clear</button>
+    <button class="btn btn-warning btn-block btn-lg" (click)="clear()" [hidden]="hidden">Clear</button>
   </div>
   <div class="row">
-    <button class="btn btn-primary btn-lg" (click)="saveChecksheet()">Save</button>
+    <button class="btn btn-primary btn-lg" (click)="saveChecksheet()" [disabled]="ValidateRequiredFields()"
+      [hidden]="hidden">Save</button>
   </div>
 </div>

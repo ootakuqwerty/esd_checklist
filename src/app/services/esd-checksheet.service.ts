@@ -50,14 +50,14 @@ export class EsdChecksheetService {
   }
 
   public updateCheckSheet(payload: any) {
-    return axios.put(this.url + 'api/EsdAuditCheckSheet', payload, this.auth)
+    return axios.post(this.url + 'api/EsdAuditCheckSheet/Update', payload, this.auth)
       .pipe(map(response => {
         return response.data;
       }));
   }
 
   public updateEndTime(payload: any) {
-    return axios.put(this.url + 'api/EsdAuditCheckSheet/UpdateEndTime', payload, this.auth)
+    return axios.post(this.url + 'api/EsdAuditCheckSheet/UpdateEndTime', payload, this.auth)
       .pipe(map(response => {
         return response.data;
       }));

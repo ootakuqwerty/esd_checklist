@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DynamicDataService } from '../../services/dynamicData.service';
 import { ToastrService } from 'ngx-toastr';
 import { SgaChecksheetService } from '../../services/sga-checksheet.service'
@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class SgaCheckSheetComponent implements OnInit {
 
+  @Input() hidden: boolean = false;
   userInfo: any
   member: any;
   memberCount: any;
@@ -70,7 +71,7 @@ export class SgaCheckSheetComponent implements OnInit {
     private sgaCheckSheetService: SgaChecksheetService,
     private userAccountService: UserAccountService,
     private utilsService: UtilsService,
-     private ActivatedRoute: ActivatedRoute) {
+    private ActivatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -94,31 +95,32 @@ export class SgaCheckSheetComponent implements OnInit {
     this.ActivatedRoute.params.subscribe((param) => {
       this.paramsId = param['id'];
       if (this.paramsId != 0) {
-        this.sgaCheckSheetService.getSgaCheckSheet(this.paramsId).subscribe((data: any) =>{
-        this.sga.ControlNo = data.Data.ControlNo;
-        this.sga.Title = data.Data.Title;
-        this.sga.Present = data.Data.Present;
-        this.sga.PresentUom = data.Data.PresentUom;
-        this.sga.Target = data.Data.Target;
-        this.sga.TargetUom = data.Data.TargetUom;
-        this.sga.Division = data.Data.Division;
-        this.sga.Bldg = data.Data.Bldg;
-        this.sga.Floor = data.Data.Floor;
-        this.sga.Department = data.Data.Department;
-        this.sga.DepartmentManager = data.Data.DepartmentManager;
-        this.sga.SectionManager = data.Data.SectionManager;
-        this.sga.Section = data.Data.Section;
-        this.sga.SectionChief = data.Data.SectionChief;
-        this.sga.EmployeeNo = data.Data.EmployeeNo;
-        this.sga.SgaLeader = data.Data.SgaLeader;
-        this.sga.ShiftOfLeader = data.Data.ShiftOfLeader;
-        this.sga.LocalNo = data.Data.LocalNo;
-        this.sga.EmailAddress = data.Data.EmailAddress;
-        this.sga.Category = data.Data.Category;
-        this.sga.Type = data.Data.Type;
-        this.sga.GroupMember = data.Data.GroupMember;
-        this.membersList = JSON.parse(this.sga.GroupMember);
-      })
+        this.sgaCheckSheetService.getSgaCheckSheet(this.paramsId).subscribe((data: any) => {
+          this.sga.ControlNo = data.Data.ControlNo;
+          this.sga.Title = data.Data.Title;
+          this.sga.Present = data.Data.Present;
+          this.sga.PresentUom = data.Data.PresentUom;
+          this.sga.Target = data.Data.Target;
+          this.sga.TargetUom = data.Data.TargetUom;
+          this.sga.Division = data.Data.Division;
+          this.sga.Bldg = data.Data.Bldg;
+          this.sga.Floor = data.Data.Floor;
+          this.sga.Department = data.Data.Department;
+          this.sga.DepartmentManager = data.Data.DepartmentManager;
+          this.sga.SectionManager = data.Data.SectionManager;
+          this.sga.Section = data.Data.Section;
+          this.sga.SectionChief = data.Data.SectionChief;
+          this.sga.EmployeeNo = data.Data.EmployeeNo;
+          this.sga.SgaLeader = data.Data.SgaLeader;
+          this.sga.ShiftOfLeader = data.Data.ShiftOfLeader;
+          this.sga.LocalNo = data.Data.LocalNo;
+          this.sga.EmailAddress = data.Data.EmailAddress;
+          this.sga.Category = data.Data.Category;
+          this.sga.Type = data.Data.Type;
+          this.sga.GroupMember = data.Data.GroupMember;
+          this.membersList = JSON.parse(this.sga.GroupMember);
+          this.memberCount = this.membersList.length;
+        })
       }
     })
     setTimeout(() => {
@@ -156,7 +158,7 @@ export class SgaCheckSheetComponent implements OnInit {
             window.scroll(0, 0)
             this.spinner.hide();
             this.toastr.success(data.Message)
-            this.clear();
+            // this.clear();
           } else {
             this.spinner.hide();
             this.toastr.error(data.Message)
@@ -171,7 +173,7 @@ export class SgaCheckSheetComponent implements OnInit {
         console.log(error);
         this.toastr.error(error)
       })
-    }else{
+    } else {
       this.sga.UpdatedBy = this.userInfo.UserID;
       console.log(this.sga)
       this.sgaCheckSheetService.updateCheckSheet(this.sga).subscribe((data: any) => {
@@ -235,4 +237,35 @@ export class SgaCheckSheetComponent implements OnInit {
       this.sga.SgaLeader = person.Name;
     } else this.sga.SgaLeader = "";
   }
+
+  getDepartment() {
+    this.departmentList = this.utilsService.getSgaDepartment();
+  }
+
+  ValidateRequiredFields() {
+    let ctr = 0
+    if (this.sga.Bldg == "") ctr++;
+    if (this.sga.Category == null) ctr++;
+    if (this.sga.Department == "") ctr++;
+    if (this.sga.DepartmentManager == "") ctr++;
+    if (this.sga.Division == null) ctr++;
+    if (this.sga.EmailAddress == "") ctr++;
+    if (this.sga.EmployeeNo == "") ctr++;
+    if (this.sga.Floor == "") ctr++;
+    if (this.memberCount == undefined) ctr++;
+    if (this.sga.LocalNo == "") ctr++;
+    if (this.sga.Present == "") ctr++;
+    if (this.sga.PresentUom == "") ctr++;
+    if (this.sga.Section == "") ctr++;
+    if (this.sga.SectionChief == "") ctr++;
+    if (this.sga.SectionManager == "") ctr++;
+    if (this.sga.SgaLeader == "") ctr++;
+    if (this.sga.ShiftOfLeader == "") ctr++;
+    if (this.sga.Target == "") ctr++;
+    if (this.sga.TargetUom == "") ctr++;
+    if (this.sga.Title == "") ctr++;
+    if (this.sga.Type == "") ctr++;
+    return ctr > 0
+  }
+
 }

@@ -441,7 +441,8 @@ export class EsdReverificationComponent {
     this.totalItemFailed = totalItemFailed;
     let totalLength = (origTotalCount + openTotalCount)
     let score = (totalItemPass / totalLength * 100)
-    this.rateScore = this.toFixed(score, 0);
+    
+    this.rateScore = isNaN(this.toFixed(score, 0)) ? 0 :this.toFixed(score, 0)  ;
     if (this.rateScore >= 91 && this.rateScore <= 100) this.rank = "A"
     else if (this.rateScore >= 81 && this.rateScore <= 90) this.rank = "B"
     else if (this.rateScore >= 71 && this.rateScore <= 80) this.rank = "C"

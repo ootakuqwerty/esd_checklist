@@ -20,7 +20,7 @@ export class SgaChecksheetService {
       },
     }
   }
-  
+
 
   public getCheckSheets() {
     return axios.get(this.url + 'api/SgaThemeRegistration/', this.auth)
@@ -28,7 +28,7 @@ export class SgaChecksheetService {
         return response.data;
       }));
   }
-  
+
   public addCheckSheet(payload: any) {
     return axios.post(this.url + 'api/SgaThemeRegistration', payload, this.auth)
       .pipe(map(response => {
@@ -37,7 +37,7 @@ export class SgaChecksheetService {
   }
 
   public updateCheckSheet(payload: any) {
-    return axios.put(this.url + 'api/SgaThemeRegistration', payload, this.auth)
+    return axios.post(this.url + 'api/SgaThemeRegistration/Update', payload, this.auth)
       .pipe(map(response => {
         return response.data;
       }));
@@ -56,6 +56,28 @@ export class SgaChecksheetService {
         return response.data;
       }));
   }
+
+  public getPatrolFormByControlNumber(id: any) {
+    return axios.get(this.url + 'api/PatrolForm/' + id, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
+  public addPatrolForm(payload: any) {
+    return axios.post(this.url + 'api/PatrolForm', payload, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
+  public updatePatrolForm(payload: any) {
+    return axios.post(this.url + 'api/PatrolForm/Update', payload, this.auth)
+      .pipe(map(response => {
+        return response.data;
+      }));
+  }
+
 
   // public updateCheckSheet(id: any, payload: any) {
   //   return axios.put(this.url + 'api/EsdCheckSheet/' + id, payload, this.auth)

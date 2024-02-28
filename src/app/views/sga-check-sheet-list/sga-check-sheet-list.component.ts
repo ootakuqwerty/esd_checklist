@@ -73,6 +73,10 @@ export class SgaCheckSheetListComponent implements OnInit {
   }
 
   getDivision(id: any) {
-    return this.utils.getEsdDivisionByID(id).Name
+    return this.utils.getSgaDivisionByID(id).Name
+  }
+
+  getDepartment(id: any){
+    return this.utils.getSgaDepartmentByID(id).Name
   }
 }

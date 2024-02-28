@@ -3,6 +3,13 @@ import { DatePipe } from '@angular/common';
 import { DynamicTemplateService } from 'src/app/services/dynamic-template.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { UtilsService } from 'src/app/services/utils.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SgaChecksheetService } from 'src/app/services/sga-checksheet.service';
+import { EsdChecksheetService } from 'src/app/services/esd-checksheet.service';
+import { UserAccountService } from 'src/app/services/user-account.service';
+import html2canvas from 'html2canvas';
+import jspdf from 'jspdf';
 
 @Component({
   selector: 'app-sga-patrol-form',
@@ -12,38 +19,128 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class SgaPatrolFormComponent implements OnInit {
 
-  header = {
-    date: ''
+  params = {
+    ControlNo: '',
+    SgaAuditor: '',
+    SgaLeader: '',
+    sgaTitle: '',
+    date: '',
+    sgaDeptDiv: '',
   }
   vericationScore: number = 0;
   verificationRating: number = 0;
-
   patrolSheet: any;
+  paramsId: any;
+  sgaAuditorList: any;
+  isNew: boolean = true;
+  userInfo: any;
+  isExport: boolean = false;
+  sgaLeader: any;
 
   constructor(private datePipe: DatePipe,
-    private dynamicTemplateService: DynamicTemplateService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,) { }
+    private spinner: NgxSpinnerService,
+    private utilsService: UtilsService,
+    private ActivatedRoute: ActivatedRoute,
+    private sgaCheckSheetService: SgaChecksheetService,
+    private utils: UtilsService,
+    private userAccountService: UserAccountService,) { }
 
   ngOnInit(): void {
     this.spinner.show()
-    this.header.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
-    this.getTemplate();
+    this.userInfo = this.userAccountService.getUserAccount();
+    this.params.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
+    this.patrolSheet = JSON.parse(this.utilsService.getSgaTemplate().Template);
+    this.sgaAuditorList = this.utilsService.getSgaPersonnelData().filter((sga: any) => sga.Type == "sga_auditor");
+    this.sgaLeader = this.utilsService.getSgaPersonnelData().filter((sga: any) => sga.Type == "sga_leader");
 
-    setTimeout(() => {
-      this.spinner.hide()
-    }, 100);
-  }
-
-  getTemplate() {
-    this.dynamicTemplateService.getDynamicTemplate("sga_verification_patrol_sheet").subscribe((data: any) => {
-      if (data.Success) {
-        this.patrolSheet = (JSON.parse(data.Data.Template))
-      } else {
-        console.log(data.Message)
-        this.toastr.error(data.Message)
+    this.ActivatedRoute.params.subscribe((param) => {
+      this.paramsId = param['id'];
+      if (this.paramsId != 0) {
+        this.sgaCheckSheetService.getPatrolFormByControlNumber(this.paramsId).subscribe((data) => {
+          this.params.ControlNo = this.paramsId;
+          if (data.Success) {
+            this.params.SgaAuditor = data.Data.SgaAuditor;
+            this.patrolSheet = JSON.parse(data.Data.LevelOfAssessment);
+            this.params.SgaLeader = data.Data.SgaLeader;
+            this.isNew = false;
+          }
+          this.sgaCheckSheetService.getSgaCheckSheet(this.paramsId).subscribe((data2: any) => {
+            this.params.sgaTitle = data2.Data.Title;
+            this.params.sgaDeptDiv = `${this.getDivision(data2.Data.Division)} / ${this.getDepartment(data2.Data.Department)}`
+          })
+          this.computeTotalGradeAndRating()
+          this.spinner.hide()
+        })
       }
     })
+  }
+
+  savePatrolForm() {
+    let payload = {
+      ...this.params,
+      LevelOfAssessment: JSON.stringify(this.patrolSheet),
+      Score: String(this.vericationScore),
+      Rating: String(this.verificationRating),
+      CreatedBy: this.userInfo.UserID,
+      UpdatedBy: this.userInfo.UserID,
+    }
+
+    if (this.isNew) {
+      this.sgaCheckSheetService.addPatrolForm(payload).subscribe((data: any) => {
+        if (data.Success) {
+          window.scroll(0, 0)
+          this.spinner.hide();
+          this.isNew = false;
+          this.toastr.success(data.Message)
+        } else {
+          this.spinner.hide();
+          this.toastr.error(data.Message)
+        }
+      }, (error: any) => {
+        this.spinner.hide();
+        console.log(error);
+        this.toastr.error(error)
+      })
+    } else {
+      this.sgaCheckSheetService.updatePatrolForm(payload).subscribe((data: any) => {
+        if (data.Success) {
+          window.scroll(0, 0)
+          this.spinner.hide();
+          this.toastr.success(data.Message)
+        } else {
+          this.spinner.hide();
+          this.toastr.error(data.Message)
+        }
+      }, (error: any) => {
+        this.spinner.hide();
+        console.log(error);
+        this.toastr.error(error)
+      })
+    }
+  }
+
+  exportPdf() {
+    this.spinner.show()
+    this.isExport = true;
+    setTimeout(() => {
+      var data = document.getElementById('contentToConvert') as HTMLElement;  //Id of the table
+      html2canvas(data).then(canvas => {
+        // Few necessary setting options  
+        let imgWidth = 208;
+        let pageHeight = 295;
+        let imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+
+        const contentDataURL = canvas.toDataURL('image/png')
+        let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+        let position = 0;
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+        pdf.save(this.paramsId); // Generated PDF   
+        this.spinner.hide()
+        this.isExport = false
+      });
+    }, 500);
   }
 
   getID(id: any, index: any, itemId: any) {
@@ -141,6 +238,14 @@ export class SgaPatrolFormComponent implements OnInit {
     if (this.vericationScore >= 89 && this.vericationScore <= 92) this.verificationRating = 23;
     if (this.vericationScore >= 93 && this.vericationScore <= 96) this.verificationRating = 24;
     if (this.vericationScore >= 97 && this.vericationScore <= 100) this.verificationRating = 25;
+  }
+
+  getDivision(id: any) {
+    return this.utils.getSgaDivisionByID(id).Name
+  }
+
+  getDepartment(id: any) {
+    return this.utils.getSgaDepartmentByID(id).Name
   }
 }
 

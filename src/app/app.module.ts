@@ -27,6 +27,7 @@ import { EsdReverificationComponent } from './views/esd-reverification/esd-rever
 import { EsdReverificationListComponent } from './views/esd-reverification-list/esd-reverification-list.component';
 import { EsdReportListComponent } from './views/esd-report-list/esd-report-list.component';
 import { EsdReportComponent } from './views/esd-report/esd-report.component';
+import { SgaPatrolFormListComponent } from './views/sga-patrol-form-list/sga-patrol-form-list.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { EsdReportComponent } from './views/esd-report/esd-report.component';
     EsdReverificationListComponent,
     EsdReportListComponent,
     EsdReportComponent,
+    SgaPatrolFormListComponent,
   ],
   imports: [
     BrowserModule,

@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
           let dynamicTempate = await this.loginService.loadAllDynamicTemplate(JSON.stringify(data.Data));
           localStorage.setItem("DynamicTemplate", JSON.stringify(dynamicTempate));
 
+          localStorage.setItem("selectedScreen", "");
           this.spinner.hide();
           this.router.navigateByUrl('/views');
         } else {

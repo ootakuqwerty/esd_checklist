@@ -52,7 +52,8 @@
             Registration</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/views/sga-patrol-form']">Patrol Form</a>
+          <a class="nav-link" [routerLink]="['/views/sga-patrol-form-list']" [routerLinkActive]="['active']">Patrol
+            Form</a>
         </li>
         <!-- <li class="nav-item">
           <div class="dropdown">
@@ -69,21 +70,12 @@
         <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]="['/views/esd-audit']" [routerLinkActive]="['active']">Audit</a>
         </li> -->
-        <li class="nav-item">
-          <div class="dropdown">
-            <a class="dropbtn nav-link">Account
-              <i class="fa fa-caret-down"></i>
-            </a>
-            <div class="dropdown-content">
-              <a [routerLink]="['/views/users']" [routerLinkActive]="['active']">User</a>
-              <a [routerLink]="['/views/role']" [routerLinkActive]="['active']">Role</a>
-            </div>
-          </div>
-          <!-- <a class="nav-link">Account</a> -->
+        <li class="nav-item" *ngIf="this.userInfo.AccessID == 0">
+          <a class="nav-link" [routerLink]="['/views/users']" [routerLinkActive]="['active']">User Account</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link">Reports</a>
-        </li>
+        </li> -->
       </ul>
       <form class="d-flex">
         <label class="account">{{this.userInfo.Fullname}} {{"(" + selectedScreen.toUpperCase() + ")"}}</label>

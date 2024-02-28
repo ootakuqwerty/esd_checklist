@@ -1,85 +1,129 @@
 <h2>SGA Verification Patrol Sheet</h2>
 
-<div class="card">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-xs-3 col-md-3 col-left">
-        <span>SGA Auditor</span><input placeholder="Enter SGA auditor" class="form-control" type="text" />
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="patrol-tab" data-bs-toggle="tab" data-bs-target="#patrol-form" type="button"
+      role="tab" aria-controls="personal" aria-selected="true">Patrol Form</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="theme-tab" data-bs-toggle="tab" data-bs-target="#theme-registration" type="button"
+      role="tab" aria-controls="ekyc" aria-selected="false">Theme Registration </button>
+  </li>
+</ul>
+
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="patrol-form" role="tabpanel" aria-labelledby="patrol-tab">
+
+    <div id="contentToConvert" #content>
+      <!-- Header -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-xs-3 col-md-3 col-left">
+              <span>SGA Auditor</span>
+              <select class="form-control" id="divisions" [(ngModel)]="params.SgaAuditor">
+                <option *ngFor="let list of sgaAuditorList" [value]="list.EmpNo"> {{list.Name}}</option>
+              </select>
+            </div>
+            <div class="col-xs-3 col-md-3 col-left">
+              <span>SGA Leader</span>
+              <select class="form-control" id="dept" [(ngModel)]="params.SgaLeader">
+                <option *ngFor="let list of sgaLeader" [value]="list.EmpNo"> {{list.Name}}</option>
+              </select>
+              <!-- <span>SGA Leader</span><input placeholder="Enter SGA leader" class="form-control" type="text"
+                [(ngModel)]="params.sgaLeader" readonly /> -->
+            </div>
+            <div class="col-xs-3 col-md-3 col-left">
+              <span>SGA Title</span><input placeholder="Enter SGA title" class="form-control" type="text"
+                [(ngModel)]="params.sgaTitle" readonly />
+            </div>
+            <div class="col-xs-3 col-md-1 col-left">
+              <span>Date</span><input placeholder="Enter Date" class="form-control" type="date"
+                [(ngModel)]="params.date" />
+            </div>
+            <div class="col-xs-3 col-md-2  col-left">
+              <span>DIV/DEPT</span><input placeholder="Enter division/department" class="form-control" type="text"
+                [(ngModel)]="params.sgaDeptDiv" />
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-xs-3 col-md-3 col-left">
-        <span>SGA Leader</span><input placeholder="Enter SGA leader" class="form-control" type="text" />
+
+      <!-- Body -->
+      <div class="card">
+        <div class="card-body">
+          <div  [ngClass]="{'scrollit': !isExport}">
+            <table class="table table-responsive table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th colspan="5">LEVEL OF ASSESSMENT</th>
+                  <th scope="col">REMARKS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of patrolSheet; let i = index ">
+                  <td class="td-vertical" *ngIf="(i + 1) == 1 && (i + 1) <= 8" rowspan="8"><label
+                      class="break">PLAN</label>
+                  </td>
+                  <td class="td-vertical" *ngIf="(i + 1) == 9" rowspan="1"><label class="break">DO</label> </td>
+                  <td class="td-vertical" *ngIf="(i + 1) == 10 && (i + 1) <= 12" rowspan="3"><label
+                      class="break">CHECK</label></td>
+                  <td class="td-vertical" *ngIf="(i + 1) == 13 && (i + 1) <= 18" rowspan="5"><label
+                      class="break">ACT</label>
+                  </td>
+                  <td class="td-left">{{item.title}}</td>
+
+                  <td class="td-survey td-left">
+                    <label><input type="radio" [name]="createRadioName(i)" [id]="getID(1,i,item.id)"
+                        (change)="radioItemChange(item, 1)" [checked]="item.level1[1]">&nbsp;{{item.level1[0]}}</label>
+                  </td>
+                  <td class="td-survey td-left">
+                    <label *ngIf="item.level2[0] != ''"><input type="radio" [name]="createRadioName(i)"
+                        [id]="getID(2,i,item.id)" (change)="radioItemChange(item, 2)"
+                        [checked]="item.level2[1]">&nbsp;{{item.level2[0]}}</label>
+                  </td>
+                  <td class="td-survey td-left">
+                    <label *ngIf="item.level3[0] != ''"><input type="radio" [name]="createRadioName(i)"
+                        [id]="getID(3,i,item.id)" (change)="radioItemChange(item, 3)"
+                        [checked]="item.level3[1]">&nbsp;{{item.level3[0]}}</label>
+                  </td>
+                  <td class="td-survey td-left">
+                    <label *ngIf="item.level4[0] != ''"><input type="radio" [name]="createRadioName(i)"
+                        [id]="getID(4,i,item.id)" (change)="radioItemChange(item, 4)"
+                        [checked]="item.level4[1]">&nbsp;{{item.level4[0]}}</label>
+                  </td>
+                  <td class="td-survey td-left">
+                    <label *ngIf="item.level5[0] != ''"><input type="radio" [name]="createRadioName(i)"
+                        [id]="getID(5,i,item.id)" (change)="radioItemChange(item, 5)"
+                        [checked]="item.level5[1]">&nbsp;{{item.level5[0]}}</label>
+                  </td>
+                  <td><textarea class="form-control" [(ngModel)]="item.remarks"></textarea></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <label class="label-footer"><b>Verification Score: {{vericationScore}}</b></label>
+        <label class="label-footer"><b>Verification Rating: {{verificationRating}}</b></label>
       </div>
-      <div class="col-xs-3 col-md-3 col-left">
-        <span>SGA Title</span><input placeholder="Enter SGA title" class="form-control" type="text" />
+    </div>
+
+    <!-- Button Footer -->
+    <div class="btn-footer">
+      <div class="row">
+        <button class="btn btn-success btn-block btn-lg" (click)="exportPdf()">Export</button>
       </div>
-      <div class="col-xs-3 col-md-1 col-left">
-        <span>Date</span><input placeholder="Enter Date" class="form-control" type="date" [(ngModel)]="header.date" />
-      </div>
-      <div class="col-xs-3 col-md-2  col-left">
-        <span>DIV/DEPT</span><input placeholder="Enter division/department" class="form-control" type="text" />
+      <div class="row">
+        <button class="btn btn-primary btn-lg" (click)="savePatrolForm()">Save</button>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card">
-  <div class="card-body">
-    <div class="scrollit">
-      <table class="table table-responsive table-bordered">
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th colspan="5">LEVEL OF ASSESSMENT</th>
-            <th scope="col">REMARKS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of patrolSheet; let i = index ">
-            <td class="td-vertical" *ngIf="(i + 1) == 1 && (i + 1) <= 8" rowspan="8"><label class="break">PLAN</label>
-            </td>
-            <td class="td-vertical" *ngIf="(i + 1) == 9" rowspan="1"><label class="break">DO</label> </td>
-            <td class="td-vertical" *ngIf="(i + 1) == 10 && (i + 1) <= 12" rowspan="3"><label
-                class="break">CHECK</label></td>
-            <td class="td-vertical" *ngIf="(i + 1) == 13 && (i + 1) <= 18" rowspan="5"><label class="break">ACT</label>
-            </td>
-            <td class="td-left">{{item.title}}</td>
-            <td class="td-survey td-left">
-              <label><input type="radio" [name]="createRadioName(i)" [id]="getID(1,i,item.id)"
-                  (change)="radioItemChange(item, 1)">&nbsp;{{item.level1[0]}}</label>
-            </td>
-            <td class="td-survey td-left">
-              <label *ngIf="item.level2[0] != ''"><input type="radio" [name]="createRadioName(i)"
-                  [id]="getID(2,i,item.id)" (change)="radioItemChange(item, 2)">&nbsp;{{item.level2[0]}}</label>
-            </td>
-            <td class="td-survey td-left">
-              <label *ngIf="item.level3[0] != ''"><input type="radio" [name]="createRadioName(i)"
-                  [id]="getID(3,i,item.id)" (change)="radioItemChange(item, 3)">&nbsp;{{item.level3[0]}}</label>
-            </td>
-            <td class="td-survey td-left">
-              <label *ngIf="item.level4[0] != ''"><input type="radio" [name]="createRadioName(i)"
-                  [id]="getID(4,i,item.id)" (change)="radioItemChange(item, 4)">&nbsp;{{item.level4[0]}}</label>
-            </td>
-            <td class="td-survey td-left">
-              <label *ngIf="item.level5[0] != ''"><input type="radio" [name]="createRadioName(i)"
-                  [id]="getID(5,i,item.id)" (change)="radioItemChange(item, 5)">&nbsp;{{item.level5[0]}}</label>
-            </td>
-            <td><textarea class="form-control" [(ngModel)]="item.remarks"></textarea></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <label class="label-footer"><b>Verification Score: {{vericationScore}}</b></label>
-  <label class="label-footer"><b>Verification Rating: {{verificationRating}}</b></label>
-</div>
-
-<!-- Button Footer -->
-<div class="btn-footer">
-  <div class="row">
-    <button class="btn btn-warning btn-block btn-lg">Clear</button>
-  </div>
-  <div class="row">
-    <button class="btn btn-primary btn-lg">Save</button>
+  <div class="tab-pane fade show" id="theme-registration" role="tabpanel" aria-labelledby="theme-tab">
+    <app-sga-check-sheet [hidden]="true"></app-sga-check-sheet>
   </div>
 </div>

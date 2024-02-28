@@ -41,6 +41,11 @@ export class UtilsService {
     if (dynamicTemplate != null) return (JSON.parse(dynamicTemplate).esdCheckSheetData)
   }
 
+  getSgaTemplate() {
+    let dynamicTemplate = localStorage.getItem("DynamicTemplate");
+    if (dynamicTemplate != null) return (JSON.parse(dynamicTemplate).sgaVerificationData)
+  }
+
   getAutoNumber(id: any){
     return axios.get(this.url + 'api/AutoId/' + id, this.auth)
       .pipe(map(response => {
@@ -101,5 +106,19 @@ export class UtilsService {
   getSgaSectionChief(){
     let dynamicData = localStorage.getItem("DynamicData")
     if (dynamicData != null) return (JSON.parse(dynamicData).sgaShiftOfLeadersData)
+  }
+
+  getSgaDivisionByID(id: any): any{
+    let division: any
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) division = JSON.parse(dynamicData).divisionData
+    return division.find((div: any) => div.ID == id);
+  }
+
+  getSgaDepartmentByID(id: any): any{
+    let division: any
+    let dynamicData = localStorage.getItem("DynamicData")
+    if (dynamicData != null) division = JSON.parse(dynamicData).sgaDepartmentsData
+    return division.find((div: any) => div.ID == id);
   }
 }
