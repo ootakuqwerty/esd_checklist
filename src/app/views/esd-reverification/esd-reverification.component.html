@@ -152,9 +152,10 @@
             <th scope="col">QTY</th>
             <th scope="col">% Completed</th>
             <th colspan="3">Condition</th>
-            <th scope="col" class="yellow">QTY</th>
-            <th scope="col" class="yellow">% Completed</th>
-            <th colspan="3" class="yellow">Condition</th> 
+            <th scope="col" class="blue">Fail/Pass</th>
+            <th scope="col" class="blue">QTY</th>
+            <th scope="col" class="blue">% Completed</th>
+            <th colspan="3" class="blue">Condition</th> 
             <th scope="col">Actual Picture</th>
             <th scope="col">Comments/Remarks</th>
 
@@ -205,30 +206,37 @@
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name">
                 {{item.condition[2].name}}</label>
             </td>
-            <td class="yellow">
+            <td class="blue">
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.reverify_passOrFail" [name]="i + 'passOrFail-r'" [id]="i + 'passOrFail-r'"
+                 (change)="getReverificationTotalScore()" [disabled]="item.notAvailable || verifyConditionToDisable(item)">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td class="blue">
               <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[0]"
-              (input)="getReverifyPercentCompletion(item)"
+              (input)="getReverifyPercentCompletion(item)" [disabled]="item.notAvailable || verifyConditionToDisable(item)"
                >/
               <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[1]" 
-              (input)="getReverifyPercentCompletion(item)"
+              (input)="getReverifyPercentCompletion(item)" [disabled]="item.notAvailable || verifyConditionToDisable(item)"
               >
             </td>
-            <td class="yellow"><label>{{item.reverify_completed}}</label></td>
-            <td class="yellow">
+            <td class="blue"><label>{{item.reverify_completed}}</label></td>
+            <td class="blue">
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[0].name + 'r'"
-                (change)="radioItemChange(item.reverify_condition, item.reverify_condition[0].name)" [checked]="item.reverify_condition[0].value" >
+                (change)="radioItemChange(item.reverify_condition, item.reverify_condition[0].name)" [checked]="item.reverify_condition[0].value" [disabled]="item.notAvailable || verifyConditionToDisable(item)">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[0].name + 'r'" >
                 {{item.reverify_condition[0].name}}</label>
             </td>
-            <td class="yellow">
+            <td class="blue">
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[1].name + 'r'"
-                 (change)="radioItemChange(item.reverify_condition, item.reverify_condition[1].name)" [checked]="item.reverify_condition[1].value">
+                 (change)="radioItemChange(item.reverify_condition, item.reverify_condition[1].name)" [checked]="item.reverify_condition[1].value" [disabled]="item.notAvailable || verifyConditionToDisable(item)">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[1].name + 'r'">
                 {{item.reverify_condition[1].name}}</label>
             </td>
-            <td class="yellow">
+            <td class="blue">
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[2].name + 'r'"
-               (change)="radioItemChange(item.reverify_condition,item.reverify_condition[2].name)" [checked]="item.reverify_condition[2].value">
+               (change)="radioItemChange(item.reverify_condition,item.reverify_condition[2].name)" [checked]="item.reverify_condition[2].value" [disabled]="item.notAvailable || verifyConditionToDisable(item)">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[2].name + 'r'">
                 {{item.reverify_condition[2].name}}</label>
             </td>
@@ -272,9 +280,10 @@
             <th scope="col">QTY</th>
             <th scope="col">% Completed</th>
             <th colspan="3">Condition</th>
-            <th scope="col" class="yellow">QTY</th>
-            <th scope="col" class="yellow">% Completed</th>
-            <th colspan="3" class="yellow">Condition</th> 
+            <th scope="col" class="blue">Fail/Pass</th>
+            <th scope="col" class="blue">QTY</th>
+            <th scope="col" class="blue">% Completed</th>
+            <th colspan="3" class="blue">Condition</th> 
             <th scope="col">Actual Picture</th>
             <th scope="col">Comments/Remarks</th> 
           </tr>
@@ -297,69 +306,76 @@
             <td>
               <label class="switch">
                 <input type="checkbox" [(ngModel)]="item.notAvailable" [name]="i + 'notAvailable'"
-                  [id]="i + 'notAvailable'" (change)="getTotalScore()">
+                  [id]="i + 'notAvailable'" (change)="getTotalScore()" disabled>
                 <span class="slider round"></span>
               </label>
             </td>
             <td>
               <label class="switch">
                 <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'"
-                  [disabled]="item.notAvailable" (change)="getTotalScore()">
+                 (change)="getTotalScore()" disabled>
                 <span class="slider round"></span>
               </label>
             </td>
             <td>
-              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]" [disabled]="item.notAvailable"
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]" disabled
                 (input)="getPercentCompletion(item)">/
-              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]" [disabled]="item.notAvailable"
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]" disabled
                 (input)="getPercentCompletion(item)">
             </td>
             <td><label>{{item.completed}}</label></td>
             <td>
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'open-area')"
-                [id]="i + item.condition[0].name + '-open-area'" [disabled]="item.notAvailable"
+                [id]="i + item.condition[0].name + '-open-area'"disabled
                 (change)="radioItemChange(item.condition, item.condition[0].name)" [checked]="item.condition[0].value">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0].name + '-open-area'">
                 {{item.condition[0].name}}</label>
             </td>
             <td>
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'open-area')"
-                [id]="i + item.condition[1].name + '-open-area'" [disabled]="item.notAvailable"
+                [id]="i + item.condition[1].name + '-open-area'"disabled
                 (change)="radioItemChange(item.condition, item.condition[1].name)" [checked]="item.condition[1].value">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1].name + '-open-area'">
                 {{item.condition[1].name}}</label>
             </td>
             <td>
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'open-area')"
-                [id]="i + item.condition[2].name + '-open-area'" [disabled]="item.notAvailable"
+                [id]="i + item.condition[2].name + '-open-area'" disabled
                 (change)="radioItemChange(item.condition,item.condition[2].name)" [checked]="item.condition[2].value">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name + '-open-area'">
                 {{item.condition[2].name}}</label>
             </td>
-            <td class="yellow">
-              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[0]"
-              (input)="getReverifyPercentCompletion(item)"
+            <td class="blue">
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.reverify_passOrFail" [name]="i + 'passOrFail-r-open'" [id]="i + 'passOrFail-r-open'"
+                 (change)="getReverificationTotalScore()" [disabled]="verifyConditionToDisable(item)">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td class="blue">
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[0]" 
+              (input)="getReverifyPercentCompletion(item)" [disabled]="verifyConditionToDisable(item)"
                >/
               <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[1]" 
-              (input)="getReverifyPercentCompletion(item)"
+              (input)="getReverifyPercentCompletion(item)" [disabled]="verifyConditionToDisable(item)"
               >
             </td>
-            <td class="yellow"><label>{{item.reverify_completed}}</label></td>
-            <td class="yellow">
+            <td class="blue"><label>{{item.reverify_completed}}</label></td>
+            <td class="blue">
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[0].name + 'r-open-area'"
-                (change)="radioItemChange(item.reverify_condition, item.reverify_condition[0].name)" [checked]="item.reverify_condition[0].value" >
+                (change)="radioItemChange(item.reverify_condition, item.reverify_condition[0].name)" [checked]="item.reverify_condition[0].value" [disabled]="verifyConditionToDisable(item)">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[0].name + 'r-open-area'" >
                 {{item.reverify_condition[0].name}}</label>
             </td>
-            <td class="yellow">
+            <td class="blue">
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[1].name + 'r-open-area'"
-                 (change)="radioItemChange(item.reverify_condition, item.reverify_condition[1].name)" [checked]="item.reverify_condition[1].value">
+                 (change)="radioItemChange(item.reverify_condition, item.reverify_condition[1].name)" [checked]="item.reverify_condition[1].value" [disabled]="verifyConditionToDisable(item)">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[1].name + 'r-open-area'">
                 {{item.reverify_condition[1].name}}</label>
             </td>
-            <td class="yellow">
+            <td class="blue">
               <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[2].name + 'r-open-area'"
-               (change)="radioItemChange(item.reverify_condition,item.reverify_condition[2].name)" [checked]="item.reverify_condition[2].value">
+               (change)="radioItemChange(item.reverify_condition,item.reverify_condition[2].name)" [checked]="item.reverify_condition[2].value" [disabled]="verifyConditionToDisable(item)">
               <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[2].name + 'r-open-area'">
                 {{item.reverify_condition[2].name}}</label>
             </td>
@@ -383,6 +399,7 @@
 
 <!-- Scores -->
 <div class="card" *ngIf="model.DateTimeStarted != ''">
+  <h5 class="mt-2">Initial</h5>
   <div class="card-body">
     <div class="row">
 
@@ -440,6 +457,77 @@
           </div>
           <div class="row score-details">
             <label> Total Item Failed : {{totalItemFailed}}</label>
+          </div>
+          <!-- <div class="row score-details">
+            <label> Rate / Score : {{rateScore}}</label>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reverify Scores -->
+<div class="card" *ngIf="model.DateTimeStarted != ''">
+  <h5 class="mt-2">Reverification</h5>
+  <div class="card-body blue">
+   
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status"> {{reverify_rateScore}}</label>
+          </div>
+        </div>
+        Score/Rate
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status">{{reverify_rank}}</label>
+          </div>
+        </div>
+        Rank
+      </div>
+
+      <div class="col-md-3">
+        <table class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>91-100</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>81-90</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>71-80</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>70 below</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="row score-details">
+            <label> Total Item Pass : {{reverify_totalItemPass}}</label>
+          </div>
+          <div class="row score-details">
+            <label> Total Item Failed : {{reverify_totalItemFailed}}</label>
           </div>
           <!-- <div class="row score-details">
             <label> Rate / Score : {{rateScore}}</label>

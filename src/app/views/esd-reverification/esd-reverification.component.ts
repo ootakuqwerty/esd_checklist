@@ -1,5 +1,5 @@
 import { DatePipe, JsonPipe } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserAccountService } from '../../services/user-account.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -48,6 +48,10 @@ export class EsdReverificationComponent {
     TotalItemFail: 0,
     RankScore: 0,
     Rank: "",
+    ReverifyTotalItemPass: 0,
+    ReverifyTotalItemFail: 0,
+    ReverifyScore: 0,
+    ReverifyRank: "",
     DateTimeStarted: "",
     DateTimeEnded: "",
     CheckSheet: "",
@@ -83,6 +87,11 @@ export class EsdReverificationComponent {
   rateScore: any = 0;
   rank: any = '';
 
+  reverify_totalItemPass: any = 0;
+  reverify_totalItemFailed: any = 0;
+  reverify_rateScore: any = 0;
+  reverify_rank: any = '';
+
   addSignatureData = {
     status: false,
     type: '',
@@ -100,7 +109,12 @@ export class EsdReverificationComponent {
     private esdChecksheetService: EsdChecksheetService,
     private toastr: ToastrService,
     private utilsService: UtilsService,
-    private ActivatedRoute: ActivatedRoute,) { }
+    private ActivatedRoute: ActivatedRoute,
+    private cdref: ChangeDetectorRef) { }
+
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();
+  }
 
   ngOnInit() {
     this.spinner.show();
@@ -117,6 +131,7 @@ export class EsdReverificationComponent {
     this.userInfo = this.userAccountService.getUserAccount();
 
     this.getTotalScore();
+    this.getReverificationTotalScore()
 
     this.checkListArray.forEach((item: any) => {
       this.getPercentCompletion(item);
@@ -126,7 +141,8 @@ export class EsdReverificationComponent {
         this.getPercentCompletion(item);
       })
     }
-
+    this.spinner.hide()
+    this.spinner.show()
     this.ActivatedRoute.params.subscribe((param) => {
       this.paramsId = param['id'];
       if (this.paramsId != 0) {
@@ -153,11 +169,12 @@ export class EsdReverificationComponent {
 
             this.checkListArray = JSON.parse(data.Data.CheckSheet);
             this.openAreaArray = JSON.parse(data.Data.OpenArea);
-
+            
             this.model.DateTimeStarted = data.Data.DateTimeStarted
             this.model.DateTimeEnded = data.Data.DateTimeEnded
 
             this.getTotalScore();
+            this.getReverificationTotalScore();
 
             this.checkListArray.forEach((item: any) => {
               this.getPercentCompletion(item);
@@ -169,15 +186,14 @@ export class EsdReverificationComponent {
                 this.getReverifyPercentCompletion(item);
               })
             }
+            this.spinner.hide();
           } else {
             this.toastr.error(data.Message)
           }
         })
       }
     })
-    setTimeout(() => {
-      this.spinner.hide()
-    }, 100);
+   
 
   }
 
@@ -265,10 +281,18 @@ export class EsdReverificationComponent {
     payload.TotalItemFail = this.totalItemFailed;
     payload.RankScore = this.rateScore;
     payload.Rank = this.rank;
+
     payload.CheckSheet = JSON.stringify(this.checkListArray)
     payload.OpenArea = JSON.stringify(this.openAreaArray)
     payload.CreatedBy = this.userInfo.UserID
     payload.UpdatedOn = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
+
+    //Reverify 
+    payload.ReverifyTotalItemPass = this.reverify_totalItemPass;
+    payload.ReverifyTotalItemFail = this.reverify_totalItemFailed;
+    payload.ReverifyScore = this.reverify_rateScore;
+    payload.ReverifyRank = this.reverify_rank;
+
     if (payload.DateTimeEnded == "") payload.DateTimeEnded = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
     if (isNew) {
       this.esdChecksheetService.addCheckSheet(payload).subscribe((data) => {
@@ -301,9 +325,9 @@ export class EsdReverificationComponent {
     }
   }
 
-  saveEndDateTime(){
+  saveEndDateTime() {
     var alert = confirm("Are you sure you want to end time?");
-    if(alert){
+    if (alert) {
       this.spinner.show();
       let payload = {
         ...this.model
@@ -318,6 +342,13 @@ export class EsdReverificationComponent {
       payload.UpdatedOn = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
       payload.DateTimeEnded = String(this.datePipe.transform(new Date(), "yyyy-MM-ddThh:mm:ss"));
       payload.UpdatedBy = this.userInfo.UserID;
+
+          //Reverify 
+    payload.ReverifyTotalItemPass = this.reverify_totalItemPass;
+    payload.ReverifyTotalItemFail = this.reverify_totalItemFailed;
+    payload.ReverifyScore = this.reverify_rateScore;
+    payload.ReverifyRank = this.reverify_rank;
+    
       this.esdChecksheetService.updateEndTime(payload).subscribe((data) => {
         if (data.Success) {
           window.scroll(0, 0)
@@ -327,7 +358,7 @@ export class EsdReverificationComponent {
           this.spinner.hide();
           this.toastr.error(data.Message);
         }
-      }, (error: any) =>{
+      }, (error: any) => {
         this.spinner.hide();
         this.toastr.error(error)
       })
@@ -441,12 +472,46 @@ export class EsdReverificationComponent {
     this.totalItemFailed = totalItemFailed;
     let totalLength = (origTotalCount + openTotalCount)
     let score = (totalItemPass / totalLength * 100)
-    
-    this.rateScore = isNaN(this.toFixed(score, 0)) ? 0 :this.toFixed(score, 0)  ;
+
+    this.rateScore = isNaN(this.toFixed(score, 0)) ? 0 : this.toFixed(score, 0);
     if (this.rateScore >= 91 && this.rateScore <= 100) this.rank = "A"
     else if (this.rateScore >= 81 && this.rateScore <= 90) this.rank = "B"
     else if (this.rateScore >= 71 && this.rateScore <= 80) this.rank = "C"
     else if (this.rateScore <= 70) this.rank = "D"
+  }
+
+  getReverificationTotalScore() {
+    let totalItemFailed = 0
+    let totalItemPass = 0
+    let origTotalCount = 0
+    let openTotalCount = 0
+
+    this.checkListArray.forEach((item: any) => {
+      if (!item.notAvailable) {
+        if (item.reverify_passOrFail) totalItemPass += 1
+        else totalItemFailed += 1;
+        origTotalCount += 1
+      }
+    });
+
+    this.openAreaArray.forEach((item: any) => {
+      if (!item.notAvailable) {
+        if (item.reverify_passOrFail) totalItemPass += 1
+        else totalItemFailed += 1;
+        origTotalCount += 1
+      }
+    });
+
+    this.reverify_totalItemPass = totalItemPass;
+    this.reverify_totalItemFailed = totalItemFailed;
+    let totalLength = (origTotalCount + openTotalCount)
+    let score = (totalItemPass / totalLength * 100)
+
+    this.reverify_rateScore = isNaN(this.toFixed(score, 0)) ? 0 : this.toFixed(score, 0);
+    if (this.reverify_rateScore >= 91 && this.reverify_rateScore <= 100) this.reverify_rank = "A"
+    else if (this.reverify_rateScore >= 81 && this.reverify_rateScore <= 90) this.reverify_rank = "B"
+    else if (this.reverify_rateScore >= 71 && this.reverify_rateScore <= 80) this.reverify_rank = "C"
+    else if (this.reverify_rateScore <= 70) this.reverify_rank = "D"
   }
 
   toFixed(num: any, fixed: any) {
@@ -543,5 +608,22 @@ export class EsdReverificationComponent {
 
   imageHasBeenLoaded(event: any, addSignatureData: any) {
     addSignatureData.error = true;
+  }
+
+  verifyConditionToDisable(item: any) {
+    let value = false;
+    item.condition.forEach((cond: any) => {
+      if (cond.name == 'A' && cond.value == true) {
+        value = true;
+        item.reverify_passOrFail = true;
+        item.reverify_qty[0] = item.qty[0];
+        item.reverify_qty[1] = item.qty[1];
+        item.reverify_condition[0].value = true;
+        this.getReverificationTotalScore();
+        this.getReverifyPercentCompletion(item);
+        
+      }
+    })
+    return value
   }
 }

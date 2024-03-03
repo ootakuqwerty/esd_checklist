@@ -52,6 +52,10 @@ export class EsdReportComponent {
     TotalItemFail: 0,
     RankScore: 0,
     Rank: "",
+    ReverifyTotalItemPass: 0,
+    ReverifyTotalItemFail: 0,
+    ReverifyScore: 0,
+    ReverifyRank: "",
     DateTimeStarted: "",
     DateTimeEnded: "",
     CheckSheet: "",
@@ -90,6 +94,8 @@ export class EsdReportComponent {
 
   paramsId: any
   division: any
+
+  isHideReverify = false;
 
   constructor(private datePipe: DatePipe,
     private modalService: NgbModal,
@@ -140,6 +146,13 @@ export class EsdReportComponent {
             this.model.RankScore =  data.Data.RankScore
             this.model.TotalItemFail =  data.Data.TotalItemFail
             this.model.TotalItemPass = data.Data.TotalItemPass
+            
+            if(this.model.Rank == "A") this.isHideReverify = true; 
+            
+            this.model.ReverifyRank =  data.Data.ReverifyRank
+            this.model.ReverifyScore =  data.Data.ReverifyScore
+            this.model.ReverifyTotalItemPass =  data.Data.ReverifyTotalItemPass
+            this.model.ReverifyTotalItemFail = data.Data.ReverifyTotalItemFail
 
             this.model.DateTimeStarted = data.Data.DateTimeStarted
             this.model.DateTimeEnded = data.Data.DateTimeEnded

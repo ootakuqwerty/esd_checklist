@@ -50,7 +50,7 @@ export class EsdReverificationListComponent {
     this.esdChecksheetService.getCheckSheetByDate(payload).subscribe((data) => {
       if (data.Success) {
         $('#esd_table').DataTable().destroy();
-        this.esd_checksheet_list = data.Data;
+        this.esd_checksheet_list = data.Data.filter((esd: any) => esd.Rank != 'A') ;
         setTimeout(function () {
           $(function () {
             $('#esd_table').DataTable({

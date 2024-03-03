@@ -71,9 +71,10 @@
           <th scope="col">QTY</th>
           <th scope="col">% Completed</th>
           <th scope="col">Condition</th>
-          <th scope="col" class="yellow">QTY</th>
-          <th scope="col" class="yellow">% Completed</th>
-          <th scope="col" class="yellow">Condition</th>
+          <th *ngIf="!isHideReverify" scope="col"  class="yellow">Fail/Pass</th>
+          <th *ngIf="!isHideReverify" scope="col" class="yellow">QTY</th>
+          <th *ngIf="!isHideReverify" scope="col" class="yellow">% Completed</th>
+          <th *ngIf="!isHideReverify" scope="col" class="yellow">Condition</th>
           <th scope="col">Comments/Remarks</th>
         </tr>
       </thead>
@@ -95,11 +96,14 @@
           <td>
             {{getConditionValue(item.condition)}}
           </td>
-          <td class="yellow">
+          <td class="yellow" *ngIf="!isHideReverify">
+            {{item.reverify_passOrFail ? "Yes": "No"}}
+          </td>
+          <td class="yellow" *ngIf="!isHideReverify">
             {{item.reverify_qty[0] + "/" + item.reverify_qty[1]}}
           </td>
-          <td class="yellow"><label>{{item.reverify_completed}}</label></td>
-          <td class="yellow">
+          <td class="yellow" *ngIf="!isHideReverify"><label>{{item.reverify_completed}}</label></td>
+          <td class="yellow" *ngIf="!isHideReverify">
             {{getConditionValue(item.reverify_condition)}}
           </td>
           <td>
@@ -123,9 +127,10 @@
           <th scope="col">QTY</th>
           <th scope="col">% Completed</th>
           <th scope="col">Condition</th>
-          <th scope="col" class="yellow">QTY</th>
-          <th scope="col" class="yellow">% Completed</th>
-          <th scope="col" class="yellow">Condition</th>
+          <th *ngIf="!isHideReverify" scope="col" class="yellow">Fail/Pass</th>
+          <th *ngIf="!isHideReverify" scope="col" class="yellow">QTY</th>
+          <th *ngIf="!isHideReverify" scope="col" class="yellow">% Completed</th>
+          <th *ngIf="!isHideReverify" scope="col" class="yellow">Condition</th>
           <th scope="col">Comments/Remarks</th>
         </tr>
       </thead>
@@ -147,11 +152,14 @@
           <td>
             {{getConditionValue(item.condition)}}
           </td>
-          <td>
+          <td *ngIf="!isHideReverify">
+            {{item.reverify_passOrFail ? "Yes": "No"}}
+          </td>
+          <td *ngIf="!isHideReverify">
             {{item.reverify_qty[0] + "/" + item.reverify_qty[1]}}
           </td>
-          <td><label>{{item.reverify_completed}}</label></td>
-          <td>
+          <td *ngIf="!isHideReverify"><label>{{item.reverify_completed}}</label></td>
+          <td *ngIf="!isHideReverify">
             {{getConditionValue(item.reverify_condition)}}
           </td>
           <td> <label>{{item.commentRemarks}}</label></td>
@@ -161,6 +169,7 @@
   </div>
   <hr>
   <!-- Scores -->
+  <h5 class="mt-2">Initial</h5>
   <div class="card-body">
     <div class="row">
 
@@ -218,6 +227,73 @@
           </div>
           <div class="row score-details">
             <label> Total Item Failed : {{this.model.TotalItemFail}}</label>
+          </div>
+          <!-- <div class="row score-details">
+              <label> Rate / Score : {{rateScore}}</label>
+            </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <h5 *ngIf="!isHideReverify" class="mt-2">Reverification</h5>
+  <div class="card-body blue" *ngIf="!isHideReverify">
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status"> {{this.model.ReverifyScore}}</label>
+          </div>
+        </div>
+        Score/Rate
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status">{{this.model.ReverifyRank}}</label>
+          </div>
+        </div>
+        Rank
+      </div>
+
+      <div class="col-md-3">
+        <table class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>91-100</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>81-90</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>71-80</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>70 below</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="row score-details">
+            <label> Total Item Pass : {{this.model.ReverifyTotalItemPass}}</label>
+          </div>
+          <div class="row score-details">
+            <label> Total Item Failed : {{this.model.ReverifyTotalItemFail}}</label>
           </div>
           <!-- <div class="row score-details">
               <label> Rate / Score : {{rateScore}}</label>

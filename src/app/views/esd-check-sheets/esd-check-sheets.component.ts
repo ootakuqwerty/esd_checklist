@@ -48,6 +48,10 @@ export class EsdCheckSheetsComponent implements OnInit {
     TotalItemFail: 0,
     RankScore: 0,
     Rank: "",
+    ReverifyTotalItemPass: 0,
+    ReverifyTotalItemFail: 0,
+    ReverifyScore: 0,
+    ReverifyRank: "",
     DateTimeStarted: "",
     DateTimeEnded: "",
     CheckSheet: "",
@@ -202,6 +206,7 @@ export class EsdCheckSheetsComponent implements OnInit {
           value: false
         }
       ],
+      reverify_passOrFail: false,
       reverify_qty: [0,0],
       reverify_condition: [
         {
