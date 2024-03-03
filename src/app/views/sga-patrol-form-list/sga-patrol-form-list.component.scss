@@ -1,0 +1,30 @@
+.scrollit {
+    overflow: scroll;
+    height: auto;
+    max-height: 500px;
+  }
+
+  .date_filter{
+    width: 20rem;
+  }
+
+  .left, .right {
+    width: 50%; /* Floated elements technically need a width specified. */
+  }
+  
+  .left {
+    float: left;
+  }
+  
+  .right {
+    float: right;
+  }
+
+  .btn-add{
+    float: right;
+    margin-right: 1rem;
+  }
+
+  .control-no{
+      width: 30% !important;
+  }

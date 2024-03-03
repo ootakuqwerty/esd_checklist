@@ -1,7 +1,3 @@
-.table {
-    margin-top: 1rem;
-}
-
 td {
     white-space: pre
 }
@@ -88,16 +84,15 @@ img {
 }
 
 .btn-footer {
-    button {
-        margin: 1rem;
-        width: 10rem;
+    .row {
+        padding: .5rem;
     }
 }
 
 .modal-body {
     max-height: 50rem;
     overflow: auto;
-
+    text-align: center;
     .image-wrap {
         margin-bottom: 1rem;
 
@@ -138,4 +133,52 @@ th {
 
 .td-left {
     text-align: left;
+}
+
+.signature {
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.timer {
+    text-align: center;
+
+    button {
+        width: 20rem;
+    }
+}
+
+.left {
+    text-align: left;
+}
+
+// .score-details{
+//     margin-left: 8rem;
+// }
+
+.card-status {
+    height: 13rem;
+    background-color: #ffffff;
+}
+
+.text-status {
+    font-size: 100px;
+}
+
+.score-details {
+    padding: 1rem;
+    font-size: 20px;
+}
+
+.signature-img {
+    max-width: 80%;
+    max-height: 80%;
+}
+
+th {
+    white-space: nowrap;
+}
+
+.btn .badge {
+    background-color: #323232;
 }

@@ -18,6 +18,16 @@ import { CommonModule } from '@angular/common';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { SgaCheckSheetComponent } from './views/sga-check-sheet/sga-check-sheet.component';
 import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.component';
+import { SgaCheckSheetListComponent } from './views/sga-check-sheet-list/sga-check-sheet-list.component';
+import { SgaReportsComponent } from './views/sga-reports/sga-reports.component';
+import { IsAuthorizedGuard } from './guard/is-authorized.guard';
+import { EsdCheckSheetsListComponent } from './views/esd-check-sheets-list/esd-check-sheets-list.component';
+import { DataTablesModule } from 'angular-datatables';
+import { EsdReverificationComponent } from './views/esd-reverification/esd-reverification.component';
+import { EsdReverificationListComponent } from './views/esd-reverification-list/esd-reverification-list.component';
+import { EsdReportListComponent } from './views/esd-report-list/esd-report-list.component';
+import { EsdReportComponent } from './views/esd-report/esd-report.component';
+import { SgaPatrolFormListComponent } from './views/sga-patrol-form-list/sga-patrol-form-list.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +39,15 @@ import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.
     UsersComponent,
     AuditComponent,
     SgaCheckSheetComponent,
-    SgaPatrolFormComponent
+    SgaPatrolFormComponent,
+    SgaCheckSheetListComponent,
+    SgaReportsComponent,
+    EsdCheckSheetsListComponent,
+    EsdReverificationComponent,
+    EsdReverificationListComponent,
+    EsdReportListComponent,
+    EsdReportComponent,
+    SgaPatrolFormListComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +58,7 @@ import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.
     ReactiveFormsModule,
     RouterModule,
     NgbModule,
+    DataTablesModule,
     ToastrModule.forRoot({
       closeButton: true,
       timeOut: 5000, // 5 seconds
@@ -48,7 +67,7 @@ import { SgaPatrolFormComponent } from './views/sga-patrol-form/sga-patrol-form.
     CommonModule,
     NgxSpinnerModule
   ],
-  providers: [],
+  providers: [IsAuthorizedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

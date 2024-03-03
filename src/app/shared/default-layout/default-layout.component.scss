@@ -34,3 +34,25 @@
     width: 100%;
   }
 }
+
+img{
+  width: 5rem;
+  cursor: pointer;
+}
+
+.selection{
+  text-align: center;
+  .option-button{
+    padding: 1rem;
+    width: 40%;
+    margin-top: 2rem;
+    font-size: 35px;
+  }
+}
+
+.account{
+  color: white;
+  margin-right: 0.5rem;
+  font-size: 18px;
+  text-align: center;
+}

@@ -5,112 +5,178 @@
 
     <div class="row">
       <div class="col-xs-3 col-md-3 col-left">
-        <span>THEME TITLE</span><input placeholder="Enter theme title" class="form-control" type="text" />
+        <span>CONTROL No.</span><input placeholder="Auto generated" class="form-control" type="text" readonly
+          [(ngModel)]="sga.ControlNo" />
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>PRESENT</span><input placeholder="Enter present" class="form-control" type="text" />
+        <span>THEME TITLE</span><input placeholder="Enter theme title" class="form-control" type="text"
+          [(ngModel)]="sga.Title" />
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>TARGET</span><input placeholder="Enter target" class="form-control" type="text" />
+        <div class="row">
+          <div class="col-md">
+            <span>PRESENT</span><input placeholder="Enter present" class="form-control" type="text"
+              [(ngModel)]="sga.Present" />
+          </div>
+          <div class="col-md">
+            <span>UOM</span>
+            <select class="form-control" id="present_uom" [(ngModel)]="sga.PresentUom">
+              <option *ngFor="let data of uomList" [value]="data.ID"> {{data.Name}}</option>
+            </select>
+          </div>
+        </div>
+
       </div>
+
+      <div class="col-xs-3 col-md-3 col-left">
+        <div class="row">
+          <div class="col-md">
+            <span>TARGET</span><input placeholder="Enter present" class="form-control" type="text"
+              [(ngModel)]="sga.Target" />
+          </div>
+          <div class="col-md">
+            <span>UOM</span>
+            <select class="form-control" id="target_uom" [(ngModel)]="sga.TargetUom">
+              <option *ngFor="let data of uomList" [value]="data.ID"> {{data.Name}}</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <hr>
+    <div class="row">
       <div class="col-xs-3 col-md-3 col-left">
         <span>DIVISION</span>
-        <select class="form-control" id="DIV">
-          <option value="" disabled>Select Division</option>
+        <select class="form-control" id="divisions" [(ngModel)]="sga.Division">
           <option *ngFor="let div of divisionList" [value]="div.ID"> {{div.Name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>BLDG</span>
+        <select class="form-control" id="bldg" [(ngModel)]="sga.Bldg">
+          <option *ngFor="let list of buildingList" [value]="list.ID"> {{list.Name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>FLOOR</span>
+        <select class="form-control" id="floor" [(ngModel)]="sga.Floor">
+          <option *ngFor="let list of floorList" [value]="list.ID"> {{list.Name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-3 col-md-3 col-left">
+        <span>DEPT</span>
+        <select class="form-control" id="dept" [(ngModel)]="sga.Department">
+          <option *ngFor="let list of departmentList" [value]="list.ID"> {{list.Name}}</option>
         </select>
       </div>
     </div>
     <hr>
     <div class="row">
       <div class="col-xs-3 col-md-3 col-left">
-        <span>BLDG</span><input placeholder="Enter theme building" class="form-control" type="text" />
+        <span>DEPT. MNGR</span>
+        <select class="form-control" id="dept" [(ngModel)]="sga.DepartmentManager">
+          <option *ngFor="let list of departmentManagerList" [value]="list.EmpNo"> {{list.Name}}</option>
+        </select>
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>FLOOR</span><input placeholder="Enter floor" class="form-control" type="text" />
+        <span>SECTION MNGR</span>
+        <select class="form-control" id="dept" [(ngModel)]="sga.SectionManager">
+          <option *ngFor="let list of sectionManagerList" [value]="list.EmpNo"> {{list.Name}}</option>
+        </select>
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>DEPT</span><input placeholder="Enter depeartment" class="form-control" type="text" />
+        <span>SECTION CHIEF</span>
+        <select class="form-control" id="chief" [(ngModel)]="sga.SectionChief">
+          <option *ngFor="let list of sectionChiefList" [value]="list.EmpNo"> {{list.Name}}</option>
+        </select>
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>DEPT. MNGR</span><input placeholder="Enter theme department manager" class="form-control" type="text" />
+        <span>SECTION</span>
+        <select class="form-control" id="dept" [(ngModel)]="sga.Section">
+          <option *ngFor="let list of sectionList" [value]="list.ID"> {{list.Name}}</option>
+        </select>
       </div>
     </div>
     <hr>
     <div class="row">
       <div class="col-xs-3 col-md-3 col-left">
-        <span>SECTION MNGR</span><input placeholder="Enter section manager" class="form-control" type="text" />
+        <span>SGA LEADER</span><input class="form-control" type="text" placeholder="Auto Generated Based on Emp No"
+          readonly [(ngModel)]="sga.SgaLeader" />
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>SECTION CHIEF</span><input placeholder="Enter section chief" class="form-control" type="text" />
+        <span>EMP NO.</span>
+        <input list="emp" name="browser" id="browser" class="form-control" [(ngModel)]="sga.EmployeeNo"
+          (change)="onChangeEmpNo()">
+        <!-- <select class="form-control" id="dept" [(ngModel)]="sga.EmployeeNo" (change)="onChangeEmpNo()">
+          <option *ngFor="let list of sgaLeader" [value]="list.EmpNo"> {{list.EmpNo}}</option>
+        </select> -->
+        <datalist id="emp">
+          <option *ngFor="let list of sgaLeader" [value]="list.EmpNo"> {{list.EmpNo}}</option>
+        </datalist>
+
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>SECTION</span><input placeholder="Enter section" class="form-control" type="text" />
+        <span>SHIFT OF LEADER</span>
+        <select class="form-control" id="dept" [(ngModel)]="sga.ShiftOfLeader">
+          <option *ngFor="let list of shiftOfLeaderList" [value]="list.ID"> {{list.Name}}</option>
+        </select>
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>SGA LEADER</span><input placeholder="Enter SGA leader" class="form-control" type="text" />
-      </div>
-    </div>
-    <hr>
-    <div class="row">
-      <div class="col-xs-3 col-md-3 col-left">
-        <span>EMP NO.</span><input placeholder="Enter employee number" class="form-control" type="text" />
+        <span>LOCAL NO.</span><input placeholder="Enter local number" class="form-control" type="text"
+          [(ngModel)]="sga.LocalNo" />
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>SHIFT OF LEADER</span><input placeholder="Enter shift of leader" class="form-control" type="text" />
+        <span>E-MAIL ADDRESS</span><input placeholder="Enter email address" class="form-control" type="text"
+          [(ngModel)]="sga.EmailAddress" />
       </div>
-      <div class="col-xs-3 col-md-3 col-left">
-        <span>LOCAL NO.</span><input placeholder="Enter local number" class="form-control" type="text" />
-      </div>
-      <div class="col-xs-3 col-md-3 col-left">
-        <span>E-MAIL ADDRESS</span><input placeholder="Enter email address" class="form-control" type="text" />
-      </div>
-    </div>
-    <hr>
-    <div class="row">
       <div class="col-xs-3 col-md-3 col-left">
         <span>Category</span>
-        <select class="form-control" id="category">
+        <select class="form-control" id="category" [(ngModel)]="sga.Category">
           <option value="" disabled>Select Division</option>
           <option *ngFor="let div of categoryList" [value]="div.ID"> {{div.Name}}</option>
         </select>
       </div>
       <div class="col-xs-3 col-md-3 col-left">
-        <span>CONTROL No.</span><input placeholder="Enter control number" class="form-control" type="text" />
-      </div>
-      <div class="col-xs-3 col-md-3 col-left">
         <span>Type</span>
-        <select class="form-control" id="type">
+        <select class="form-control" id="type" [(ngModel)]="sga.Type">
           <option value="NEW">NEW</option>
           <option value="RE-ENTRY">RE-ENTRY</option>
         </select>
       </div>
     </div>
-
+    <hr>
     <div class="row">
-      <div class="col-xs-6 col-md-6 col-left">
+      <div class="col-xs-4 col-md-4 col-left">
         <div class="row">
           <span>GROUP MEMBERS NAME</span>
-          <div class="col-xs-10 col-md-10">
-
+          <div>
             <select multiple class="form-control" id="sel2">
-              <option *ngFor="let member of sga.Members; let i = index" (dblclick)="removeMember(i)">{{member}}</option>
+              <option *ngFor="let member of membersList; let i = index" (dblclick)="removeMember(i)">{{member}}<span
+                  class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{"(Double click to remove)"}}</span></option>
             </select>
             <input placeholder="Enter group member" class="form-control member" type="text" [(ngModel)]="member" />
           </div>
-          <div class="col-xs-2 col-md-2 add-members">
-            <button class="btn btn-primary" [disabled]="member == ''" (click)="addMember()">Add member</button>
+          <div class="col-xs-4 col-md-4 add-members">
+            <button class="btn btn-primary" [disabled]="member == ''" [hidden]="hidden" (click)="addMember()">Add
+              member</button>
           </div>
         </div>
       </div>
       <div class="col-xs-2 col-md-2 col-left">
-        <span>MEMB QTY.</span><input class="form-control" type="text" disabled [(ngModel)]="sga.MembersCount" />
+        <span>MEMB QTY.</span><input class="form-control" type="text" disabled [(ngModel)]="memberCount" />
       </div>
     </div>
   </div>
 </div>
 
-<div class="btn-footer">
-  <span><button class="btn btn-warning btn-lg">Clear</button></span>
-  <span><button class="btn btn-primary btn-lg">Save</button></span>
+<!-- Button Footer -->
+<div class="btn-footer" *ngIf="paramsId == 0">
+  <div class="row">
+    <button class="btn btn-warning btn-block btn-lg" (click)="clear()" [hidden]="hidden">Clear</button>
+  </div>
+  <div class="row">
+    <button class="btn btn-primary btn-lg" (click)="saveChecksheet()" [disabled]="ValidateRequiredFields()"
+      [hidden]="hidden">Save</button>
+  </div>
 </div>

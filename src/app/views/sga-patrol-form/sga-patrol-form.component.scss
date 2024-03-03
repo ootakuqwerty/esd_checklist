@@ -74,8 +74,12 @@ th {
 }
 
 .btn-footer {
-  button {
-      margin: 1rem;
-      width: 10rem;
+  .row {
+      padding: .5rem;
   }
+}
+
+::ng-deep .nav-link .active {
+  border-color: 1px solid lightblue !important;
+  border-bottom-color: 0px !important;
 }

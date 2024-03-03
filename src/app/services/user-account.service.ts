@@ -13,6 +13,6 @@ export class UserAccountService {
       var userAccount = JSON.parse(userInfo)
       return userAccount
     };
-    return [];
+    return null;
   }
 }

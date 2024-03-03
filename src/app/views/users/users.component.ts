@@ -21,18 +21,10 @@ export class UsersComponent implements OnInit {
   accessId = [
     {
       id: 0,
-      name: "Super Admin"
-    },
-    {
-      id: 1,
       name: "Admin"
     },
     {
-      id: 2,
-      name: "Auditor"
-    },
-    {
-      id: 3,
+      id: 1,
       name: "User"
     },
   ]

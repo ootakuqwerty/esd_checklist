@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserAccountService } from 'src/app/services/user-account.service';
 
 @Component({
   selector: 'app-default-layout',
@@ -7,17 +8,26 @@ import { Router } from '@angular/router';
   styleUrls: ['./default-layout.component.scss']
 })
 export class DefaultLayoutComponent implements OnInit {
+  selectedScreen = "";
+  userInfo: any
+  constructor(private router: Router,
+    private userAccountService: UserAccountService) {
 
-  constructor(private router: Router,){
-    
   }
 
   ngOnInit(): void {
-    
+    this.userInfo = this.userAccountService.getUserAccount();
+    this.selectedScreen = localStorage.getItem("selectedScreen") != null ? String(localStorage.getItem("selectedScreen")) : '';
   }
 
-  logOut(){
+  logOut() {
     localStorage.clear();
     window.location.replace('/');
+  }
+
+  setSelection() {
+    localStorage.setItem("selectedScreen", this.selectedScreen);
+    if(this.selectedScreen == 'esd') this.router.navigateByUrl('/views/esd-check-sheet-list')
+    else this.router.navigateByUrl('/views/sga-check-sheet-list')
   }
 }

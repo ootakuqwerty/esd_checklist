@@ -1,5 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { DynamicTemplateService } from 'src/app/services/dynamic-template.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { UtilsService } from 'src/app/services/utils.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SgaChecksheetService } from 'src/app/services/sga-checksheet.service';
+import { EsdChecksheetService } from 'src/app/services/esd-checksheet.service';
+import { UserAccountService } from 'src/app/services/user-account.service';
+import html2canvas from 'html2canvas';
+import jspdf from 'jspdf';
 
 @Component({
   selector: 'app-sga-patrol-form',
@@ -9,172 +19,128 @@ import { DatePipe } from '@angular/common';
 })
 export class SgaPatrolFormComponent implements OnInit {
 
-  header = {
-    date: ''
+  params = {
+    ControlNo: '',
+    SgaAuditor: '',
+    SgaLeader: '',
+    sgaTitle: '',
+    date: '',
+    sgaDeptDiv: '',
   }
   vericationScore: number = 0;
   verificationRating: number = 0;
+  patrolSheet: any;
+  paramsId: any;
+  sgaAuditorList: any;
+  isNew: boolean = true;
+  userInfo: any;
+  isExport: boolean = false;
+  sgaLeader: any;
 
-  patrolSheet = [{
-    id: 1,
-    title: "1)  Report Presentation",
-    level1: ["No report presentation (1)", false, 1],
-    level2: ["With report but using an old format of template (2)", false, 2],
-    level3: ["Less than 79% completion of report using updated template (3)", false, 3],
-    level4: ["80% Fto 90% completion of report using updated template (4)", false, 4],
-    level5: ["100% completion of report using updated template (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 2,
-    title: "2)  Project theme category",
-    level1: ["Activity is related to Morale, Control, Equipment (1)", false, 1],
-    level2: ["Activity is related to Safety & Environment (2)", false, 2],
-    level3: ["Activity is related to Delivery (3)", false, 3],
-    level4: ["Activity is related to Quality (4)", false, 4],
-    level5: ["Activity is related to Human error elimination and Cost down reduction (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 3,
-    title: "3) Background of activity",
-    level1: ["Background is rarely relevant to the activity (1)", false, 1],
-    level2: ["Background is nearly relevant to the activity (2)" , false, 2],
-    level3: ["Background is understandable but with insufficiency (3)", false, 3],
-    level4: ["Background is clearly and understandable thru statement (4)", false, 4],
-    level5: ["Background is clearly and understandable with supporting data (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 4,
-    title: "4) Problem Point of the activity",
-    level1: ["Problem is not relevant to the activity (1)" , false, 1],
-    level2: ["Problem is nearly relevant to the activity (2)", false, 2],
-    level3: ["Problem is understandable but with insufficiency (3)", false, 3],
-    level4: ["Problem is clearly and understandable thru statement (4)", false, 4],
-    level5: ["Problem is clearly and understandable with supporting data (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 5,
-    title: "5) Objective of activity",
-    level1: ["Objective is not relevant to the title of activity (1)", false, 1],
-    level2: ["", false, 2],
-    level3: ["", false, 3],
-    level4: ["", false, 4],
-    level5: ["Objective is relevant to the title of activity (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 6,
-    title: "6) Master Plan update",
-    level1: ["Old format of Master plan (1)", false, 1],
-    level2: ["With wrong entry of details (2)", false, 2],
-    level3: ["Updated plan, not distributed task to each member (3)", false, 3],
-    level4: ["Updated plan, but no signatories, distributed task (4)", false, 4],
-    level5: ["With complete details on master plan, (updated plan, with signatories, task is distributed, with title, correct sem.) (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 7,
-    title: "7) Benchmark of activity",
-    level1: ["Benchmark is presented thru picture / statement (1)", false, 1],
-    level2: ["", false, 2],
-    level3: ["", false, 3],
-    level4: ["", false, 4],
-    level5: ["Clearly presented the data using 7QC tools (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 8,
-    title: "8) Cause Identification / Analysis",
-    level1: ["No fishbone analysis (2)", false, 2],
-    level2: ["Analysis of the problem is insufficient/not clear (4)", false, 4],
-    level3: ["Analysis of the problem is clearly stated thru fishbone diagram but no 5W analysis (6)", false, 6],
-    level4: ["Analysis of the problem is clearly stated thru fishbone diagram but 5W analysis is not clear (8)", false, 8],
-    level5: ["Analysis of the problem is clearly stated thru fishbone diagram and 5W analysis (10)", false, 10],
-    remarks: ""
-  }, {
-    id: 9,
-    title: "9) Implementation of activity",
-    level1: ["Implementation items is rare from the title of activity (2)", false, 2],
-    level2: ["Not tally Master plan vs. slides (4)", false, 4],
-    level3: ["Incomplete implementation items base from master plan (6)", false, 6],
-    level4: ["Tally Master plan vs. actual slides (8)", false, 8],
-    level5: ["Implementation is based from the result of 5W analysis (10)", false, 10],
-    remarks: ""
-  }, {
-    id: 10,
-    title: "10) Effectiveness of activity (result)",
-    level1: ["Achievement is 79% below on the set target or goal (2)", false, 2],
-    level2: ["Achievement is 80% to 89% on the set target or goal (4)", false, 4],
-    level3: ["Achievement is 90% to 99% on the set target or goal (6)", false, 6],
-    level4: ["Achievement is exactly on the set target or goal (8)", false, 8],
-    level5: ["Achievement more than the set target or goal (10)", false, 10],
-    remarks: ""
-  }, {
-    id: 11,
-    title: "11) Efficiency of activity(duration)",
-    level1: ["Schedule of activity is not finished/stop (1)", false, 1],
-    level2: ["", false, 4],
-    level3: ["", false, 6],
-    level4: ["", false, 8],
-    level5: ["Schedule of activity is done on time or ahead on schedule (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 12,
-    title: "12) Education / Awareness)",
-    level1: ["No education (1)", false, 1],
-    level2: ["Lacking of  members to be educated (2)", false, 2],
-    level3: ["Lacking of evidence thru plan vs. actual of members to be educated (3)", false, 3],
-    level4: ["Lacking of evidence thru IPN record (4)", false, 4],
-    level5: ["All concerned personnel are educated (head count plan vs. actual, IPN, picture) (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 13,
-    title: "13) Standardization (NEED)",
-    level1: ["Standardization is below 59% completion (2)", false, 2],
-    level2: ["Standardization is 69% to 79% completion (4)", false, 4],
-    level3: ["Standardization schedule is 80% to 99% completion (6)", false, 6],
-    level4: ["Standardized but not yet uploaded to e-docs (8)", false, 8],
-    level5: ["Standard is uploaded to e-docs) (10)", false, 10],
-    remarks: ""
-  }, {
-    id: 0,
-    title: "NO NEED",
-    level1: ["Not applicable for ideal condition (2)", false, 2],
-    level2: ["Posting of Ideal Condition is below 69% completion (4)", false, 4],
-    level3: ["Posting of Ideal condition is 70% to 79% completion (6)", false, 6],
-    level4: ["Posting of Ideal condition is 80% to 99% completion (8)", false, 8],
-    level5: ["Activity is with Ideal Condition 100%) (10)", false, 10],
-    remarks: ""
-  }, {
-    id: 14,
-    title: "14) Horizontal Application",
-    level1: ["Not applicable for horizontal application (1)", false, 1],
-    level2: ["Horizontal application is below 69% completion (2)", false, 2],
-    level3: ["Horizontal application is 70 to 79% completion (3)", false, 3],
-    level4: ["Horizontal application is 80% to 99% completion (4)", false, 4],
-    level5: ["Activity is with Ideal Condition 100%) (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 15,
-    title: "15) Interview with member",
-    level1: ["Member did not know the activity (1)", false, 1],
-    level2: ["Member know the activity but did not know the background (2)", false, 2],
-    level3: ["Member know the background/problem but did not know the result/effectiveness of activity (3)", false, 3],
-    level4: ["Member know the background/problem and effectiveness (4)", false, 4],
-    level5: ["Member has broad knowledge about the activity) (5)", false, 5],
-    remarks: ""
-  }, {
-    id: 16,
-    title: "16) Total project status",
-    level1: ["Activity is not yet implemented (1)", false, 1],
-    level2: ["", false, 2],
-    level3: ["", false, 3],
-    level4: ["", false, 4],
-    level5: ["Activity is established and well implemented) (5)", false, 5],
-    remarks: ""
-  }]
-
-
-  constructor(private datePipe: DatePipe,) { }
+  constructor(private datePipe: DatePipe,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
+    private utilsService: UtilsService,
+    private ActivatedRoute: ActivatedRoute,
+    private sgaCheckSheetService: SgaChecksheetService,
+    private utils: UtilsService,
+    private userAccountService: UserAccountService,) { }
 
   ngOnInit(): void {
-    this.header.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
+    this.spinner.show()
+    this.userInfo = this.userAccountService.getUserAccount();
+    this.params.date = String(this.datePipe.transform(new Date(), "yyyy-MM-dd"));
+    this.patrolSheet = JSON.parse(this.utilsService.getSgaTemplate().Template);
+    this.sgaAuditorList = this.utilsService.getSgaPersonnelData().filter((sga: any) => sga.Type == "sga_auditor");
+    this.sgaLeader = this.utilsService.getSgaPersonnelData().filter((sga: any) => sga.Type == "sga_leader");
+
+    this.ActivatedRoute.params.subscribe((param) => {
+      this.paramsId = param['id'];
+      if (this.paramsId != 0) {
+        this.sgaCheckSheetService.getPatrolFormByControlNumber(this.paramsId).subscribe((data) => {
+          this.params.ControlNo = this.paramsId;
+          if (data.Success) {
+            this.params.SgaAuditor = data.Data.SgaAuditor;
+            this.patrolSheet = JSON.parse(data.Data.LevelOfAssessment);
+            this.params.SgaLeader = data.Data.SgaLeader;
+            this.isNew = false;
+          }
+          this.sgaCheckSheetService.getSgaCheckSheet(this.paramsId).subscribe((data2: any) => {
+            this.params.sgaTitle = data2.Data.Title;
+            this.params.sgaDeptDiv = `${this.getDivision(data2.Data.Division)} / ${this.getDepartment(data2.Data.Department)}`
+          })
+          this.computeTotalGradeAndRating()
+          this.spinner.hide()
+        })
+      }
+    })
+  }
+
+  savePatrolForm() {
+    let payload = {
+      ...this.params,
+      LevelOfAssessment: JSON.stringify(this.patrolSheet),
+      Score: String(this.vericationScore),
+      Rating: String(this.verificationRating),
+      CreatedBy: this.userInfo.UserID,
+      UpdatedBy: this.userInfo.UserID,
+    }
+
+    if (this.isNew) {
+      this.sgaCheckSheetService.addPatrolForm(payload).subscribe((data: any) => {
+        if (data.Success) {
+          window.scroll(0, 0)
+          this.spinner.hide();
+          this.isNew = false;
+          this.toastr.success(data.Message)
+        } else {
+          this.spinner.hide();
+          this.toastr.error(data.Message)
+        }
+      }, (error: any) => {
+        this.spinner.hide();
+        console.log(error);
+        this.toastr.error(error)
+      })
+    } else {
+      this.sgaCheckSheetService.updatePatrolForm(payload).subscribe((data: any) => {
+        if (data.Success) {
+          window.scroll(0, 0)
+          this.spinner.hide();
+          this.toastr.success(data.Message)
+        } else {
+          this.spinner.hide();
+          this.toastr.error(data.Message)
+        }
+      }, (error: any) => {
+        this.spinner.hide();
+        console.log(error);
+        this.toastr.error(error)
+      })
+    }
+  }
+
+  exportPdf() {
+    this.spinner.show()
+    this.isExport = true;
+    setTimeout(() => {
+      var data = document.getElementById('contentToConvert') as HTMLElement;  //Id of the table
+      html2canvas(data).then(canvas => {
+        // Few necessary setting options  
+        let imgWidth = 208;
+        let pageHeight = 295;
+        let imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+
+        const contentDataURL = canvas.toDataURL('image/png')
+        let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+        let position = 0;
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+        pdf.save(this.paramsId); // Generated PDF   
+        this.spinner.hide()
+        this.isExport = false
+      });
+    }, 500);
   }
 
   getID(id: any, index: any, itemId: any) {
@@ -272,6 +238,14 @@ export class SgaPatrolFormComponent implements OnInit {
     if (this.vericationScore >= 89 && this.vericationScore <= 92) this.verificationRating = 23;
     if (this.vericationScore >= 93 && this.vericationScore <= 96) this.verificationRating = 24;
     if (this.vericationScore >= 97 && this.vericationScore <= 100) this.verificationRating = 25;
+  }
+
+  getDivision(id: any) {
+    return this.utils.getSgaDivisionByID(id).Name
+  }
+
+  getDepartment(id: any) {
+    return this.utils.getSgaDepartmentByID(id).Name
   }
 }
 

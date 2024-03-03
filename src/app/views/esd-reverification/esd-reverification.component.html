@@ -1,0 +1,615 @@
+<h2>ESD REVERIFICATION</h2>
+
+<!-- Header -->
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4 left">
+        <span style="font-weight: bold;">Transaction Number</span><input class="form-control" type="text"
+          placeholder="Auto generated" [(ngModel)]="model.TransactionNumber" readonly />
+      </div>
+      <div class="col-md-4 left">
+        <span style="font-weight: bold;">Date</span><input class="form-control" type="datetime" [value]="formatDateDisplay( model.CreatedOn)" readonly />
+      </div>
+      <div class="col-md-4 left">
+        <span style="font-weight: bold;">Div/Flr/Process</span>
+        <select class="form-control" id="auditVerificationLeadOwner" [(ngModel)]="model.divOrFloorOrProcess">
+          <option value=""></option>
+          <option *ngFor="let data of esdDivisionList" [value]="data.ID">
+            {{data.Name}}
+          </option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Audit Proper -->
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <h5><b>Audit Proper</b></h5>
+
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Auditor</span>
+        <select class="form-control" id="auditProperAuditor" [(ngModel)]="model.AuditProperAuditor">
+          <option value=""></option>
+          <option *ngFor="let data of this.auditorList" [value]="data.ControlNumber"> {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn" [ngClass]="model.AuditProperAuditorSigned ? 'btn-success':'btn-primary'"
+            id="btnAuditProperAuditor" [disabled]="model.AuditProperAuditor == ''"
+            (click)="onClickAddSignature('auditProperAuditor')">{{model.AuditProperAuditorSigned ? 'View Signature':'Add Signature'}} </button>
+        </div>
+      </div>
+
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Lead Auditor</span>
+        <select class="form-control" id="auditProperLeadAuditor" [(ngModel)]="model.AuditProperLeadAuditor">
+          <option value=""></option>
+          <option *ngFor="let data of this.leadAuditorList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn" [ngClass]="model.AuditProperLeadAuditorSigned ? 'btn-success':'btn-primary'"
+            id="btnAuditProperLeadAuditor" [disabled]="model.AuditProperLeadAuditor == ''"
+            (click)="onClickAddSignature('auditProperLeadAuditor')">{{model.AuditProperLeadAuditorSigned ? 'View Signature':'Add Signature'}} </button>
+        </div>
+      </div>
+
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Process Owner</span>
+        <select class="form-control" id="auditProperProcessOwner" [(ngModel)]="model.AuditProperProcessOwner">
+          <option value=""></option>
+          <option *ngFor="let data of this.processOwnerList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn" [ngClass]="model.AuditProperProcessOwnerSigned ? 'btn-success':'btn-primary'"
+            id="btnAuditProperProcessOwner" [disabled]="model.AuditProperProcessOwner == ''"
+            (click)="onClickAddSignature('auditProperProcessOwner')">{{model.AuditProperProcessOwnerSigned ? 'View Signature':'Add Signature'}} </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Audit Verification -->
+ <div class="card">
+  <div class="card-body">
+    <div class="row">
+      <h5><b>Audit Verification</b></h5>
+
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Process Owner</span>
+        <select class="form-control" id="auditVerificationProcessOwner"
+          [(ngModel)]="model.AuditVerificationProcessOwner">
+          <option value=""></option>
+          <option *ngFor="let data of this.processOwnerList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn" [ngClass]="model.AuditVerificationProcessOwnerSigned ? 'btn-success':'btn-primary'"
+            id="btnAuditVerificationProcessOwner" [disabled]="model.AuditVerificationProcessOwner == ''"
+            (click)="onClickAddSignature('auditVerificationProcessOwner')">{{model.AuditVerificationProcessOwnerSigned ?
+            'View Signature':'Add Signature'}} </button>
+        </div>
+      </div>
+
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">Lead Auditor</span>
+        <select class="form-control" id="auditVerificationLeadAuditor" [(ngModel)]="model.AuditVerificationLeadAuditor">
+          <option value=""></option>
+          <option *ngFor="let data of this.leadAuditorList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn" [ngClass]="model.AuditVerificationLeadOwnerSigned ? 'btn-success':'btn-primary'"
+            id="btnAuditVerificationLeadAuditor" [disabled]="model.AuditVerificationLeadAuditor == ''"
+            (click)="onClickAddSignature('auditVerificationLeadAuditor')">{{model.AuditVerificationLeadOwnerSigned ?
+            'View Signature':'Add Signature'}} </button>
+        </div>
+      </div>
+
+      <div class="col-xs-4 col-md-4 col-left">
+        <span style="font-weight: bold;">ESD Coordinator</span>
+        <select class="form-control" id="auditVerificationEsdCoordinator"
+          [(ngModel)]="model.AuditVerificationEsdCoordinator">
+          <option value=""></option>
+          <option *ngFor="let data of this.esdCoordinatorList" [value]="data.ControlNumber">
+            {{data.ControlNumber}}
+          </option>
+        </select>
+        <div class="signature">
+          <button class="btn" [ngClass]="model.AuditVerificationEsdCoordinatorSigned ? 'btn-success':'btn-primary'"
+            id="btnAuditVerificationEsdCoordinator" [disabled]="model.AuditVerificationEsdCoordinator == ''"
+            (click)="onClickAddSignature('auditVerificationEsdCoordinator')">{{model.AuditVerificationEsdCoordinatorSigned
+            ? 'View Signature':'Add Signature'}} </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CheckSheet -->
+<div class="card" *ngIf="model.DateTimeStarted != ''">
+  <div class="card-body">
+    <div class="scrollit">
+      <table class="table table-responsive table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="2">ESD Audit Items</th>
+            <th scope="col">Ideal Condition</th>
+            <th scope="col">Criteria</th>
+            <th scope="col">Not Available</th>
+            <th scope="col">Fail/Pass</th>
+            <th scope="col">QTY</th>
+            <th scope="col">% Completed</th>
+            <th colspan="3">Condition</th>
+            <th scope="col" class="blue">Fail/Pass</th>
+            <th scope="col" class="blue">QTY</th>
+            <th scope="col" class="blue">% Completed</th>
+            <th colspan="3" class="blue">Condition</th> 
+            <th scope="col">Actual Picture</th>
+            <th scope="col">Comments/Remarks</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of checkListArray; let i = index">
+            <td>{{i}}</td>
+            <td class="td-left">{{item.item}}</td>
+            <td><button class="btn btn-secondary" (click)="openModal(i)">View</button></td>
+            <td class="td-criteria td-left">{{item.criteria}}</td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.notAvailable" [name]="i + 'notAvailable'" 
+                  [id]="i + 'notAvailable'" (change)="getTotalScore()" disabled>
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'"
+                disabled (change)="getTotalScore()">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]" disabled
+                (input)="getPercentCompletion(item)">/
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]" disabled 
+                (input)="getPercentCompletion(item)">
+            </td>
+            <td><label>{{item.completed}}</label></td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[0].name"
+                (change)="radioItemChange(item.condition, item.condition[0].name)" [checked]="item.condition[0].value" disabled >
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0].name">
+                {{item.condition[0].name}}</label>
+            </td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[1].name"
+                 (change)="radioItemChange(item.condition, item.condition[1].name)" [checked]="item.condition[1].value" disabled>
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1].name">
+                {{item.condition[1].name}}</label>
+            </td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i)" [id]="i + item.condition[2].name"
+               (change)="radioItemChange(item.condition,item.condition[2].name)" [checked]="item.condition[2].value" disabled>
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name">
+                {{item.condition[2].name}}</label>
+            </td>
+            <td class="blue">
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.reverify_passOrFail" [name]="i + 'passOrFail-r'" [id]="i + 'passOrFail-r'"
+                 (change)="getReverificationTotalScore()" [disabled]="item.notAvailable || verifyConditionToDisable(item)">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td class="blue">
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[0]"
+              (input)="getReverifyPercentCompletion(item)" [disabled]="item.notAvailable || verifyConditionToDisable(item)"
+               >/
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[1]" 
+              (input)="getReverifyPercentCompletion(item)" [disabled]="item.notAvailable || verifyConditionToDisable(item)"
+              >
+            </td>
+            <td class="blue"><label>{{item.reverify_completed}}</label></td>
+            <td class="blue">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[0].name + 'r'"
+                (change)="radioItemChange(item.reverify_condition, item.reverify_condition[0].name)" [checked]="item.reverify_condition[0].value" [disabled]="item.notAvailable || verifyConditionToDisable(item)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[0].name + 'r'" >
+                {{item.reverify_condition[0].name}}</label>
+            </td>
+            <td class="blue">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[1].name + 'r'"
+                 (change)="radioItemChange(item.reverify_condition, item.reverify_condition[1].name)" [checked]="item.reverify_condition[1].value" [disabled]="item.notAvailable || verifyConditionToDisable(item)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[1].name + 'r'">
+                {{item.reverify_condition[1].name}}</label>
+            </td>
+            <td class="blue">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r')" [id]="i + item.reverify_condition[2].name + 'r'"
+               (change)="radioItemChange(item.reverify_condition,item.reverify_condition[2].name)" [checked]="item.reverify_condition[2].value" [disabled]="item.notAvailable || verifyConditionToDisable(item)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[2].name + 'r'">
+                {{item.reverify_condition[2].name}}</label>
+            </td>
+            <td>
+              <input #fileUpload type="file" (click)="fileUpload.value = ''"
+                (change)="importFile($event,item.actualPicture)" style="display:none" accept="image/*">
+              <button (click)="fileUpload.click()" class="btn btn-primary"
+              disabled>Upload</button>
+              &nbsp;
+              <button class="btn btn-secondary" (click)="openUploadedModal(item.actualPicture)"
+                [disabled]="item.notAvailable">View <span class="badge">{{item.actualPicture.length}}</span></button>
+            </td>
+            <td><textarea type="text" [(ngModel)]="item.commentRemarks" [disabled]="item.notAvailable"
+                class="form-control"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Open Area -->
+<div class="card" *ngIf="model.DateTimeStarted != ''">
+  <div class="card-body">
+    <!-- <div class="row col-md-12" style="text-align: left;">
+      <span>
+        <label style="font-size: 20px;">Open Area</label>&nbsp;&nbsp;<button class="btn btn-primary"
+          (click)="addOpenArea(); getTotalScore();">Add</button>
+      </span>
+    </div> -->
+
+    <div class="scrollit mt-1" *ngIf="this.openAreaArray.length > 0">
+      <table class="table table-responsive table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="2">ESD Audit Items</th>
+            <th scope="col">Ideal Condition</th>
+            <th scope="col">Criteria</th>
+            <th scope="col">Not Available</th>
+            <th scope="col">Fail/Pass</th>
+            <th scope="col">QTY</th>
+            <th scope="col">% Completed</th>
+            <th colspan="3">Condition</th>
+            <th scope="col" class="blue">Fail/Pass</th>
+            <th scope="col" class="blue">QTY</th>
+            <th scope="col" class="blue">% Completed</th>
+            <th colspan="3" class="blue">Condition</th> 
+            <th scope="col">Actual Picture</th>
+            <th scope="col">Comments/Remarks</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of openAreaArray; let i = index">
+            <td>{{i}}</td>
+            <td><textarea type="text" [(ngModel)]="item.item" class="form-control" style="width: 200px"></textarea></td>
+            <td>
+              <input #fileUpload type="file" (click)="fileUpload.value = ''"
+                (change)="importFile($event,item.idealCondition)" style="display:none" accept="image/*">
+              <button (click)="fileUpload.click()" class="btn btn-primary"
+                [disabled]="item.notAvailable">Upload</button>
+              &nbsp;
+              <button class="btn btn-secondary" (click)="openUploadedModal(item.idealCondition)"
+                [disabled]="item.notAvailable">View</button>
+            </td>
+            <td><textarea type="text" [(ngModel)]="item.criteria" class="form-control" style="width: 400px"></textarea>
+            </td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.notAvailable" [name]="i + 'notAvailable'"
+                  [id]="i + 'notAvailable'" (change)="getTotalScore()" disabled>
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.passOrFail" [name]="i + 'passOrFail'" [id]="i + 'passOrFail'"
+                 (change)="getTotalScore()" disabled>
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[0]" disabled
+                (input)="getPercentCompletion(item)">/
+              <input class="qty" min="0" type="number" [(ngModel)]="item.qty[1]" disabled
+                (input)="getPercentCompletion(item)">
+            </td>
+            <td><label>{{item.completed}}</label></td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'open-area')"
+                [id]="i + item.condition[0].name + '-open-area'"disabled
+                (change)="radioItemChange(item.condition, item.condition[0].name)" [checked]="item.condition[0].value">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[0].name + '-open-area'">
+                {{item.condition[0].name}}</label>
+            </td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'open-area')"
+                [id]="i + item.condition[1].name + '-open-area'"disabled
+                (change)="radioItemChange(item.condition, item.condition[1].name)" [checked]="item.condition[1].value">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[1].name + '-open-area'">
+                {{item.condition[1].name}}</label>
+            </td>
+            <td>
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'open-area')"
+                [id]="i + item.condition[2].name + '-open-area'" disabled
+                (change)="radioItemChange(item.condition,item.condition[2].name)" [checked]="item.condition[2].value">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.condition[2].name + '-open-area'">
+                {{item.condition[2].name}}</label>
+            </td>
+            <td class="blue">
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="item.reverify_passOrFail" [name]="i + 'passOrFail-r-open'" [id]="i + 'passOrFail-r-open'"
+                 (change)="getReverificationTotalScore()" [disabled]="verifyConditionToDisable(item)">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td class="blue">
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[0]" 
+              (input)="getReverifyPercentCompletion(item)" [disabled]="verifyConditionToDisable(item)"
+               >/
+              <input class="qty" min="0" type="number" [(ngModel)]="item.reverify_qty[1]" 
+              (input)="getReverifyPercentCompletion(item)" [disabled]="verifyConditionToDisable(item)"
+              >
+            </td>
+            <td class="blue"><label>{{item.reverify_completed}}</label></td>
+            <td class="blue">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[0].name + 'r-open-area'"
+                (change)="radioItemChange(item.reverify_condition, item.reverify_condition[0].name)" [checked]="item.reverify_condition[0].value" [disabled]="verifyConditionToDisable(item)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[0].name + 'r-open-area'" >
+                {{item.reverify_condition[0].name}}</label>
+            </td>
+            <td class="blue">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[1].name + 'r-open-area'"
+                 (change)="radioItemChange(item.reverify_condition, item.reverify_condition[1].name)" [checked]="item.reverify_condition[1].value" [disabled]="verifyConditionToDisable(item)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[1].name + 'r-open-area'">
+                {{item.reverify_condition[1].name}}</label>
+            </td>
+            <td class="blue">
+              <input type="radio" class="btn-check" [name]="createRadioName(i + 'r-open-area')" [id]="i + item.reverify_condition[2].name + 'r-open-area'"
+               (change)="radioItemChange(item.reverify_condition,item.reverify_condition[2].name)" [checked]="item.reverify_condition[2].value" [disabled]="verifyConditionToDisable(item)">
+              <label class="btn btn-outline-secondary" [htmlFor]="i + item.reverify_condition[2].name + 'r-open-area'">
+                {{item.reverify_condition[2].name}}</label>
+            </td>
+            <td>
+              <input #fileUploadActual type="file" (click)="fileUploadActual.value = ''"
+                (change)="importFile($event,item.actualPicture)" style="display:none" accept="image/*">
+              <button (click)="fileUploadActual.click()" class="btn btn-primary"
+                [disabled]="item.notAvailable">Upload</button>
+              &nbsp;
+              <button class="btn btn-secondary" (click)="openUploadedModal(item.actualPicture)"
+                [disabled]="item.notAvailable">View <span class="badge">{{item.actualPicture.length}}</span></button>
+            </td>
+            <td><textarea type="text" [(ngModel)]="item.commentRemarks" [disabled]="item.notAvailable"
+                class="form-control"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Scores -->
+<div class="card" *ngIf="model.DateTimeStarted != ''">
+  <h5 class="mt-2">Initial</h5>
+  <div class="card-body">
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status"> {{rateScore}}</label>
+          </div>
+        </div>
+        Score/Rate
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status">{{rank}}</label>
+          </div>
+        </div>
+        Rank
+      </div>
+
+      <div class="col-md-3">
+        <table class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>91-100</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>81-90</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>71-80</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>70 below</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="row score-details">
+            <label> Total Item Pass : {{totalItemPass}}</label>
+          </div>
+          <div class="row score-details">
+            <label> Total Item Failed : {{totalItemFailed}}</label>
+          </div>
+          <!-- <div class="row score-details">
+            <label> Rate / Score : {{rateScore}}</label>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reverify Scores -->
+<div class="card" *ngIf="model.DateTimeStarted != ''">
+  <h5 class="mt-2">Reverification</h5>
+  <div class="card-body blue">
+   
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status"> {{reverify_rateScore}}</label>
+          </div>
+        </div>
+        Score/Rate
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body card-status">
+            <label class="text-status">{{reverify_rank}}</label>
+          </div>
+        </div>
+        Rank
+      </div>
+
+      <div class="col-md-3">
+        <table class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>91-100</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>81-90</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>71-80</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>70 below</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="row score-details">
+            <label> Total Item Pass : {{reverify_totalItemPass}}</label>
+          </div>
+          <div class="row score-details">
+            <label> Total Item Failed : {{reverify_totalItemFailed}}</label>
+          </div>
+          <!-- <div class="row score-details">
+            <label> Rate / Score : {{rateScore}}</label>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Start Timer -->
+<div class="row timer mt-5" *ngIf="model.DateTimeStarted == ''">
+  <div class="col text-center">
+    <button class="btn btn-primary btn-block btn-lg" [disabled]="model.divOrFloorOrProcess == ''"
+      (click)="startTimer()">Start Timer</button>
+  </div>
+</div>
+
+<!-- Button Footer -->
+<div class="btn-footer" *ngIf="model.DateTimeEnded == null || model.DateTimeEnded == ''">
+  <!-- <div class="row">
+    <button class="btn btn-warning btn-block btn-lg" (click)="clear()">Clear</button>
+  </div> -->
+  <div class="row">
+    <button class="btn btn-primary btn-lg" [disabled]="ValidateRequiredFields()"
+      (click)="saveChecksheet(false)">Save</button>
+  </div>
+  <div class="row"  >
+    <button class="btn btn-success btn-lg" [disabled]="ValidateRequiredFields()" (click)="saveEndDateTime()">End Time</button>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<ng-template #confirmationModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title"></h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <div class="modal-body modal-sm">
+    <img alt="" [src]="images">
+  </div>
+</ng-template>
+
+<!-- View Uploaded Modal -->
+<ng-template #uploadedModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title"></h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <div class="modal-body modal-lg">
+    <div *ngIf="uploadedImagesList.length > 0">
+      <div class="image-wrap" *ngFor="let image of uploadedImagesList; index as i">
+        <button class="remove-image" (click)="removeImage(uploadedImagesList, i)">x</button>
+        <img alt="" [src]="image">
+      </div>
+    </div>
+    <div *ngIf="uploadedImagesList.length == 0">
+      <h2 style="text-align: center;">No Image</h2>
+    </div>
+
+  </div>
+</ng-template>
+
+<!-- Signature Modal -->
+<ng-template #signatureModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{addSignatureData.title}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <div class="modal-body modal-lg">
+    <img class="signature-img" alt="" [src]="addSignatureData.image" (error)="imageHasBeenLoaded($event, addSignatureData)">
+  </div>
+
+  <div class="modal-footer">
+    <div class="row" *ngIf="addSignatureData.status">
+      <button class="btn btn-danger btn-block btn-lg" (click)=" modal.close(false)">Remove</button>
+    </div>
+    <div class="row" *ngIf="!addSignatureData.status">
+      <button class="btn btn-primary btn-lg" [disabled]="addSignatureData.error" (click)="modal.close(true)">Sign</button>
+    </div>
+  </div>
+</ng-template>
